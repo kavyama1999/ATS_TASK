@@ -1,0 +1,12 @@
+dependencies {
+	api project(":modules:library-db:library-db-api")
+
+	compileOnly group: "com.liferay.portal", name: "release.portal.api"
+}
+
+buildService {
+	apiDir = "../library-db-api/src/main/java"
+	testDir = "../library-db-test/src/testIntegration/java"
+}
+
+group = "library.db"

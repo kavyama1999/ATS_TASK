@@ -1,0 +1,10 @@
+Bundle-Name: bank_db-api
+Bundle-SymbolicName: com.ats.bank.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.ats.bank.exception,\
+	com.ats.bank.model,\
+	com.ats.bank.service,\
+	com.ats.bank.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../bank_db-service/service.xml

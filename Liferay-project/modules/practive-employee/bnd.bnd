@@ -1,0 +1,7 @@
+Bundle-Name: practive-employee
+Bundle-SymbolicName: com.practice.employee
+Bundle-Version: 1.0.0
+Export-Package: com.practice.employee.constants
+Provide-Capability:\
+	liferay.language.resources;\
+		resource.bundle.base.name="content.Language"

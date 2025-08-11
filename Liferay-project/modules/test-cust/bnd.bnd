@@ -1,0 +1,7 @@
+Bundle-Name: test-cust
+Bundle-SymbolicName: test.cust
+Bundle-Version: 1.0.0
+Export-Package: test.cust.constants
+Provide-Capability:\
+	liferay.language.resources;\
+		resource.bundle.base.name="content.Language"

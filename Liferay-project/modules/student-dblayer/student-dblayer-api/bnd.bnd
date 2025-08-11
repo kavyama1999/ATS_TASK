@@ -1,0 +1,10 @@
+Bundle-Name: student-dblayer-api
+Bundle-SymbolicName: com.liferay.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.exception,\
+	com.liferay.model,\
+	com.liferay.service,\
+	com.liferay.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../student-dblayer-service/service.xml

@@ -1,0 +1,12 @@
+dependencies {
+	api project(":modules:checkIndb3:checkIndb3-api")
+
+	compileOnly group: "com.liferay.portal", name: "release.portal.api"
+}
+
+buildService {
+	apiDir = "../checkIndb3-api/src/main/java"
+	testDir = "../checkIndb3-test/src/testIntegration/java"
+}
+
+group = "checkIndb3"

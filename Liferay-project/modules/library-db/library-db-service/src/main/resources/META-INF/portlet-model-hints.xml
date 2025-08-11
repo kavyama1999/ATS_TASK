@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="library.db.model.book_review">
+		<field name="uuid" type="String" />
+		<field name="reviewId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="libId" type="long" />
+		<field name="reviewerName" type="String" />
+		<field name="reviewDate" type="Date" />
+		<field name="rating" type="int" />
+		<field name="comment" type="String" />
+		<field name="approved" type="boolean" />
+	</model>
+	<model name="library.db.model.library_books">
+		<field name="uuid" type="String" />
+		<field name="libId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="book_name" type="String" />
+		<field name="author" type="String" />
+		<field name="title" type="int" />
+		<field name="publisherd_year" type="int" />
+		<field name="category" type="String" />
+	</model>
+</model-hints>

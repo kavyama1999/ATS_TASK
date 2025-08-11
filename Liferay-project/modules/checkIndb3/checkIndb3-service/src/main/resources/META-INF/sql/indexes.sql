@@ -1,0 +1,1 @@
+create unique index IX_C542A540 on practice_check (uuid_[$COLUMN_LENGTH:75$], groupId);

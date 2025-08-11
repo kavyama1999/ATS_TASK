@@ -1,0 +1,1 @@
+create unique index IX_DF2A55CE on Practice_employee (uuid_[$COLUMN_LENGTH:75$], groupId);

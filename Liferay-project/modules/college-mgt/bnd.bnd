@@ -1,0 +1,7 @@
+Bundle-Name: college-mgt
+Bundle-SymbolicName: com.college
+Bundle-Version: 1.0.0
+Export-Package: com.college.constants
+Provide-Capability:\
+	liferay.language.resources;\
+		resource.bundle.base.name="content.Language"

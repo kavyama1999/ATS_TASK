@@ -1,0 +1,10 @@
+Bundle-Name: employe-db-layer-api
+Bundle-SymbolicName: employe.db.layer.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	employe.db.layer.exception,\
+	employe.db.layer.model,\
+	employe.db.layer.service,\
+	employe.db.layer.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../employe-db-layer-service/service.xml

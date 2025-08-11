@@ -1,0 +1,12 @@
+dependencies {
+	api project(":modules:ats-db:ats-db-api")
+
+	compileOnly group: "com.liferay.portal", name: "release.portal.api"
+}
+
+buildService {
+	apiDir = "../ats-db-api/src/main/java"
+	testDir = "../ats-db-test/src/testIntegration/java"
+}
+
+group = "ats.db"

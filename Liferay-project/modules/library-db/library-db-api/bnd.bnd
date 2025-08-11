@@ -1,0 +1,10 @@
+Bundle-Name: library-db-api
+Bundle-SymbolicName: library.db.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	library.db.exception,\
+	library.db.model,\
+	library.db.service,\
+	library.db.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../library-db-service/service.xml

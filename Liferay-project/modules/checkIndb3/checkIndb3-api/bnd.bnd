@@ -1,0 +1,10 @@
+Bundle-Name: checkIndb3-api
+Bundle-SymbolicName: checkIndb3.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	checkIndb3.exception,\
+	checkIndb3.model,\
+	checkIndb3.service,\
+	checkIndb3.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../checkIndb3-service/service.xml

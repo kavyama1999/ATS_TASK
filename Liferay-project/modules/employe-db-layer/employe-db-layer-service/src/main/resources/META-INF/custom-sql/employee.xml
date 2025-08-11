@@ -1,0 +1,8 @@
+<!-- <custom-sql>
+    <sql id="customeQuery">
+ 
+            <![CDATA[
+                SELECT *FROM Practice_employee WHERE company like ?;
+            ]]>
+    </sql>
+</custom-sql> -->

@@ -1,0 +1,7 @@
+Bundle-Name: new1-student
+Bundle-SymbolicName: com.new1.student
+Bundle-Version: 1.0.0
+Export-Package: com.new1.student.constants
+Provide-Capability:\
+	liferay.language.resources;\
+		resource.bundle.base.name="content.Language"

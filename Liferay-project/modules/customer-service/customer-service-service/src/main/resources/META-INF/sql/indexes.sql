@@ -1,0 +1,1 @@
+create unique index IX_51E4FCA2 on FOO_customer_table (uuid_[$COLUMN_LENGTH:75$], groupId);

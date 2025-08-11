@@ -1,0 +1,7 @@
+Bundle-Name: company-mngt
+Bundle-SymbolicName: com.company
+Bundle-Version: 1.0.0
+Export-Package: com.company.constants
+Provide-Capability:\
+	liferay.language.resources;\
+		resource.bundle.base.name="content.Language"

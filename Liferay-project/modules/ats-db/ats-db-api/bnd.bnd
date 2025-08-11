@@ -1,0 +1,10 @@
+Bundle-Name: ats-db-api
+Bundle-SymbolicName: ats.db.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	ats.db.exception,\
+	ats.db.model,\
+	ats.db.service,\
+	ats.db.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../ats-db-service/service.xml

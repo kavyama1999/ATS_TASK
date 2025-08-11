@@ -1,0 +1,10 @@
+Bundle-Name: CheckOutHrmsPortlet
+Bundle-SymbolicName: CheckOutHrmsPortlet
+Bundle-Version: 1.0.0
+Export-Package: CheckOutHrmsPortlet.constants
+Provide-Capability:\
+	liferay.language.resources;\
+		resource.bundle.base.name="content.Language"
+
+		
+

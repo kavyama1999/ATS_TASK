@@ -1,0 +1,7 @@
+Bundle-Name: employee-mgmt
+Bundle-SymbolicName: com.ats.employee
+Bundle-Version: 1.0.0
+Export-Package: com.ats.employee.constants
+Provide-Capability:\
+	liferay.language.resources;\
+		resource.bundle.base.name="content.Language"

@@ -1,0 +1,1 @@
+create unique index IX_942F47FC on practice_bank (uuid_[$COLUMN_LENGTH:75$], groupId);

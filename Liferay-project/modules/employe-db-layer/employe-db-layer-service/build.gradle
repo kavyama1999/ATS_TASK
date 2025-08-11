@@ -1,0 +1,13 @@
+dependencies {
+    api project(":modules:employe-db-layer:employe-db-layer-api")
+
+    compileOnly group: "com.liferay.portal", name: "release.portal.api"
+    compileOnly group: "com.liferay", name: "com.liferay.portal.dao.orm.custom.sql.api", version: "1.0.0"
+}
+
+buildService {
+    apiDir = "../employe-db-layer-api/src/main/java"
+    testDir = "../employe-db-layer-test/src/testIntegration/java"
+}
+
+group = "employe.db.layer"

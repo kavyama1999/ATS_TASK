@@ -1,0 +1,12 @@
+dependencies {
+	api project(":modules:student-dblayer:student-dblayer-api")
+
+	compileOnly group: "com.liferay.portal", name: "release.portal.api"
+}
+
+buildService {
+	apiDir = "../student-dblayer-api/src/main/java"
+	testDir = "../student-dblayer-test/src/testIntegration/java"
+}
+
+group = "com.liferay"
