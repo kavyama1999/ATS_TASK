@@ -53,7 +53,7 @@ public class employeeCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(29);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -81,6 +81,8 @@ public class employeeCacheModel
 		sb.append(company);
 		sb.append(", gender=");
 		sb.append(gender);
+		sb.append(", status=");
+		sb.append(status);
 		sb.append("}");
 
 		return sb.toString();
@@ -153,6 +155,8 @@ public class employeeCacheModel
 			employeeImpl.setGender(gender);
 		}
 
+		employeeImpl.setStatus(status);
+
 		employeeImpl.resetOriginalValues();
 
 		return employeeImpl;
@@ -178,6 +182,8 @@ public class employeeCacheModel
 		age = objectInput.readInt();
 		company = objectInput.readUTF();
 		gender = objectInput.readUTF();
+
+		status = objectInput.readInt();
 	}
 
 	@Override
@@ -236,6 +242,8 @@ public class employeeCacheModel
 		else {
 			objectOutput.writeUTF(gender);
 		}
+
+		objectOutput.writeInt(status);
 	}
 
 	public String uuid;
@@ -251,5 +259,6 @@ public class employeeCacheModel
 	public int age;
 	public String company;
 	public String gender;
+	public int status;
 
 }

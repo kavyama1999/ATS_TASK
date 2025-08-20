@@ -2,20 +2,29 @@
 package com.ats.employee.portlet;
 
 import com.ats.employee.constants.EmployeeMgmtPortletKeys;
+import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.EmailAddressLocalServiceUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.portlet.ActionRequest;
@@ -67,6 +76,9 @@ public class EmployeeMgmtPortlet extends MVCPortlet {
 	
     public void addEmployee(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException,PortletException {
     	
+	    ThemeDisplay themeDisplay = (ThemeDisplay) actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
+
+    	
     	log.info("Inside Action Method");
     	
     	String name = ParamUtil.getString(actionRequest, "name");
@@ -74,21 +86,87 @@ public class EmployeeMgmtPortlet extends MVCPortlet {
     	String gender = ParamUtil.getString(actionRequest, "gender");
     	String company = ParamUtil.getString(actionRequest, "company");
     	int age = ParamUtil.getInteger(actionRequest, "age");
+    	int status = ParamUtil.getInteger(actionRequest, "status");
+
     	
     	employee empObj = employeeLocalServiceUtil.getInstance();
     	
-    	//long empId = CounterLocalServiceUtil.increment(employee.class.getName());    	
+    	long empId = CounterLocalServiceUtil.increment(employee.class.getName());    	
     	
     	empObj.setName(name);
     	empObj.setSalary(salary);;
     	empObj.setGender(gender);
     	empObj.setCompany(company);
     	empObj.setAge(age);
+    	empObj.setStatus(status);
     	
     	empObj = employeeLocalServiceUtil.addemployee(empObj);
+    	
+    	
+//    	for Employee Workflow
+    	
+    	
+    	ServiceContext serviceContext;
+		try {
+		    serviceContext = ServiceContextFactory.getInstance(employee.class.getName(), actionRequest);
+
+		    AssetEntry assetEntry = AssetEntryLocalServiceUtil.updateEntry(
+		    		
+		    		
+		  
+		      themeDisplay.getUserId(),                       // userId
+		        themeDisplay.getScopeGroupId(),                 // groupId
+		        empObj.getCreateDate(),                           // createDate
+		        empObj.getModifiedDate(),                         // modifiedDate
+		        employee.class.getName(),                      // className
+		        empObj.getPrimaryKey(),                           // classPK
+		        empObj.getUuid(),                                 // classUuid
+		        0,                                              // classTypeId
+		        null,                                           // categoryIds
+		        null,                                           // tagNames
+		        true,                                           // visible
+		        false,                                          // listable
+		        new Date(),                                     // startDate
+		        null,                                           // endDate
+		        new Date(),                                     // publishDate
+		        null,                                           // expirationDate
+		        ContentTypes.TEXT_HTML,                         // contentType
+		        empObj.getCompany(),                         // title
+		        String.valueOf(empObj.getStatus()),           // description ✅ FIXED
+		       // empObj.getStatus(),                       // description
+		        null,                                           // summary
+		        null,                                           // url
+		        null,                                           // layoutUuid
+		        0,                                              // height
+		        0,                                              // width
+		        null                                            // priority
+		    );
+
+		    // Reindex the BankTable entity
+		    Indexer<employee> indexer = IndexerRegistryUtil.nullSafeGetIndexer(employee.class);
+		    indexer.reindex(empObj);
+
+		    // Start workflow
+		    WorkflowHandlerRegistryUtil.startWorkflowInstance(
+		        themeDisplay.getCompanyId(),
+		        themeDisplay.getScopeGroupId(),
+		        themeDisplay.getUserId(),
+		        employee.class.getName(),
+		        empObj.getPrimaryKey(),
+		        empObj,
+		        serviceContext
+		    );
+
+		} catch (PortalException e) {
+		    log.error("Error while saving BankTable entry: ", e);
+		}
+    	
+    	
     }
     
-    
+//    ======================================================================================
+//    ====================================================================================
+   
     //for edit
     public void editEmployee(ActionRequest actionRequest, ActionResponse actionResponse) throws IOException,PortletException {
     	

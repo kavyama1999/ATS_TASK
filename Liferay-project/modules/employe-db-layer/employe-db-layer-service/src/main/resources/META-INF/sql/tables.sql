@@ -11,5 +11,6 @@ create table Practice_employee (
 	salary VARCHAR(75) null,
 	age INTEGER,
 	company VARCHAR(75) null,
-	gender VARCHAR(75) null
+	gender VARCHAR(75) null,
+	status INTEGER
 );

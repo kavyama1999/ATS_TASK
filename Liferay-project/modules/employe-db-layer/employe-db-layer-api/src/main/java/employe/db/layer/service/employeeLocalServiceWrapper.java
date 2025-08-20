@@ -404,6 +404,15 @@ public class employeeLocalServiceWrapper
 	}
 
 	@Override
+	public employe.db.layer.model.employee updateEmployeeStatus(
+		long userId, long empId, int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
+
+		return _employeeLocalService.updateEmployeeStatus(
+			userId, empId, status, serviceContext);
+	}
+
+	@Override
 	public BasePersistence<?> getBasePersistence() {
 		return _employeeLocalService.getBasePersistence();
 	}

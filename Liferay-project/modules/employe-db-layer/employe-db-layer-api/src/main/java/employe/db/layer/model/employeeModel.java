@@ -269,6 +269,20 @@ public interface employeeModel
 	 */
 	public void setGender(String gender);
 
+	/**
+	 * Returns the status of this employee.
+	 *
+	 * @return the status of this employee
+	 */
+	public int getStatus();
+
+	/**
+	 * Sets the status of this employee.
+	 *
+	 * @param status the status of this employee
+	 */
+	public void setStatus(int status);
+
 	@Override
 	public employee cloneWithOriginalValues();
 

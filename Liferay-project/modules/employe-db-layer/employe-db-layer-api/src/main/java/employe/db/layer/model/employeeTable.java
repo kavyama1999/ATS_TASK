@@ -49,6 +49,8 @@ public class employeeTable extends BaseTable<employeeTable> {
 		"company", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<employeeTable, String> gender = createColumn(
 		"gender", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
+	public final Column<employeeTable, Integer> status = createColumn(
+		"status", Integer.class, Types.INTEGER, Column.FLAG_DEFAULT);
 
 	private employeeTable() {
 		super("Practice_employee", employeeTable::new);

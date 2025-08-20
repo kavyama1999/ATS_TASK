@@ -47,6 +47,7 @@ public class employeeWrapper
 		attributes.put("age", getAge());
 		attributes.put("company", getCompany());
 		attributes.put("gender", getGender());
+		attributes.put("status", getStatus());
 
 		return attributes;
 	}
@@ -129,6 +130,12 @@ public class employeeWrapper
 
 		if (gender != null) {
 			setGender(gender);
+		}
+
+		Integer status = (Integer)attributes.get("status");
+
+		if (status != null) {
+			setStatus(status);
 		}
 	}
 
@@ -245,6 +252,16 @@ public class employeeWrapper
 	@Override
 	public String getSalary() {
 		return model.getSalary();
+	}
+
+	/**
+	 * Returns the status of this employee.
+	 *
+	 * @return the status of this employee
+	 */
+	@Override
+	public int getStatus() {
+		return model.getStatus();
 	}
 
 	/**
@@ -400,6 +417,16 @@ public class employeeWrapper
 	@Override
 	public void setSalary(String salary) {
 		model.setSalary(salary);
+	}
+
+	/**
+	 * Sets the status of this employee.
+	 *
+	 * @param status the status of this employee
+	 */
+	@Override
+	public void setStatus(int status) {
+		model.setStatus(status);
 	}
 
 	/**

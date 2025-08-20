@@ -6,11 +6,15 @@
 package employe.db.layer.service.impl;
 
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
+import java.util.Date;
 import java.util.List;
 
 import employe.db.layer.model.employee;
 import employe.db.layer.model.impl.employeeImpl;
+import employe.db.layer.service.employeeLocalServiceUtil;
 import employe.db.layer.service.base.employeeLocalServiceBaseImpl;
 
 import org.osgi.service.component.annotations.Component;
@@ -34,6 +38,33 @@ public class employeeLocalServiceImpl extends employeeLocalServiceBaseImpl {
         return employeeFinder.getByCompany(company);
     }
     
+    
+   
+    
+    
+    
+  // employee workflow
+  	public employee updateEmployeeStatus(long userId, long empId, int status, ServiceContext serviceContext) {
+  		employee empObj = employeeLocalServiceUtil.fetchemployee( userId);
+  		empObj.setStatus(status);
+  		empObj = employeeLocalServiceUtil.updateemployee(empObj);
+
+  	    try {
+  	        if (status == WorkflowConstants.STATUS_APPROVED) {
+  	            assetEntryLocalService.updateEntry(
+  	                employee.class.getName(), empId, new Date(), null, true, true);
+  	        } else {
+  	            // set supportTicket entity status to false
+  	            assetEntryLocalService.updateVisible(
+  	            		employee.class.getName(), empId, false
+  	            );
+  	        }
+  	    } catch (Exception e) {
+  	        e.printStackTrace();
+  	    }
+
+  	    return empObj;
+  	}
 
 }
 

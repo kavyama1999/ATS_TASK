@@ -140,6 +140,8 @@ public class employeePersistenceTest {
 
 		newemployee.setGender(RandomTestUtil.randomString());
 
+		newemployee.setStatus(RandomTestUtil.nextInt());
+
 		_employees.add(_persistence.update(newemployee));
 
 		employee existingemployee = _persistence.findByPrimaryKey(
@@ -170,6 +172,8 @@ public class employeePersistenceTest {
 			existingemployee.getCompany(), newemployee.getCompany());
 		Assert.assertEquals(
 			existingemployee.getGender(), newemployee.getGender());
+		Assert.assertEquals(
+			existingemployee.getStatus(), newemployee.getStatus());
 	}
 
 	@Test
@@ -227,7 +231,7 @@ public class employeePersistenceTest {
 			"Practice_employee", "uuid", true, "empId", true, "groupId", true,
 			"companyId", true, "userId", true, "userName", true, "createDate",
 			true, "modifiedDate", true, "name", true, "salary", true, "age",
-			true, "company", true, "gender", true);
+			true, "company", true, "gender", true, "status", true);
 	}
 
 	@Test
@@ -521,6 +525,8 @@ public class employeePersistenceTest {
 		employee.setCompany(RandomTestUtil.randomString());
 
 		employee.setGender(RandomTestUtil.randomString());
+
+		employee.setStatus(RandomTestUtil.nextInt());
 
 		_employees.add(_persistence.update(employee));
 

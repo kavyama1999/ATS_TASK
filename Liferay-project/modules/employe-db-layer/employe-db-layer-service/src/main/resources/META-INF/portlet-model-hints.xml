@@ -15,5 +15,6 @@
 		<field name="age" type="int" />
 		<field name="company" type="String" />
 		<field name="gender" type="String" />
+		<field name="status" type="int" />
 	</model>
 </model-hints>

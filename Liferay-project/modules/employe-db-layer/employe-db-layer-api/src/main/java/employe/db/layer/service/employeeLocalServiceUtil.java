@@ -355,6 +355,14 @@ public class employeeLocalServiceUtil {
 		return getService().updateemployee(employee);
 	}
 
+	public static employee updateEmployeeStatus(
+		long userId, long empId, int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
+
+		return getService().updateEmployeeStatus(
+			userId, empId, status, serviceContext);
+	}
+
 	public static employeeLocalService getService() {
 		return _serviceSnapshot.get();
 	}

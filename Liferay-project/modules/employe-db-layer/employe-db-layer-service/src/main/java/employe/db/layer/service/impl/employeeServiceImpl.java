@@ -22,4 +22,5 @@ import org.osgi.service.component.annotations.Component;
 	service = AopService.class
 )
 public class employeeServiceImpl extends employeeServiceBaseImpl {
+	
 }

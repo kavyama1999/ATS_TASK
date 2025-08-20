@@ -71,7 +71,7 @@ public class employeeModelImpl
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
 		{"name", Types.VARCHAR}, {"salary", Types.VARCHAR},
 		{"age", Types.INTEGER}, {"company", Types.VARCHAR},
-		{"gender", Types.VARCHAR}
+		{"gender", Types.VARCHAR}, {"status", Types.INTEGER}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -91,10 +91,11 @@ public class employeeModelImpl
 		TABLE_COLUMNS_MAP.put("age", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("company", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("gender", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table Practice_employee (uuid_ VARCHAR(75) null,empId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name VARCHAR(75) null,salary VARCHAR(75) null,age INTEGER,company VARCHAR(75) null,gender VARCHAR(75) null)";
+		"create table Practice_employee (uuid_ VARCHAR(75) null,empId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name VARCHAR(75) null,salary VARCHAR(75) null,age INTEGER,company VARCHAR(75) null,gender VARCHAR(75) null,status INTEGER)";
 
 	public static final String TABLE_SQL_DROP = "drop table Practice_employee";
 
@@ -255,6 +256,7 @@ public class employeeModelImpl
 			attributeGetterFunctions.put("age", employee::getAge);
 			attributeGetterFunctions.put("company", employee::getCompany);
 			attributeGetterFunctions.put("gender", employee::getGender);
+			attributeGetterFunctions.put("status", employee::getStatus);
 
 			_attributeGetterFunctions = Collections.unmodifiableMap(
 				attributeGetterFunctions);
@@ -301,6 +303,8 @@ public class employeeModelImpl
 				"company", (BiConsumer<employee, String>)employee::setCompany);
 			attributeSetterBiConsumers.put(
 				"gender", (BiConsumer<employee, String>)employee::setGender);
+			attributeSetterBiConsumers.put(
+				"status", (BiConsumer<employee, Integer>)employee::setStatus);
 
 			_attributeSetterBiConsumers = Collections.unmodifiableMap(
 				(Map)attributeSetterBiConsumers);
@@ -583,6 +587,21 @@ public class employeeModelImpl
 		_gender = gender;
 	}
 
+	@JSON
+	@Override
+	public int getStatus() {
+		return _status;
+	}
+
+	@Override
+	public void setStatus(int status) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_status = status;
+	}
+
 	@Override
 	public StagedModelType getStagedModelType() {
 		return new StagedModelType(
@@ -658,6 +677,7 @@ public class employeeModelImpl
 		employeeImpl.setAge(getAge());
 		employeeImpl.setCompany(getCompany());
 		employeeImpl.setGender(getGender());
+		employeeImpl.setStatus(getStatus());
 
 		employeeImpl.resetOriginalValues();
 
@@ -685,6 +705,7 @@ public class employeeModelImpl
 		employeeImpl.setAge(this.<Integer>getColumnOriginalValue("age"));
 		employeeImpl.setCompany(this.<String>getColumnOriginalValue("company"));
 		employeeImpl.setGender(this.<String>getColumnOriginalValue("gender"));
+		employeeImpl.setStatus(this.<Integer>getColumnOriginalValue("status"));
 
 		return employeeImpl;
 	}
@@ -838,6 +859,8 @@ public class employeeModelImpl
 			employeeCacheModel.gender = null;
 		}
 
+		employeeCacheModel.status = getStatus();
+
 		return employeeCacheModel;
 	}
 
@@ -913,6 +936,7 @@ public class employeeModelImpl
 	private int _age;
 	private String _company;
 	private String _gender;
+	private int _status;
 
 	public <T> T getColumnValue(String columnName) {
 		columnName = _attributeNames.getOrDefault(columnName, columnName);
@@ -957,6 +981,7 @@ public class employeeModelImpl
 		_columnOriginalValues.put("age", _age);
 		_columnOriginalValues.put("company", _company);
 		_columnOriginalValues.put("gender", _gender);
+		_columnOriginalValues.put("status", _status);
 	}
 
 	private static final Map<String, String> _attributeNames;
@@ -1005,6 +1030,8 @@ public class employeeModelImpl
 		columnBitmasks.put("company", 2048L);
 
 		columnBitmasks.put("gender", 4096L);
+
+		columnBitmasks.put("status", 8192L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
