@@ -1,41 +1,40 @@
 <%@ include file="./init.jsp" %>
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
+<%@ page import="com.liferay.portal.kernel.util.Validator" %>
+<%@ page import="com.liferay.portal.kernel.model.User" %>
 
 <%
-long userId = ParamUtil.getLong(request, "userId");
-String errorMessage = ParamUtil.getString(request, "errorMessage");
-String successMessage = ParamUtil.getString(request, "successMessage");
+    String errorMessage = (String) request.getAttribute("errorMessage");
+    String successMessage = (String) request.getAttribute("successMessage");
+
+    User verifiedUser = (User) request.getAttribute("verifiedUser");
+    Long userId = (Long) request.getAttribute("userId");
+    String emailAddress = (String) request.getAttribute("emailAddress");
 %>
 
 <div class="verification-container">
     <h2>Email Verification</h2>
 
-    <c:if test="<%= successMessage != null && !successMessage.isEmpty() %>">
-        <div class="alert alert-success">
-            <%= successMessage %>
-        </div>
+    <c:if test="${not empty errorMessage}">
+        <div class="alert alert-danger"><%= errorMessage %></div>
     </c:if>
 
-    <c:if test="<%= errorMessage != null && !errorMessage.isEmpty() %>">
-        <div class="alert alert-danger">
-            <%= errorMessage %>
-        </div>
+    <c:if test="${not empty successMessage}">
+        <div class="alert alert-success"><%= successMessage %></div>
     </c:if>
 
-    <portlet:actionURL name="/action/signUp/sendOTP" var="sendOTPActionURL" />
+    <c:if test="${verifiedUser != null}">
+        <portlet:actionURL name="/action/signUp/sendOTP" var="sendOTPActionURL" />
 
-    <aui:form action="<%= sendOTPActionURL %>" method="post">
-        <aui:fieldset>
-            <aui:input 
-                name="emailAddress"  label="Enter Your Email Address"  type="text" 
-                required="true"  placeholder="you@example.com" />
-
-            <!-- Hidden fields -->
-            <aui:input name="userId" type="hidden" value="<%= userId %>" />
-
-            <aui:button type="submit" value="Send OTP" cssClass="btn-primary" />
-        </aui:fieldset>
-    </aui:form>
+        <aui:form action="<%= sendOTPActionURL %>" method="post" name="verifyEmailForm">
+            <aui:fieldset>
+                <aui:input name="emailAddress" type="text" label="Email Address"
+                    value="<%= emailAddress %>" readonly="true" />
+                <aui:input name="userId" type="hidden" value="<%= userId %>" />
+                <aui:button type="submit" value="Send OTP" cssClass="btn-primary" />
+            </aui:fieldset>
+        </aui:form>
+    </c:if>
 </div>
 
 <style>
@@ -43,23 +42,15 @@ String successMessage = ParamUtil.getString(request, "successMessage");
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
+    text-align: center;
 }
 .alert {
     padding: 15px;
     margin: 20px 0;
-    border: 1px solid transparent;
     border-radius: 4px;
 }
-.alert-success {
-    color: #3c763d;
-    background-color: #dff0d8;
-    border-color: #d6e9c6;
-}
-.alert-danger {
-    color: #a94442;
-    background-color: #f2dede;
-    border-color: #ebccd1;
-}
+.alert-success { color: #155724; background-color: #d4edda; border-color: #c3e6cb; }
+.alert-danger { color: #721c24; background-color: #f8d7da; border-color: #f5c6cb; }
 .btn-primary {
     background-color: #007bff;
     color: white;

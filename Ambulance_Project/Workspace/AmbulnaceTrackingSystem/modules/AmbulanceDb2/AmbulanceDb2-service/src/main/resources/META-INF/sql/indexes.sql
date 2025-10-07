@@ -1,0 +1,1 @@
+create unique index IX_D0569D01 on AMB_AmbSignUp (uuid_[$COLUMN_LENGTH:75$], groupId);

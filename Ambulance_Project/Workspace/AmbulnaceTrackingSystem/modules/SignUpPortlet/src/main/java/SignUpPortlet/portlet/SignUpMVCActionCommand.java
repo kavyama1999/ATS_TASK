@@ -18,17 +18,19 @@ import javax.mail.internet.InternetAddress;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
+
+
 import SignUpPortlet.constants.SignUpPortletKeys;
 
 import java.util.Locale;
 
 @Component(
-        immediate = true,
-        property = {
-                "javax.portlet.name=" + SignUpPortletKeys.SIGNUP,
-                "mvc.command.name=/action/signUp/register"
-        },
-        service = MVCActionCommand.class
+    immediate = true,
+    property = {
+        "javax.portlet.name=" + SignUpPortletKeys.SIGNUP,
+        "mvc.command.name=/action/signUp/register"
+    },
+    service = MVCActionCommand.class
 )
 public class SignUpMVCActionCommand implements MVCActionCommand {
 
@@ -58,45 +60,54 @@ public class SignUpMVCActionCommand implements MVCActionCommand {
                     return false;
                 }
             } catch (Exception e) {
-                // User doesn't exist — OK to continue
+                // User doesn't exist — continue
             }
 
             Locale locale = themeDisplay.getLocale();
             ServiceContext serviceContext = ServiceContextFactory.getInstance(User.class.getName(), actionRequest);
 
-            // Create inactive user (no OTP yet)
+            // Create inactive user
             User user = UserLocalServiceUtil.addUser(
-                    0, companyId, false, password, password,
-                    false, screenName, emailAddress,
-                    themeDisplay.getLocale(), firstName, "", lastName,
-                    0, 0, true, 1, 1, 2000, "", 0, null, null, null, null,
-                    false, serviceContext
+                0, companyId, false, password, password,
+                false, screenName, emailAddress,
+                locale, firstName, "", lastName,
+                0, 0, true, 1, 1, 2000, "", 0, null, null, null, null,
+                false, serviceContext
             );
 
-            // Create expando attributes (empty for now)
+
+
+            
+           
+            // Add custom attributes
             createExpandoAttributes(user);
 
-            // Set inactive until email verified
+            // Mark user inactive until verified
             UserLocalServiceUtil.updateStatus(user.getUserId(), WorkflowConstants.STATUS_INACTIVE, serviceContext);
 
-            // ✅ Build only the verification link (no OTP yet)
-            String portalURL = themeDisplay.getPortalURL();
-            String groupFriendlyURL = themeDisplay.getScopeGroup().getFriendlyURL();
-            String portletInstanceId = themeDisplay.getPortletDisplay().getId();
 
-            // Construct correct verification URL
-            String verificationLink = portalURL + "/web" + groupFriendlyURL +
-                    "/ambulance?p_p_id=" + portletInstanceId +
-                    "&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view" +
-                    "&_SignUpPortlet_SignUpPortlet_INSTANCE_kizn_jspPage=%2Fverify_email.jsp" +
-                    "&mvcRenderCommandName=%2Fverify-email" +
-                    "&userId=" + user.getUserId();
 
-            // Send verification link only (no OTP)
+
+String portletInstanceId = themeDisplay.getPortletDisplay().getId();
+String namespace = "_" + portletInstanceId + "_";
+
+String verificationLink =
+    themeDisplay.getPortalURL() +
+    "/web" + themeDisplay.getScopeGroup().getFriendlyURL() + // ✅ Correct site path
+    "/ambulance" + // ✅ Replace with your actual page friendly URL
+    "?p_p_id=" + portletInstanceId +
+    "&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view" +
+    "&" + namespace + "mvcRenderCommandName=/verify-email" +
+    "&" + namespace + "userId=" + user.getUserId();
+
+
+
+
+            // Send verification link
             sendVerificationEmail(user, verificationLink);
 
             actionResponse.setRenderParameter("successMessage",
-                    "Registration successful! Please check your email for the verification link.");
+                "Registration successful! Please check your email for the verification link.");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,7 +118,6 @@ public class SignUpMVCActionCommand implements MVCActionCommand {
         return true;
     }
 
-    // ✅ Create expando fields for OTP (empty for now)
     private void createExpandoAttributes(User user) {
         try {
             if (!user.getExpandoBridge().hasAttribute("verificationOTP")) {
@@ -121,7 +131,6 @@ public class SignUpMVCActionCommand implements MVCActionCommand {
         }
     }
 
-    // ✅ Send only verification link
     private void sendVerificationEmail(User user, String verificationLink) {
         try {
             String subject = "Verify Your Email - SOS Ambulance Portal";
@@ -148,7 +157,7 @@ public class SignUpMVCActionCommand implements MVCActionCommand {
 
             MailServiceUtil.sendEmail(mailMessage);
 
-            System.out.println("✅ Verification email (link only) sent to: " + user.getEmailAddress());
+            System.out.println("✅ Verification email sent to: " + user.getEmailAddress());
             System.out.println("🔗 Verification link: " + verificationLink);
 
         } catch (Exception e) {

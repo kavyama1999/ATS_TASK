@@ -1,0 +1,12 @@
+dependencies {
+	api project(":modules:AmbulanceDb2:AmbulanceDb2-api")
+
+	compileOnly group: "com.liferay.portal", name: "release.portal.api"
+}
+
+buildService {
+	apiDir = "../AmbulanceDb2-api/src/main/java"
+	testDir = "../AmbulanceDb2-test/src/testIntegration/java"
+}
+
+group = "AmbulanceDb2"

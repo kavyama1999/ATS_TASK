@@ -9,6 +9,7 @@ import org.osgi.service.component.annotations.Component;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import java.util.Map;
 
 import SignUpPortlet.constants.SignUpPortletKeys;
 
@@ -24,25 +25,55 @@ public class VerifyEmailRenderCommand implements MVCRenderCommand {
 
     @Override
     public String render(RenderRequest renderRequest, RenderResponse renderResponse) {
+
+    	
         long userId = ParamUtil.getLong(renderRequest, "userId");
-        
+
+        System.out.println("🔍 DEBUG: userId param = " + userId);
+        renderRequest.getParameterMap().forEach((k,v) -> System.out.println(k + " = " + String.join(",", v)));
+
+        // ✅ Fix for namespaced params (_SignUpPortlet_INSTANCE_xxx_userId)
+        if (userId <= 0) {
+            Map<String, String[]> params = renderRequest.getParameterMap();
+            for (String key : params.keySet()) {
+                if (key.endsWith("userId")) {
+                    try {
+                        userId = Long.parseLong(params.get(key)[0]);
+                        break;
+                    } catch (Exception ignored) {}
+                }
+            }
+        }
+
         try {
-            User user = UserLocalServiceUtil.getUser(userId);
-            renderRequest.setAttribute("user", user);
+            if (userId <= 0) {
+                renderRequest.setAttribute("errorMessage", "Invalid or missing verification link.");
+                return "/verify_email.jsp";
+            }
+
+            // ✅ Get user safely
+            User user = UserLocalServiceUtil.fetchUser(userId);
+            if (user == null) {
+                renderRequest.setAttribute("errorMessage", "User not found or invalid link.");
+                return "/verify_email.jsp";
+            }
+
+            renderRequest.setAttribute("verifiedUser", user);
             renderRequest.setAttribute("userId", userId);
-            
-            // Check if user is already verified
+            renderRequest.setAttribute("emailAddress", user.getEmailAddress());
+
+            // ✅ Pass status
             if (user.getStatus() == WorkflowConstants.STATUS_APPROVED) {
                 renderRequest.setAttribute("alreadyVerified", true);
             } else {
                 renderRequest.setAttribute("showOTPForm", true);
             }
-            
+
         } catch (Exception e) {
-            renderRequest.setAttribute("error", "Invalid user ID or user not found");
+            renderRequest.setAttribute("errorMessage", "Invalid user or verification link expired.");
             e.printStackTrace();
         }
-        
+
         return "/verify_email.jsp";
     }
 }

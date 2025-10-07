@@ -2,23 +2,14 @@
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 
 <%
-/* long userId = ParamUtil.getLong(request, "userId");
- */
- long userId = ParamUtil.getLong(request, "userId");
-
+String emailAddress = ParamUtil.getString(request, "emailAddress");
 String errorMessage = ParamUtil.getString(request, "errorMessage");
-String successMessage = ParamUtil.getString(request, "successMessage");
 %>
 
 <div class="verification-container">
     <h2>Enter OTP</h2>
 
-    <c:if test="<%= successMessage != null && !successMessage.isEmpty() %>">
-        <div class="alert alert-success">
-            <%= successMessage %>
-        </div>
-    </c:if>
-
+    <!-- ❌ Remove successMessage here (it will show on home page after redirect) -->
     <c:if test="<%= errorMessage != null && !errorMessage.isEmpty() %>">
         <div class="alert alert-danger">
             <%= errorMessage %>
@@ -31,8 +22,8 @@ String successMessage = ParamUtil.getString(request, "successMessage");
         <aui:fieldset>
             <aui:input name="otp" label="Enter OTP" type="text" required="true" placeholder="Enter the OTP you received" />
 
-            <!-- Hidden userId must be included -->
-       <aui:input name="userId" type="hidden" value="<%= userId %>" />
+            <!-- ✅ Hidden email address instead of userId -->
+            <input type="hidden" name="<portlet:namespace />emailAddress" value="<%= emailAddress %>" />
 
             <aui:button type="submit" value="Verify OTP" cssClass="btn-primary" />
         </aui:fieldset>

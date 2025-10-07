@@ -1,7 +1,12 @@
 package SignUpPortlet.portlet;
 
+import AmbulanceDb2.model.AmbSignUp;
+import AmbulanceDb2.service.AmbSignUpLocalServiceUtil;
+
 import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.kernel.service.MailServiceUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -11,11 +16,15 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+
 import org.osgi.service.component.annotations.Component;
 
 import javax.mail.internet.InternetAddress;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+
+import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import SignUpPortlet.constants.SignUpPortletKeys;
@@ -30,93 +39,121 @@ import SignUpPortlet.constants.SignUpPortletKeys;
 )
 public class SendOTPMVCActionCommand implements MVCActionCommand {
 
+    private static final Log _log = LogFactoryUtil.getLog(SendOTPMVCActionCommand.class);
+
     @Override
     public boolean processAction(ActionRequest actionRequest, ActionResponse actionResponse) {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
         try {
+            // ✅ 1️⃣ Get parameters
             String emailAddress = ParamUtil.getString(actionRequest, "emailAddress");
             long userId = ParamUtil.getLong(actionRequest, "userId");
 
+            // ✅ 2️⃣ Validate email format
             if (!Validator.isEmailAddress(emailAddress)) {
-                actionResponse.setRenderParameter("errorMessage", "Invalid email address");
+                actionResponse.setRenderParameter("mvcRenderCommandName", "/verify-email");
+                actionResponse.setRenderParameter("errorMessage", "Invalid email format. Please enter a valid email address.");
+                actionResponse.setRenderParameter("userId", String.valueOf(userId));
                 return false;
             }
 
-            // Fetch the user by ID or email
-            User user = null;
-            if (userId > 0) {
+            // ✅ 3️⃣ Check user validity
+            User user;
+            try {
                 user = UserLocalServiceUtil.getUser(userId);
-            } else {
-                user = UserLocalServiceUtil.getUserByEmailAddress(themeDisplay.getCompanyId(), emailAddress);
-            }
-
-            if (user == null) {
-                actionResponse.setRenderParameter("errorMessage", "User not found.");
+            } catch (Exception e) {
+                _log.error("❌ Invalid userId: " + userId, e);
+                actionResponse.setRenderParameter("mvcRenderCommandName", "/verify-email");
+                actionResponse.setRenderParameter("errorMessage", "Invalid verification link or user not found.");
                 return false;
             }
 
-            // ✅ Generate OTP
+            // ✅ 4️⃣ Ensure entered email matches registered one
+            if (user == null || !user.getEmailAddress().equalsIgnoreCase(emailAddress)) {
+                _log.warn("⚠️ Entered email does not match registered email for userId: " + userId);
+                actionResponse.setRenderParameter("mvcRenderCommandName", "/verify-email");
+                actionResponse.setRenderParameter("errorMessage", "Invalid email! Please enter the same email you registered with.");
+                actionResponse.setRenderParameter("userId", String.valueOf(userId));
+                return false;
+            }
+
+            // ✅ 5️⃣ Generate OTP
             String otp = generateOTP();
-            long otpGeneratedTime = System.currentTimeMillis();
 
-            // ✅ Update Expando attributes securely using admin service context
-            ServiceContext serviceContext = ServiceContextFactory.getInstance(User.class.getName(), actionRequest);
-            user = UserLocalServiceUtil.updateUser(user); // refresh
-            user.getExpandoBridge().setAttribute("verificationOTP", otp, false);
-            user.getExpandoBridge().setAttribute("otpGeneratedTime", String.valueOf(otpGeneratedTime), false);
-            UserLocalServiceUtil.updateUser(user); // persist update
+            // ✅ 6️⃣ Send OTP via Email
+            sendOTPEmail(emailAddress, otp);
 
-            // ✅ Send OTP email
-            sendOTPEmail(user, otp);
+            // ✅ 7️⃣ Save / update AmbSignUp record
+            ServiceContext serviceContext = ServiceContextFactory.getInstance(AmbSignUp.class.getName(), actionRequest);
 
-            System.out.println("✅ OTP sent successfully to: " + user.getEmailAddress());
-            System.out.println("🔢 OTP: " + otp);
+            // Delete previous OTPs for same email (clean old records)
+            List<AmbSignUp> existingRecords = AmbSignUpLocalServiceUtil.getAmbSignUps(-1, -1);
+            for (AmbSignUp record : existingRecords) {
+                if (record.getEmail().equalsIgnoreCase(emailAddress)) {
+                    AmbSignUpLocalServiceUtil.deleteAmbSignUp(record);
+                }
+            }
 
-            // Redirect to OTP entry page
+            // Create new OTP record
+            AmbSignUp ambSignUp = AmbSignUpLocalServiceUtil.createAmbSignUp(0);
+            ambSignUp.setCompanyId(themeDisplay.getCompanyId());
+            ambSignUp.setGroupId(themeDisplay.getScopeGroupId());
+            ambSignUp.setUserId(userId);
+            ambSignUp.setCreateDate(new Date());
+            ambSignUp.setModifiedDate(new Date());
+            ambSignUp.setEmail(emailAddress);
+            ambSignUp.setOTP(otp);
+            ambSignUp.setStatus(true); // 1 = Active (OTP generated)
+
+            AmbSignUpLocalServiceUtil.addAmbSignUp(ambSignUp);
+
+            _log.info("✅ OTP generated and saved for email: " + emailAddress + ", userId=" + userId);
+
+            // ✅ 8️⃣ Redirect user to OTP entry page
             actionResponse.setRenderParameter("mvcRenderCommandName", "/enter-otp");
-            actionResponse.setRenderParameter("userId", String.valueOf(user.getUserId()));
-            actionResponse.setRenderParameter("successMessage", "OTP sent successfully to your registered email.");
+            actionResponse.setRenderParameter("emailAddress", emailAddress);
+            actionResponse.setRenderParameter("userId", String.valueOf(userId));
+            actionResponse.setRenderParameter("successMessage", "OTP sent successfully to your registered email address.");
 
         } catch (Exception e) {
-            e.printStackTrace();
-            actionResponse.setRenderParameter("errorMessage", "Failed to send OTP: " + e.getMessage());
+            _log.error("❌ Failed to send OTP", e);
+            actionResponse.setRenderParameter("mvcRenderCommandName", "/verify-email");
+            actionResponse.setRenderParameter("errorMessage", "Failed to send OTP. Please try again.");
             return false;
         }
 
         return true;
     }
 
+    // ✅ Helper method: Generate 6-digit OTP
     private String generateOTP() {
         return String.valueOf(100000 + new Random().nextInt(900000));
     }
 
-    private void sendOTPEmail(User user, String otp) {
+    // ✅ Helper method: Send OTP email
+    private void sendOTPEmail(String emailAddress, String otp) {
         try {
             String subject = "Your OTP for Email Verification";
             String body = "<html><body style='font-family: Arial, sans-serif;'>"
-                    + "<h3>Hello " + user.getFullName() + ",</h3>"
+                    + "<h3>Hello,</h3>"
                     + "<p>Your One Time Password (OTP) for email verification is:</p>"
                     + "<h2 style='color:#007bff;'>" + otp + "</h2>"
                     + "<p>This OTP is valid for 10 minutes.</p>"
                     + "<p>If you did not request this, please ignore this email.</p>"
-                    + "<hr><p style='font-size:12px;color:#999;'>SOS Ambulance Portal</p>"
+                    + "<hr><p style='font-size:12px;color:#999;'>© 2025 SOS Ambulance Portal</p>"
                     + "</body></html>";
 
             InternetAddress from = new InternetAddress("kavyama1408@gmail.com", "SOS Ambulance Portal");
-            InternetAddress to = new InternetAddress(user.getEmailAddress());
+            InternetAddress to = new InternetAddress(emailAddress);
 
-            MailMessage mailMessage = new MailMessage();
-            mailMessage.setFrom(from);
-            mailMessage.setTo(to);
-            mailMessage.setSubject(subject);
-            mailMessage.setBody(body);
-            mailMessage.setHTMLFormat(true);
-
+            MailMessage mailMessage = new MailMessage(from, to, subject, body, true);
             MailServiceUtil.sendEmail(mailMessage);
+
+            _log.info("📧 OTP email sent successfully to: " + emailAddress);
         } catch (Exception e) {
-            e.printStackTrace();
+            _log.error("❌ Error sending OTP email to: " + emailAddress, e);
         }
     }
 }
