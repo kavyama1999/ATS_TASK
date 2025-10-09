@@ -1,0 +1,10 @@
+Bundle-Name: AddAmbulanceDb-api
+Bundle-SymbolicName: AddAmbulanceDb.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	AddAmbulanceDb.exception,\
+	AddAmbulanceDb.model,\
+	AddAmbulanceDb.service,\
+	AddAmbulanceDb.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../AddAmbulanceDb-service/service.xml

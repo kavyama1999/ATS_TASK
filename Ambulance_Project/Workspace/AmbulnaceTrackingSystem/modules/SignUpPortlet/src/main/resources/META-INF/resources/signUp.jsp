@@ -8,6 +8,7 @@
     <h2>User Registration</h2>
     
     <aui:form action="<%= signUpActionURL %>" method="post" name="signUpForm">
+      
         <aui:fieldset label="User Information">
             <aui:input name="firstName" label="First Name" type="text" required="true" />
             <aui:input name="lastName" label="Last Name" type="text" required="true" />

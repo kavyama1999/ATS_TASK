@@ -39,11 +39,13 @@ import SignUpPortlet.constants.SignUpPortletKeys;
 )
 public class SendOTPMVCActionCommand implements MVCActionCommand {
 
-    private static final Log _log = LogFactoryUtil.getLog(SendOTPMVCActionCommand.class);
+    private static final Log log = LogFactoryUtil.getLog(SendOTPMVCActionCommand.class);
 
     @Override
     public boolean processAction(ActionRequest actionRequest, ActionResponse actionResponse) {
 
+    	
+    	log.info("Inside SendOTPMVCActionCommand");
         ThemeDisplay themeDisplay = (ThemeDisplay) actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
         try {
@@ -64,7 +66,7 @@ public class SendOTPMVCActionCommand implements MVCActionCommand {
             try {
                 user = UserLocalServiceUtil.getUser(userId);
             } catch (Exception e) {
-                _log.error("❌ Invalid userId: " + userId, e);
+                log.error("❌ Invalid userId: " + userId, e);
                 actionResponse.setRenderParameter("mvcRenderCommandName", "/verify-email");
                 actionResponse.setRenderParameter("errorMessage", "Invalid verification link or user not found.");
                 return false;
@@ -72,7 +74,7 @@ public class SendOTPMVCActionCommand implements MVCActionCommand {
 
             // ✅ 4️⃣ Ensure entered email matches registered one
             if (user == null || !user.getEmailAddress().equalsIgnoreCase(emailAddress)) {
-                _log.warn("⚠️ Entered email does not match registered email for userId: " + userId);
+                log.warn("⚠️ Entered email does not match registered email for userId: " + userId);
                 actionResponse.setRenderParameter("mvcRenderCommandName", "/verify-email");
                 actionResponse.setRenderParameter("errorMessage", "Invalid email! Please enter the same email you registered with.");
                 actionResponse.setRenderParameter("userId", String.valueOf(userId));
@@ -81,6 +83,9 @@ public class SendOTPMVCActionCommand implements MVCActionCommand {
 
             // ✅ 5️⃣ Generate OTP
             String otp = generateOTP();
+            log.info("Generated OTP :" +otp);
+            log.info(" Generated OTP for userId " + userId + " (" + emailAddress + "): " + otp);
+
 
             // ✅ 6️⃣ Send OTP via Email
             sendOTPEmail(emailAddress, otp);
@@ -109,7 +114,7 @@ public class SendOTPMVCActionCommand implements MVCActionCommand {
 
             AmbSignUpLocalServiceUtil.addAmbSignUp(ambSignUp);
 
-            _log.info("✅ OTP generated and saved for email: " + emailAddress + ", userId=" + userId);
+            log.info("✅ OTP generated and saved for email: " + emailAddress + ", userId=" + userId +",OTP :"+otp);
 
             // ✅ 8️⃣ Redirect user to OTP entry page
             actionResponse.setRenderParameter("mvcRenderCommandName", "/enter-otp");
@@ -118,7 +123,7 @@ public class SendOTPMVCActionCommand implements MVCActionCommand {
             actionResponse.setRenderParameter("successMessage", "OTP sent successfully to your registered email address.");
 
         } catch (Exception e) {
-            _log.error("❌ Failed to send OTP", e);
+            log.error("❌ Failed to send OTP", e);
             actionResponse.setRenderParameter("mvcRenderCommandName", "/verify-email");
             actionResponse.setRenderParameter("errorMessage", "Failed to send OTP. Please try again.");
             return false;
@@ -151,9 +156,9 @@ public class SendOTPMVCActionCommand implements MVCActionCommand {
             MailMessage mailMessage = new MailMessage(from, to, subject, body, true);
             MailServiceUtil.sendEmail(mailMessage);
 
-            _log.info("📧 OTP email sent successfully to: " + emailAddress);
+            log.info("📧 OTP email sent successfully to: " + emailAddress);
         } catch (Exception e) {
-            _log.error("❌ Error sending OTP email to: " + emailAddress, e);
+            log.error("❌ Error sending OTP email to: " + emailAddress, e);
         }
     }
 }

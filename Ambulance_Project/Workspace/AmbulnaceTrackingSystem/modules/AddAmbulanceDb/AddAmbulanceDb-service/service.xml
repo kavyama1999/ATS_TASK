@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.4.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_4_0.dtd">
+
+<service-builder dependency-injector="ds" package-path="AddAmbulanceDb">
+	<namespace>HSP</namespace>
+	<!--<entity data-source="sampleDataSource" local-service="true" name="Foo" remote-service="false" session-factory="sampleSessionFactory" table="foo" tx-manager="sampleTransactionManager uuid="true"">-->
+	<entity local-service="true" name="Hospital" remote-service="true" uuid="true">
+
+		<!-- PK fields -->
+
+		<column name="hospitalId" primary="true" type="long"  id-type="increment"/>
+	
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="hospitalName" type="String" />
+		<column name="location" type="String" />
+		<column name="address" type="String" />
+		<column name="contactNumber" type="String" />
+
+		
+		<!-- References -->
+
+		<reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
+		<reference entity="AssetTag" package-path="com.liferay.portlet.asset" />
+	</entity>
+	
+	
+<entity local-service="true" name="Ambulance" remote-service="true" uuid="true">
+      
+        <column name="ambulanceId" type="long" primary="true" id-type="increment" />
+       
+       <!-- FK -->
+        <column name="hospitalId" type="long" />
+        
+        <!-- FK -->
+        <column name="driverId" type="long" />
+       
+        <column name="ambulanceNumber" type="String" />
+        <column name="vehicleType" type="String" />
+        <column name="status" type="String" />
+        <column name="location" type="String" />
+        <column name="contactNumber" type="String" />
+        <column name="createDate" type="Date" />
+        <column name="modifiedDate" type="Date" />
+
+        <finder name="HospitalId" return-type="Collection">
+            <finder-column name="hospitalId" />
+        </finder>
+        
+        <reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
+        <reference entity="AssetTag" package-path="com.liferay.portlet.asset" />
+    </entity>
+    
+    
+    
+    <!-- 👨‍✈️ DRIVER ENTITY -->
+    <!-- ===================== -->
+    <entity local-service="true" name="Driver" remote-service="true" uuid="true">
+        
+        <column name="driverId" type="long" primary="true" id-type="increment" />
+               
+               
+              
+        <!-- FK -->
+        <column name="hospitalId" type="long" />
+        <!-- FK -->
+        <column name="ambulanceId" type="long" />
+        
+        <column name="driverName" type="String" />
+        <column name="contactNumber" type="String" />
+        <column name="email" type="String" />
+        <column name="address" type="String" />
+        <column name="experienceYears" type="int" />
+        <column name="status" type="String" />
+        <column name="createDate" type="Date" />
+        <column name="modifiedDate" type="Date" />
+
+        <finder name="HospitalId" return-type="Collection">
+            <finder-column name="hospitalId" />
+        </finder>
+
+        <finder name="AmbulanceId" return-type="Collection">
+            <finder-column name="ambulanceId" />
+        </finder>
+        
+        
+        <reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
+        <reference entity="AssetTag" package-path="com.liferay.portlet.asset" />
+    
+    </entity>
+	
+</service-builder>

@@ -36,7 +36,7 @@ public class VerifyOTPMVCActionCommand implements MVCActionCommand {
     @Override
     public boolean processAction(ActionRequest actionRequest, ActionResponse actionResponse) {
 
-    	log.info("hgfhghfghghfhg");
+    	log.info("Inside method for verifyOTP MVC Action coommand");
         try {
             String emailAddress = ParamUtil.getString(actionRequest, "emailAddress");
             String enteredOTP = ParamUtil.getString(actionRequest, "otp");
@@ -64,6 +64,8 @@ public class VerifyOTPMVCActionCommand implements MVCActionCommand {
             AmbSignUpLocalServiceUtil.updateAmbSignUp(matchedRecord);
 
             log.info("✅ OTP verified successfully for: " + emailAddress);
+            log.info("✅ OTP : " + enteredOTP);
+
 
             // ✅ Also update user_ table → set status = 0 (active)
             try {

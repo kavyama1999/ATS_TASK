@@ -12,13 +12,14 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import org.osgi.service.component.annotations.Component;
-
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import javax.mail.internet.InternetAddress;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletURL;
 
-
+import org.osgi.service.component.annotations.Component;
 
 import SignUpPortlet.constants.SignUpPortletKeys;
 
@@ -41,18 +42,20 @@ public class SignUpMVCActionCommand implements MVCActionCommand {
             ThemeDisplay themeDisplay = (ThemeDisplay) actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
             long companyId = themeDisplay.getCompanyId();
 
+            // Get form values
             String firstName = ParamUtil.getString(actionRequest, "firstName");
             String lastName = ParamUtil.getString(actionRequest, "lastName");
             String screenName = ParamUtil.getString(actionRequest, "screenName");
             String emailAddress = ParamUtil.getString(actionRequest, "emailAddress");
             String password = ParamUtil.getString(actionRequest, "password");
 
+            // Validate email
             if (!Validator.isEmailAddress(emailAddress)) {
                 actionResponse.setRenderParameter("errorMessage", "Invalid email address");
                 return false;
             }
 
-            // Check if user already exists
+            // Check if user exists
             try {
                 User existingUser = UserLocalServiceUtil.getUserByEmailAddress(companyId, emailAddress);
                 if (existingUser != null) {
@@ -66,44 +69,41 @@ public class SignUpMVCActionCommand implements MVCActionCommand {
             Locale locale = themeDisplay.getLocale();
             ServiceContext serviceContext = ServiceContextFactory.getInstance(User.class.getName(), actionRequest);
 
+            long[] groupIds = new long[0];
+            long[] organizationIds = new long[0];
+            long[] roleIds = new long[0];
+            long[] userGroupIds = new long[0];
+
             // Create inactive user
             User user = UserLocalServiceUtil.addUser(
                 0, companyId, false, password, password,
                 false, screenName, emailAddress,
                 locale, firstName, "", lastName,
-                0, 0, true, 1, 1, 2000, "", 0, null, null, null, null,
+                0, 0, true, 1, 1, 2000, "", 1,
+                groupIds, organizationIds, roleIds, userGroupIds,
                 false, serviceContext
             );
 
-
-
-            
-           
-            // Add custom attributes
+            // Add Expando attributes
             createExpandoAttributes(user);
 
-            // Mark user inactive until verified
+            // Mark user inactive until email verification
             UserLocalServiceUtil.updateStatus(user.getUserId(), WorkflowConstants.STATUS_INACTIVE, serviceContext);
 
+            // ✅ Generate proper verification link
+            PortletURL verificationURL = PortletURLFactoryUtil.create(
+                    actionRequest,
+                    SignUpPortletKeys.SIGNUP,
+                    themeDisplay.getPlid(),
+                    PortletRequest.RENDER_PHASE
+            );
 
+            verificationURL.setParameter("mvcRenderCommandName", "/verify-email");
+            verificationURL.setParameter("userId", String.valueOf(user.getUserId()));
 
+            String verificationLink = verificationURL.toString();
 
-String portletInstanceId = themeDisplay.getPortletDisplay().getId();
-String namespace = "_" + portletInstanceId + "_";
-
-String verificationLink =
-    themeDisplay.getPortalURL() +
-    "/web" + themeDisplay.getScopeGroup().getFriendlyURL() + // ✅ Correct site path
-    "/ambulance" + // ✅ Replace with your actual page friendly URL
-    "?p_p_id=" + portletInstanceId +
-    "&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view" +
-    "&" + namespace + "mvcRenderCommandName=/verify-email" +
-    "&" + namespace + "userId=" + user.getUserId();
-
-
-
-
-            // Send verification link
+            // Send verification email
             sendVerificationEmail(user, verificationLink);
 
             actionResponse.setRenderParameter("successMessage",
@@ -161,7 +161,7 @@ String verificationLink =
             System.out.println("🔗 Verification link: " + verificationLink);
 
         } catch (Exception e) {
-            System.err.println("❌ Error sending email: " + e.getMessage());
+            System.err.println("Error sending email: " + e.getMessage());
             e.printStackTrace();
         }
     }

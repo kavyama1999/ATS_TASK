@@ -1,0 +1,7 @@
+Bundle-Name: HospitalMngPortlet
+Bundle-SymbolicName: HospitalMngPortlet
+Bundle-Version: 1.0.0
+Export-Package: HospitalMngPortlet.constants
+Provide-Capability:\
+	liferay.language.resources;\
+		resource.bundle.base.name="content.Language"
