@@ -12,11 +12,14 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -62,9 +65,9 @@ public class DriverModelImpl
 	public static final Object[][] TABLE_COLUMNS = {
 		{"uuid_", Types.VARCHAR}, {"driverId", Types.BIGINT},
 		{"hospitalId", Types.BIGINT}, {"ambulanceId", Types.BIGINT},
-		{"driverName", Types.VARCHAR}, {"contactNumber", Types.VARCHAR},
-		{"email", Types.VARCHAR}, {"address", Types.VARCHAR},
-		{"experienceYears", Types.INTEGER}, {"status", Types.VARCHAR},
+		{"userId", Types.BIGINT}, {"driverName", Types.VARCHAR},
+		{"contactNumber", Types.VARCHAR}, {"email", Types.VARCHAR},
+		{"address", Types.VARCHAR}, {"status", Types.VARCHAR},
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP}
 	};
 
@@ -76,18 +79,18 @@ public class DriverModelImpl
 		TABLE_COLUMNS_MAP.put("driverId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("hospitalId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("ambulanceId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("driverName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("contactNumber", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("email", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("address", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("experienceYears", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("status", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table HSP_Driver (uuid_ VARCHAR(75) null,driverId LONG not null primary key,hospitalId LONG,ambulanceId LONG,driverName VARCHAR(75) null,contactNumber VARCHAR(75) null,email VARCHAR(75) null,address VARCHAR(75) null,experienceYears INTEGER,status VARCHAR(75) null,createDate DATE null,modifiedDate DATE null)";
+		"create table HSP_Driver (uuid_ VARCHAR(75) null,driverId LONG not null primary key,hospitalId LONG,ambulanceId LONG,userId LONG,driverName VARCHAR(75) null,contactNumber VARCHAR(75) null,email VARCHAR(75) null,address VARCHAR(75) null,status VARCHAR(75) null,createDate DATE null,modifiedDate DATE null)";
 
 	public static final String TABLE_SQL_DROP = "drop table HSP_Driver";
 
@@ -235,13 +238,12 @@ public class DriverModelImpl
 			attributeGetterFunctions.put("driverId", Driver::getDriverId);
 			attributeGetterFunctions.put("hospitalId", Driver::getHospitalId);
 			attributeGetterFunctions.put("ambulanceId", Driver::getAmbulanceId);
+			attributeGetterFunctions.put("userId", Driver::getUserId);
 			attributeGetterFunctions.put("driverName", Driver::getDriverName);
 			attributeGetterFunctions.put(
 				"contactNumber", Driver::getContactNumber);
 			attributeGetterFunctions.put("email", Driver::getEmail);
 			attributeGetterFunctions.put("address", Driver::getAddress);
-			attributeGetterFunctions.put(
-				"experienceYears", Driver::getExperienceYears);
 			attributeGetterFunctions.put("status", Driver::getStatus);
 			attributeGetterFunctions.put("createDate", Driver::getCreateDate);
 			attributeGetterFunctions.put(
@@ -272,6 +274,8 @@ public class DriverModelImpl
 				"ambulanceId",
 				(BiConsumer<Driver, Long>)Driver::setAmbulanceId);
 			attributeSetterBiConsumers.put(
+				"userId", (BiConsumer<Driver, Long>)Driver::setUserId);
+			attributeSetterBiConsumers.put(
 				"driverName",
 				(BiConsumer<Driver, String>)Driver::setDriverName);
 			attributeSetterBiConsumers.put(
@@ -281,9 +285,6 @@ public class DriverModelImpl
 				"email", (BiConsumer<Driver, String>)Driver::setEmail);
 			attributeSetterBiConsumers.put(
 				"address", (BiConsumer<Driver, String>)Driver::setAddress);
-			attributeSetterBiConsumers.put(
-				"experienceYears",
-				(BiConsumer<Driver, Integer>)Driver::setExperienceYears);
 			attributeSetterBiConsumers.put(
 				"status", (BiConsumer<Driver, String>)Driver::setStatus);
 			attributeSetterBiConsumers.put(
@@ -394,6 +395,37 @@ public class DriverModelImpl
 
 	@JSON
 	@Override
+	public long getUserId() {
+		return _userId;
+	}
+
+	@Override
+	public void setUserId(long userId) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_userId = userId;
+	}
+
+	@Override
+	public String getUserUuid() {
+		try {
+			User user = UserLocalServiceUtil.getUserById(getUserId());
+
+			return user.getUuid();
+		}
+		catch (PortalException portalException) {
+			return "";
+		}
+	}
+
+	@Override
+	public void setUserUuid(String userUuid) {
+	}
+
+	@JSON
+	@Override
 	public String getDriverName() {
 		if (_driverName == null) {
 			return "";
@@ -470,21 +502,6 @@ public class DriverModelImpl
 		}
 
 		_address = address;
-	}
-
-	@JSON
-	@Override
-	public int getExperienceYears() {
-		return _experienceYears;
-	}
-
-	@Override
-	public void setExperienceYears(int experienceYears) {
-		if (_columnOriginalValues == Collections.EMPTY_MAP) {
-			_setColumnOriginalValues();
-		}
-
-		_experienceYears = experienceYears;
 	}
 
 	@JSON
@@ -603,11 +620,11 @@ public class DriverModelImpl
 		driverImpl.setDriverId(getDriverId());
 		driverImpl.setHospitalId(getHospitalId());
 		driverImpl.setAmbulanceId(getAmbulanceId());
+		driverImpl.setUserId(getUserId());
 		driverImpl.setDriverName(getDriverName());
 		driverImpl.setContactNumber(getContactNumber());
 		driverImpl.setEmail(getEmail());
 		driverImpl.setAddress(getAddress());
-		driverImpl.setExperienceYears(getExperienceYears());
 		driverImpl.setStatus(getStatus());
 		driverImpl.setCreateDate(getCreateDate());
 		driverImpl.setModifiedDate(getModifiedDate());
@@ -627,14 +644,13 @@ public class DriverModelImpl
 			this.<Long>getColumnOriginalValue("hospitalId"));
 		driverImpl.setAmbulanceId(
 			this.<Long>getColumnOriginalValue("ambulanceId"));
+		driverImpl.setUserId(this.<Long>getColumnOriginalValue("userId"));
 		driverImpl.setDriverName(
 			this.<String>getColumnOriginalValue("driverName"));
 		driverImpl.setContactNumber(
 			this.<String>getColumnOriginalValue("contactNumber"));
 		driverImpl.setEmail(this.<String>getColumnOriginalValue("email"));
 		driverImpl.setAddress(this.<String>getColumnOriginalValue("address"));
-		driverImpl.setExperienceYears(
-			this.<Integer>getColumnOriginalValue("experienceYears"));
 		driverImpl.setStatus(this.<String>getColumnOriginalValue("status"));
 		driverImpl.setCreateDate(
 			this.<Date>getColumnOriginalValue("createDate"));
@@ -731,6 +747,8 @@ public class DriverModelImpl
 
 		driverCacheModel.ambulanceId = getAmbulanceId();
 
+		driverCacheModel.userId = getUserId();
+
 		driverCacheModel.driverName = getDriverName();
 
 		String driverName = driverCacheModel.driverName;
@@ -762,8 +780,6 @@ public class DriverModelImpl
 		if ((address != null) && (address.length() == 0)) {
 			driverCacheModel.address = null;
 		}
-
-		driverCacheModel.experienceYears = getExperienceYears();
 
 		driverCacheModel.status = getStatus();
 
@@ -855,11 +871,11 @@ public class DriverModelImpl
 	private long _driverId;
 	private long _hospitalId;
 	private long _ambulanceId;
+	private long _userId;
 	private String _driverName;
 	private String _contactNumber;
 	private String _email;
 	private String _address;
-	private int _experienceYears;
 	private String _status;
 	private Date _createDate;
 	private Date _modifiedDate;
@@ -899,11 +915,11 @@ public class DriverModelImpl
 		_columnOriginalValues.put("driverId", _driverId);
 		_columnOriginalValues.put("hospitalId", _hospitalId);
 		_columnOriginalValues.put("ambulanceId", _ambulanceId);
+		_columnOriginalValues.put("userId", _userId);
 		_columnOriginalValues.put("driverName", _driverName);
 		_columnOriginalValues.put("contactNumber", _contactNumber);
 		_columnOriginalValues.put("email", _email);
 		_columnOriginalValues.put("address", _address);
-		_columnOriginalValues.put("experienceYears", _experienceYears);
 		_columnOriginalValues.put("status", _status);
 		_columnOriginalValues.put("createDate", _createDate);
 		_columnOriginalValues.put("modifiedDate", _modifiedDate);
@@ -938,15 +954,15 @@ public class DriverModelImpl
 
 		columnBitmasks.put("ambulanceId", 8L);
 
-		columnBitmasks.put("driverName", 16L);
+		columnBitmasks.put("userId", 16L);
 
-		columnBitmasks.put("contactNumber", 32L);
+		columnBitmasks.put("driverName", 32L);
 
-		columnBitmasks.put("email", 64L);
+		columnBitmasks.put("contactNumber", 64L);
 
-		columnBitmasks.put("address", 128L);
+		columnBitmasks.put("email", 128L);
 
-		columnBitmasks.put("experienceYears", 256L);
+		columnBitmasks.put("address", 256L);
 
 		columnBitmasks.put("status", 512L);
 

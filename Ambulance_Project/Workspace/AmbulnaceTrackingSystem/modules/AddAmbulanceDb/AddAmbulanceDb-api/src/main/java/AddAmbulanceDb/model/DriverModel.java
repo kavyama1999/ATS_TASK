@@ -104,6 +104,34 @@ public interface DriverModel extends BaseModel<Driver> {
 	public void setAmbulanceId(long ambulanceId);
 
 	/**
+	 * Returns the user ID of this driver.
+	 *
+	 * @return the user ID of this driver
+	 */
+	public long getUserId();
+
+	/**
+	 * Sets the user ID of this driver.
+	 *
+	 * @param userId the user ID of this driver
+	 */
+	public void setUserId(long userId);
+
+	/**
+	 * Returns the user uuid of this driver.
+	 *
+	 * @return the user uuid of this driver
+	 */
+	public String getUserUuid();
+
+	/**
+	 * Sets the user uuid of this driver.
+	 *
+	 * @param userUuid the user uuid of this driver
+	 */
+	public void setUserUuid(String userUuid);
+
+	/**
 	 * Returns the driver name of this driver.
 	 *
 	 * @return the driver name of this driver
@@ -162,20 +190,6 @@ public interface DriverModel extends BaseModel<Driver> {
 	 * @param address the address of this driver
 	 */
 	public void setAddress(String address);
-
-	/**
-	 * Returns the experience years of this driver.
-	 *
-	 * @return the experience years of this driver
-	 */
-	public int getExperienceYears();
-
-	/**
-	 * Sets the experience years of this driver.
-	 *
-	 * @param experienceYears the experience years of this driver
-	 */
-	public void setExperienceYears(int experienceYears);
 
 	/**
 	 * Returns the status of this driver.

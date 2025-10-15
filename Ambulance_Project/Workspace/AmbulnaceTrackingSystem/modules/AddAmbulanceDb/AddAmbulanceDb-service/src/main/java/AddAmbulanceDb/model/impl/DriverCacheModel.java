@@ -62,6 +62,8 @@ public class DriverCacheModel implements CacheModel<Driver>, Externalizable {
 		sb.append(hospitalId);
 		sb.append(", ambulanceId=");
 		sb.append(ambulanceId);
+		sb.append(", userId=");
+		sb.append(userId);
 		sb.append(", driverName=");
 		sb.append(driverName);
 		sb.append(", contactNumber=");
@@ -70,8 +72,6 @@ public class DriverCacheModel implements CacheModel<Driver>, Externalizable {
 		sb.append(email);
 		sb.append(", address=");
 		sb.append(address);
-		sb.append(", experienceYears=");
-		sb.append(experienceYears);
 		sb.append(", status=");
 		sb.append(status);
 		sb.append(", createDate=");
@@ -97,6 +97,7 @@ public class DriverCacheModel implements CacheModel<Driver>, Externalizable {
 		driverImpl.setDriverId(driverId);
 		driverImpl.setHospitalId(hospitalId);
 		driverImpl.setAmbulanceId(ambulanceId);
+		driverImpl.setUserId(userId);
 
 		if (driverName == null) {
 			driverImpl.setDriverName("");
@@ -125,8 +126,6 @@ public class DriverCacheModel implements CacheModel<Driver>, Externalizable {
 		else {
 			driverImpl.setAddress(address);
 		}
-
-		driverImpl.setExperienceYears(experienceYears);
 
 		if (status == null) {
 			driverImpl.setStatus("");
@@ -163,12 +162,12 @@ public class DriverCacheModel implements CacheModel<Driver>, Externalizable {
 		hospitalId = objectInput.readLong();
 
 		ambulanceId = objectInput.readLong();
+
+		userId = objectInput.readLong();
 		driverName = objectInput.readUTF();
 		contactNumber = objectInput.readUTF();
 		email = objectInput.readUTF();
 		address = objectInput.readUTF();
-
-		experienceYears = objectInput.readInt();
 		status = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
@@ -188,6 +187,8 @@ public class DriverCacheModel implements CacheModel<Driver>, Externalizable {
 		objectOutput.writeLong(hospitalId);
 
 		objectOutput.writeLong(ambulanceId);
+
+		objectOutput.writeLong(userId);
 
 		if (driverName == null) {
 			objectOutput.writeUTF("");
@@ -217,8 +218,6 @@ public class DriverCacheModel implements CacheModel<Driver>, Externalizable {
 			objectOutput.writeUTF(address);
 		}
 
-		objectOutput.writeInt(experienceYears);
-
 		if (status == null) {
 			objectOutput.writeUTF("");
 		}
@@ -234,11 +233,11 @@ public class DriverCacheModel implements CacheModel<Driver>, Externalizable {
 	public long driverId;
 	public long hospitalId;
 	public long ambulanceId;
+	public long userId;
 	public String driverName;
 	public String contactNumber;
 	public String email;
 	public String address;
-	public int experienceYears;
 	public String status;
 	public long createDate;
 	public long modifiedDate;

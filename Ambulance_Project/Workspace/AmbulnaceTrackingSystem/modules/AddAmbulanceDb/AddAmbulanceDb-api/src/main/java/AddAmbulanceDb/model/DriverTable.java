@@ -31,6 +31,8 @@ public class DriverTable extends BaseTable<DriverTable> {
 		"hospitalId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 	public final Column<DriverTable, Long> ambulanceId = createColumn(
 		"ambulanceId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
+	public final Column<DriverTable, Long> userId = createColumn(
+		"userId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 	public final Column<DriverTable, String> driverName = createColumn(
 		"driverName", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<DriverTable, String> contactNumber = createColumn(
@@ -39,8 +41,6 @@ public class DriverTable extends BaseTable<DriverTable> {
 		"email", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<DriverTable, String> address = createColumn(
 		"address", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
-	public final Column<DriverTable, Integer> experienceYears = createColumn(
-		"experienceYears", Integer.class, Types.INTEGER, Column.FLAG_DEFAULT);
 	public final Column<DriverTable, String> status = createColumn(
 		"status", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<DriverTable, Date> createDate = createColumn(

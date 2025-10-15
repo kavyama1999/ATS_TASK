@@ -17,11 +17,11 @@ create table HSP_Driver (
 	driverId LONG not null primary key,
 	hospitalId LONG,
 	ambulanceId LONG,
+	userId LONG,
 	driverName VARCHAR(75) null,
 	contactNumber VARCHAR(75) null,
 	email VARCHAR(75) null,
 	address VARCHAR(75) null,
-	experienceYears INTEGER,
 	status VARCHAR(75) null,
 	createDate DATE null,
 	modifiedDate DATE null

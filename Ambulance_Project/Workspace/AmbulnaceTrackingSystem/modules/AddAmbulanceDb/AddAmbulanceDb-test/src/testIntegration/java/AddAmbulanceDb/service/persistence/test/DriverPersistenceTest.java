@@ -122,6 +122,8 @@ public class DriverPersistenceTest {
 
 		newDriver.setAmbulanceId(RandomTestUtil.nextLong());
 
+		newDriver.setUserId(RandomTestUtil.nextLong());
+
 		newDriver.setDriverName(RandomTestUtil.randomString());
 
 		newDriver.setContactNumber(RandomTestUtil.randomString());
@@ -129,8 +131,6 @@ public class DriverPersistenceTest {
 		newDriver.setEmail(RandomTestUtil.randomString());
 
 		newDriver.setAddress(RandomTestUtil.randomString());
-
-		newDriver.setExperienceYears(RandomTestUtil.nextInt());
 
 		newDriver.setStatus(RandomTestUtil.randomString());
 
@@ -150,6 +150,7 @@ public class DriverPersistenceTest {
 			existingDriver.getHospitalId(), newDriver.getHospitalId());
 		Assert.assertEquals(
 			existingDriver.getAmbulanceId(), newDriver.getAmbulanceId());
+		Assert.assertEquals(existingDriver.getUserId(), newDriver.getUserId());
 		Assert.assertEquals(
 			existingDriver.getDriverName(), newDriver.getDriverName());
 		Assert.assertEquals(
@@ -157,9 +158,6 @@ public class DriverPersistenceTest {
 		Assert.assertEquals(existingDriver.getEmail(), newDriver.getEmail());
 		Assert.assertEquals(
 			existingDriver.getAddress(), newDriver.getAddress());
-		Assert.assertEquals(
-			existingDriver.getExperienceYears(),
-			newDriver.getExperienceYears());
 		Assert.assertEquals(existingDriver.getStatus(), newDriver.getStatus());
 		Assert.assertEquals(
 			Time.getShortTimestamp(existingDriver.getCreateDate()),
@@ -218,8 +216,8 @@ public class DriverPersistenceTest {
 	protected OrderByComparator<Driver> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create(
 			"HSP_Driver", "uuid", true, "driverId", true, "hospitalId", true,
-			"ambulanceId", true, "driverName", true, "contactNumber", true,
-			"email", true, "address", true, "experienceYears", true, "status",
+			"ambulanceId", true, "userId", true, "driverName", true,
+			"contactNumber", true, "email", true, "address", true, "status",
 			true, "createDate", true, "modifiedDate", true);
 	}
 
@@ -434,6 +432,8 @@ public class DriverPersistenceTest {
 
 		driver.setAmbulanceId(RandomTestUtil.nextLong());
 
+		driver.setUserId(RandomTestUtil.nextLong());
+
 		driver.setDriverName(RandomTestUtil.randomString());
 
 		driver.setContactNumber(RandomTestUtil.randomString());
@@ -441,8 +441,6 @@ public class DriverPersistenceTest {
 		driver.setEmail(RandomTestUtil.randomString());
 
 		driver.setAddress(RandomTestUtil.randomString());
-
-		driver.setExperienceYears(RandomTestUtil.nextInt());
 
 		driver.setStatus(RandomTestUtil.randomString());
 

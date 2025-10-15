@@ -1,8 +1,8 @@
 <%@ include file="/init.jsp" %>
 
-<p>
+<!-- <p>
 	<b><liferay-ui:message key="signup.caption"/></b>
-</p>
+</p> -->
 <h2>Welcome To Ambulance Tracking System</h2>
 <h2>Today Work</h2>
 

@@ -36,11 +36,11 @@ public class DriverWrapper
 		attributes.put("driverId", getDriverId());
 		attributes.put("hospitalId", getHospitalId());
 		attributes.put("ambulanceId", getAmbulanceId());
+		attributes.put("userId", getUserId());
 		attributes.put("driverName", getDriverName());
 		attributes.put("contactNumber", getContactNumber());
 		attributes.put("email", getEmail());
 		attributes.put("address", getAddress());
-		attributes.put("experienceYears", getExperienceYears());
 		attributes.put("status", getStatus());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
@@ -74,6 +74,12 @@ public class DriverWrapper
 			setAmbulanceId(ambulanceId);
 		}
 
+		Long userId = (Long)attributes.get("userId");
+
+		if (userId != null) {
+			setUserId(userId);
+		}
+
 		String driverName = (String)attributes.get("driverName");
 
 		if (driverName != null) {
@@ -96,12 +102,6 @@ public class DriverWrapper
 
 		if (address != null) {
 			setAddress(address);
-		}
-
-		Integer experienceYears = (Integer)attributes.get("experienceYears");
-
-		if (experienceYears != null) {
-			setExperienceYears(experienceYears);
 		}
 
 		String status = (String)attributes.get("status");
@@ -199,16 +199,6 @@ public class DriverWrapper
 	}
 
 	/**
-	 * Returns the experience years of this driver.
-	 *
-	 * @return the experience years of this driver
-	 */
-	@Override
-	public int getExperienceYears() {
-		return model.getExperienceYears();
-	}
-
-	/**
 	 * Returns the hospital ID of this driver.
 	 *
 	 * @return the hospital ID of this driver
@@ -246,6 +236,26 @@ public class DriverWrapper
 	@Override
 	public String getStatus() {
 		return model.getStatus();
+	}
+
+	/**
+	 * Returns the user ID of this driver.
+	 *
+	 * @return the user ID of this driver
+	 */
+	@Override
+	public long getUserId() {
+		return model.getUserId();
+	}
+
+	/**
+	 * Returns the user uuid of this driver.
+	 *
+	 * @return the user uuid of this driver
+	 */
+	@Override
+	public String getUserUuid() {
+		return model.getUserUuid();
 	}
 
 	/**
@@ -334,16 +344,6 @@ public class DriverWrapper
 	}
 
 	/**
-	 * Sets the experience years of this driver.
-	 *
-	 * @param experienceYears the experience years of this driver
-	 */
-	@Override
-	public void setExperienceYears(int experienceYears) {
-		model.setExperienceYears(experienceYears);
-	}
-
-	/**
 	 * Sets the hospital ID of this driver.
 	 *
 	 * @param hospitalId the hospital ID of this driver
@@ -381,6 +381,26 @@ public class DriverWrapper
 	@Override
 	public void setStatus(String status) {
 		model.setStatus(status);
+	}
+
+	/**
+	 * Sets the user ID of this driver.
+	 *
+	 * @param userId the user ID of this driver
+	 */
+	@Override
+	public void setUserId(long userId) {
+		model.setUserId(userId);
+	}
+
+	/**
+	 * Sets the user uuid of this driver.
+	 *
+	 * @param userUuid the user uuid of this driver
+	 */
+	@Override
+	public void setUserUuid(String userUuid) {
+		model.setUserUuid(userUuid);
 	}
 
 	/**

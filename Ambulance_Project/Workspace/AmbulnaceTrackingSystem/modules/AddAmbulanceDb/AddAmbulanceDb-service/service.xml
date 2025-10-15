@@ -78,11 +78,13 @@
         <!-- FK -->
         <column name="ambulanceId" type="long" />
         
+        <!-- Link to Liferay User -->
+        <column name="userId" type="long" />
+        
         <column name="driverName" type="String" />
         <column name="contactNumber" type="String" />
         <column name="email" type="String" />
         <column name="address" type="String" />
-        <column name="experienceYears" type="int" />
         <column name="status" type="String" />
         <column name="createDate" type="Date" />
         <column name="modifiedDate" type="Date" />
