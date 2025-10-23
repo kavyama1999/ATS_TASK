@@ -36,6 +36,7 @@
 		<reference entity="AssetTag" package-path="com.liferay.portlet.asset" />
 	</entity>
 	
+    <!-- 👨‍✈️ Ambulance ENTITY -->
 	
 <entity local-service="true" name="Ambulance" remote-service="true" uuid="true">
       
@@ -47,6 +48,9 @@
         <!-- FK -->
         <column name="driverId" type="long" />
        
+        <!-- New column for driver name -->
+       <column name="driverName" type="String" />
+    
         <column name="ambulanceNumber" type="String" />
         <column name="vehicleType" type="String" />
         <column name="status" type="String" />
