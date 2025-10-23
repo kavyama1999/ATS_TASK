@@ -97,7 +97,12 @@
             <finder-column name="ambulanceId" />
         </finder>
         
-        
+         <!-- ✅ Add this finder -->
+    <!--      
+    <finder name="UserId" return-type="Collection">
+        <finder-column name="userId" />
+    </finder> -->
+    
         <reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
         <reference entity="AssetTag" package-path="com.liferay.portlet.asset" />
     

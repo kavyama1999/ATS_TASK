@@ -5,6 +5,9 @@
 <%@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+
 <%@ page import="java.util.List" %>
 <%@ page import="AddAmbulanceDb.model.Hospital" %>
 <%@ page import="AddAmbulanceDb.model.Ambulance" %>
@@ -19,11 +22,7 @@
 <liferay-ui:success key="hospital-added-success" message="Hospital registered successfully!" />
 <liferay-ui:error key="hospital-add-error" message="Error occurred while registering the hospital." />
 
-<liferay-ui:success key="ambulance-added-success" message="Ambulance added successfully!" />
-<liferay-ui:error key="ambulance-add-error" message="Failed to add ambulance. Please try again." />
 
-<liferay-ui:success key="driver-added-success" message="Driver added successfully!" />
-<liferay-ui:error key="driver-add-error" message="Failed to add driver. Please try again." />
 
 <liferay-ui:success key="assign-success" message="Hospital, ambulance, and driver linked successfully!" />
 <liferay-ui:error key="assign-error" message="Failed to assign data. Please try again." />
@@ -37,19 +36,16 @@
     <portlet:param name="jspPage" value="/hospital_Register.jsp" />
 </portlet:renderURL>
 
-<portlet:renderURL var="ambulanceRegisterPageURL">
-    <portlet:param name="jspPage" value="/ambulance_Register.jsp" />
-</portlet:renderURL>
 
-<portlet:renderURL var="driverRegisterPageURL">
-    <portlet:param name="jspPage" value="/addDriver.jsp" />
-</portlet:renderURL>
+
+
+<marquee behavior="scroll" direction="left" style="font-size:24px; font-weight:bold; color:#007bff; margin-bottom:15px;">
+    🚗 Hospital Management 🚗
+</marquee>
 
 
 <div style="display:flex; gap:30px; margin-bottom:20px;">
     <a href="${hospitalRegisterPageURL}" class="btn btn-primary">Add Hospital</a>
-    <a href="${ambulanceRegisterPageURL}" class="btn btn-primary">Add Ambulance</a>
-    <a href="${driverRegisterPageURL}" class="btn btn-primary">Add Drivers</a>
 </div>
 
 <%

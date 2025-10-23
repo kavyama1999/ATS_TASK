@@ -191,6 +191,10 @@ public interface DriverLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Driver fetchDriver(long driverId);
 
+	public List<Driver> findByDriver(long userId);
+
+	public List<Driver> findByPatient(long userId);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
@@ -228,6 +232,9 @@ public interface DriverLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Driver getInstance();
 
 	/**
 	 * Returns the OSGi service identifier.

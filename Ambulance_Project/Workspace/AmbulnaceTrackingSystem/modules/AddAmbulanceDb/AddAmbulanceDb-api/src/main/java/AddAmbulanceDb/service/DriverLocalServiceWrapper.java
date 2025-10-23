@@ -218,6 +218,20 @@ public class DriverLocalServiceWrapper
 	}
 
 	@Override
+	public java.util.List<AddAmbulanceDb.model.Driver> findByDriver(
+		long userId) {
+
+		return _driverLocalService.findByDriver(userId);
+	}
+
+	@Override
+	public java.util.List<AddAmbulanceDb.model.Driver> findByPatient(
+		long userId) {
+
+		return _driverLocalService.findByPatient(userId);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
@@ -271,6 +285,11 @@ public class DriverLocalServiceWrapper
 		getIndexableActionableDynamicQuery() {
 
 		return _driverLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	@Override
+	public AddAmbulanceDb.model.Driver getInstance() {
+		return _driverLocalService.getInstance();
 	}
 
 	/**

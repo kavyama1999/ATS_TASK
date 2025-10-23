@@ -200,6 +200,14 @@ public class DriverLocalServiceUtil {
 		return getService().fetchDriver(driverId);
 	}
 
+	public static List<Driver> findByDriver(long userId) {
+		return getService().findByDriver(userId);
+	}
+
+	public static List<Driver> findByPatient(long userId) {
+		return getService().findByPatient(userId);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
@@ -246,6 +254,10 @@ public class DriverLocalServiceUtil {
 			getIndexableActionableDynamicQuery() {
 
 		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	public static Driver getInstance() {
+		return getService().getInstance();
 	}
 
 	/**
