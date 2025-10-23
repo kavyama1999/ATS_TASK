@@ -180,6 +180,7 @@ package AddDriversPortlet.portlet;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Address;
+import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.Role;
@@ -373,7 +374,7 @@ public class AddDriverMVCActionCommand extends BaseMVCActionCommand {
 
                 Phone phone = PhoneLocalServiceUtil.addPhone(
                     user.getUserId(),
-                    user.getModelClassName(),
+                    Contact.class.getName(),
                     user.getUserId(),
                     contactNumber,
                     "",
