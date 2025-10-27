@@ -104,6 +104,21 @@ public interface AmbulanceModel extends BaseModel<Ambulance> {
 	public void setDriverId(long driverId);
 
 	/**
+	 * Returns the driver name of this ambulance.
+	 *
+	 * @return the driver name of this ambulance
+	 */
+	@AutoEscape
+	public String getDriverName();
+
+	/**
+	 * Sets the driver name of this ambulance.
+	 *
+	 * @param driverName the driver name of this ambulance
+	 */
+	public void setDriverName(String driverName);
+
+	/**
 	 * Returns the ambulance number of this ambulance.
 	 *
 	 * @return the ambulance number of this ambulance

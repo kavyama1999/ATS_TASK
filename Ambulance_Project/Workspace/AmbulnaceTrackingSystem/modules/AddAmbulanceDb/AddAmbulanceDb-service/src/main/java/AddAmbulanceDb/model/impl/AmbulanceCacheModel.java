@@ -53,7 +53,7 @@ public class AmbulanceCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(23);
+		StringBundler sb = new StringBundler(25);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -63,6 +63,8 @@ public class AmbulanceCacheModel
 		sb.append(hospitalId);
 		sb.append(", driverId=");
 		sb.append(driverId);
+		sb.append(", driverName=");
+		sb.append(driverName);
 		sb.append(", ambulanceNumber=");
 		sb.append(ambulanceNumber);
 		sb.append(", vehicleType=");
@@ -96,6 +98,13 @@ public class AmbulanceCacheModel
 		ambulanceImpl.setAmbulanceId(ambulanceId);
 		ambulanceImpl.setHospitalId(hospitalId);
 		ambulanceImpl.setDriverId(driverId);
+
+		if (driverName == null) {
+			ambulanceImpl.setDriverName("");
+		}
+		else {
+			ambulanceImpl.setDriverName(driverName);
+		}
 
 		if (ambulanceNumber == null) {
 			ambulanceImpl.setAmbulanceNumber("");
@@ -160,6 +169,7 @@ public class AmbulanceCacheModel
 		hospitalId = objectInput.readLong();
 
 		driverId = objectInput.readLong();
+		driverName = objectInput.readUTF();
 		ambulanceNumber = objectInput.readUTF();
 		vehicleType = objectInput.readUTF();
 		status = objectInput.readUTF();
@@ -183,6 +193,13 @@ public class AmbulanceCacheModel
 		objectOutput.writeLong(hospitalId);
 
 		objectOutput.writeLong(driverId);
+
+		if (driverName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(driverName);
+		}
 
 		if (ambulanceNumber == null) {
 			objectOutput.writeUTF("");
@@ -227,6 +244,7 @@ public class AmbulanceCacheModel
 	public long ambulanceId;
 	public long hospitalId;
 	public long driverId;
+	public String driverName;
 	public String ambulanceNumber;
 	public String vehicleType;
 	public String status;

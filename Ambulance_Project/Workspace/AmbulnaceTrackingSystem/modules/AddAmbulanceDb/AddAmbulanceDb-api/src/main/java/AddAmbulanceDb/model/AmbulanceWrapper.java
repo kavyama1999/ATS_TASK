@@ -37,6 +37,7 @@ public class AmbulanceWrapper
 		attributes.put("ambulanceId", getAmbulanceId());
 		attributes.put("hospitalId", getHospitalId());
 		attributes.put("driverId", getDriverId());
+		attributes.put("driverName", getDriverName());
 		attributes.put("ambulanceNumber", getAmbulanceNumber());
 		attributes.put("vehicleType", getVehicleType());
 		attributes.put("status", getStatus());
@@ -72,6 +73,12 @@ public class AmbulanceWrapper
 
 		if (driverId != null) {
 			setDriverId(driverId);
+		}
+
+		String driverName = (String)attributes.get("driverName");
+
+		if (driverName != null) {
+			setDriverName(driverName);
 		}
 
 		String ambulanceNumber = (String)attributes.get("ambulanceNumber");
@@ -170,6 +177,16 @@ public class AmbulanceWrapper
 	@Override
 	public long getDriverId() {
 		return model.getDriverId();
+	}
+
+	/**
+	 * Returns the driver name of this ambulance.
+	 *
+	 * @return the driver name of this ambulance
+	 */
+	@Override
+	public String getDriverName() {
+		return model.getDriverName();
 	}
 
 	/**
@@ -295,6 +312,16 @@ public class AmbulanceWrapper
 	@Override
 	public void setDriverId(long driverId) {
 		model.setDriverId(driverId);
+	}
+
+	/**
+	 * Sets the driver name of this ambulance.
+	 *
+	 * @param driverName the driver name of this ambulance
+	 */
+	@Override
+	public void setDriverName(String driverName) {
+		model.setDriverName(driverName);
 	}
 
 	/**

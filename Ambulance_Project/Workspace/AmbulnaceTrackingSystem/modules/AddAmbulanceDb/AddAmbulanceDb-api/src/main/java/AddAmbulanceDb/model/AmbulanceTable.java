@@ -31,6 +31,8 @@ public class AmbulanceTable extends BaseTable<AmbulanceTable> {
 		"hospitalId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 	public final Column<AmbulanceTable, Long> driverId = createColumn(
 		"driverId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
+	public final Column<AmbulanceTable, String> driverName = createColumn(
+		"driverName", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<AmbulanceTable, String> ambulanceNumber = createColumn(
 		"ambulanceNumber", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<AmbulanceTable, String> vehicleType = createColumn(

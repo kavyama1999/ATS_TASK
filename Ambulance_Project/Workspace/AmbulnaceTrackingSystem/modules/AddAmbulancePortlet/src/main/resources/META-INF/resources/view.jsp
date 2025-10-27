@@ -3,6 +3,8 @@
 <%@ page import="AddAmbulanceDb.model.Ambulance" %>
 <%@ page import="AddAmbulanceDb.service.AmbulanceLocalServiceUtil" %>
 <%@ page import="java.util.List" %>
+<%-- <%@ include file="./ambulance_Register.jsp" %>
+ --%>
 
 
 
@@ -39,6 +41,8 @@
                 <th>Status</th>
                 <th>Location</th>
                 <th>Contact Number</th>
+                <th>Driver Name</th>
+                
                 <th>Actions</th>
             </tr>
         </thead>
@@ -54,6 +58,8 @@
                 <td><%= amb.getStatus() %></td>
                 <td><%= amb.getLocation() %></td>
                 <td><%= amb.getContactNumber() %></td>
+                <td><%= amb.getDriverName()%></td>
+                
     <td>
    
     <%-- Edit Button --%>

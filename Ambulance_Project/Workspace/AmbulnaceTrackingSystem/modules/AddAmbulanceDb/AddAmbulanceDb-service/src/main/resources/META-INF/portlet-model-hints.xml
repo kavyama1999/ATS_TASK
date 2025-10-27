@@ -6,6 +6,7 @@
 		<field name="ambulanceId" type="long" />
 		<field name="hospitalId" type="long" />
 		<field name="driverId" type="long" />
+		<field name="driverName" type="String" />
 		<field name="ambulanceNumber" type="String" />
 		<field name="vehicleType" type="String" />
 		<field name="status" type="String" />

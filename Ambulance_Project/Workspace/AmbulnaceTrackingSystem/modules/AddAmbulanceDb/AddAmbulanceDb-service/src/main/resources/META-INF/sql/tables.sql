@@ -3,6 +3,7 @@ create table HSP_Ambulance (
 	ambulanceId LONG not null primary key,
 	hospitalId LONG,
 	driverId LONG,
+	driverName VARCHAR(75) null,
 	ambulanceNumber VARCHAR(75) null,
 	vehicleType VARCHAR(75) null,
 	status VARCHAR(75) null,

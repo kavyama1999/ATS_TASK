@@ -62,10 +62,10 @@ public class AmbulanceModelImpl
 	public static final Object[][] TABLE_COLUMNS = {
 		{"uuid_", Types.VARCHAR}, {"ambulanceId", Types.BIGINT},
 		{"hospitalId", Types.BIGINT}, {"driverId", Types.BIGINT},
-		{"ambulanceNumber", Types.VARCHAR}, {"vehicleType", Types.VARCHAR},
-		{"status", Types.VARCHAR}, {"location", Types.VARCHAR},
-		{"contactNumber", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
-		{"modifiedDate", Types.TIMESTAMP}
+		{"driverName", Types.VARCHAR}, {"ambulanceNumber", Types.VARCHAR},
+		{"vehicleType", Types.VARCHAR}, {"status", Types.VARCHAR},
+		{"location", Types.VARCHAR}, {"contactNumber", Types.VARCHAR},
+		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -76,6 +76,7 @@ public class AmbulanceModelImpl
 		TABLE_COLUMNS_MAP.put("ambulanceId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("hospitalId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("driverId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("driverName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("ambulanceNumber", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("vehicleType", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("status", Types.VARCHAR);
@@ -86,7 +87,7 @@ public class AmbulanceModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table HSP_Ambulance (uuid_ VARCHAR(75) null,ambulanceId LONG not null primary key,hospitalId LONG,driverId LONG,ambulanceNumber VARCHAR(75) null,vehicleType VARCHAR(75) null,status VARCHAR(75) null,location VARCHAR(75) null,contactNumber VARCHAR(75) null,createDate DATE null,modifiedDate DATE null)";
+		"create table HSP_Ambulance (uuid_ VARCHAR(75) null,ambulanceId LONG not null primary key,hospitalId LONG,driverId LONG,driverName VARCHAR(75) null,ambulanceNumber VARCHAR(75) null,vehicleType VARCHAR(75) null,status VARCHAR(75) null,location VARCHAR(75) null,contactNumber VARCHAR(75) null,createDate DATE null,modifiedDate DATE null)";
 
 	public static final String TABLE_SQL_DROP = "drop table HSP_Ambulance";
 
@@ -235,6 +236,8 @@ public class AmbulanceModelImpl
 				"hospitalId", Ambulance::getHospitalId);
 			attributeGetterFunctions.put("driverId", Ambulance::getDriverId);
 			attributeGetterFunctions.put(
+				"driverName", Ambulance::getDriverName);
+			attributeGetterFunctions.put(
 				"ambulanceNumber", Ambulance::getAmbulanceNumber);
 			attributeGetterFunctions.put(
 				"vehicleType", Ambulance::getVehicleType);
@@ -273,6 +276,9 @@ public class AmbulanceModelImpl
 			attributeSetterBiConsumers.put(
 				"driverId",
 				(BiConsumer<Ambulance, Long>)Ambulance::setDriverId);
+			attributeSetterBiConsumers.put(
+				"driverName",
+				(BiConsumer<Ambulance, String>)Ambulance::setDriverName);
 			attributeSetterBiConsumers.put(
 				"ambulanceNumber",
 				(BiConsumer<Ambulance, String>)Ambulance::setAmbulanceNumber);
@@ -382,6 +388,26 @@ public class AmbulanceModelImpl
 		}
 
 		_driverId = driverId;
+	}
+
+	@JSON
+	@Override
+	public String getDriverName() {
+		if (_driverName == null) {
+			return "";
+		}
+		else {
+			return _driverName;
+		}
+	}
+
+	@Override
+	public void setDriverName(String driverName) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_driverName = driverName;
 	}
 
 	@JSON
@@ -580,6 +606,7 @@ public class AmbulanceModelImpl
 		ambulanceImpl.setAmbulanceId(getAmbulanceId());
 		ambulanceImpl.setHospitalId(getHospitalId());
 		ambulanceImpl.setDriverId(getDriverId());
+		ambulanceImpl.setDriverName(getDriverName());
 		ambulanceImpl.setAmbulanceNumber(getAmbulanceNumber());
 		ambulanceImpl.setVehicleType(getVehicleType());
 		ambulanceImpl.setStatus(getStatus());
@@ -604,6 +631,8 @@ public class AmbulanceModelImpl
 			this.<Long>getColumnOriginalValue("hospitalId"));
 		ambulanceImpl.setDriverId(
 			this.<Long>getColumnOriginalValue("driverId"));
+		ambulanceImpl.setDriverName(
+			this.<String>getColumnOriginalValue("driverName"));
 		ambulanceImpl.setAmbulanceNumber(
 			this.<String>getColumnOriginalValue("ambulanceNumber"));
 		ambulanceImpl.setVehicleType(
@@ -707,6 +736,14 @@ public class AmbulanceModelImpl
 		ambulanceCacheModel.hospitalId = getHospitalId();
 
 		ambulanceCacheModel.driverId = getDriverId();
+
+		ambulanceCacheModel.driverName = getDriverName();
+
+		String driverName = ambulanceCacheModel.driverName;
+
+		if ((driverName != null) && (driverName.length() == 0)) {
+			ambulanceCacheModel.driverName = null;
+		}
 
 		ambulanceCacheModel.ambulanceNumber = getAmbulanceNumber();
 
@@ -831,6 +868,7 @@ public class AmbulanceModelImpl
 	private long _ambulanceId;
 	private long _hospitalId;
 	private long _driverId;
+	private String _driverName;
 	private String _ambulanceNumber;
 	private String _vehicleType;
 	private String _status;
@@ -874,6 +912,7 @@ public class AmbulanceModelImpl
 		_columnOriginalValues.put("ambulanceId", _ambulanceId);
 		_columnOriginalValues.put("hospitalId", _hospitalId);
 		_columnOriginalValues.put("driverId", _driverId);
+		_columnOriginalValues.put("driverName", _driverName);
 		_columnOriginalValues.put("ambulanceNumber", _ambulanceNumber);
 		_columnOriginalValues.put("vehicleType", _vehicleType);
 		_columnOriginalValues.put("status", _status);
@@ -912,19 +951,21 @@ public class AmbulanceModelImpl
 
 		columnBitmasks.put("driverId", 8L);
 
-		columnBitmasks.put("ambulanceNumber", 16L);
+		columnBitmasks.put("driverName", 16L);
 
-		columnBitmasks.put("vehicleType", 32L);
+		columnBitmasks.put("ambulanceNumber", 32L);
 
-		columnBitmasks.put("status", 64L);
+		columnBitmasks.put("vehicleType", 64L);
 
-		columnBitmasks.put("location", 128L);
+		columnBitmasks.put("status", 128L);
 
-		columnBitmasks.put("contactNumber", 256L);
+		columnBitmasks.put("location", 256L);
 
-		columnBitmasks.put("createDate", 512L);
+		columnBitmasks.put("contactNumber", 512L);
 
-		columnBitmasks.put("modifiedDate", 1024L);
+		columnBitmasks.put("createDate", 1024L);
+
+		columnBitmasks.put("modifiedDate", 2048L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

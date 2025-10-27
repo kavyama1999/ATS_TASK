@@ -122,6 +122,8 @@ public class AmbulancePersistenceTest {
 
 		newAmbulance.setDriverId(RandomTestUtil.nextLong());
 
+		newAmbulance.setDriverName(RandomTestUtil.randomString());
+
 		newAmbulance.setAmbulanceNumber(RandomTestUtil.randomString());
 
 		newAmbulance.setVehicleType(RandomTestUtil.randomString());
@@ -149,6 +151,8 @@ public class AmbulancePersistenceTest {
 			existingAmbulance.getHospitalId(), newAmbulance.getHospitalId());
 		Assert.assertEquals(
 			existingAmbulance.getDriverId(), newAmbulance.getDriverId());
+		Assert.assertEquals(
+			existingAmbulance.getDriverName(), newAmbulance.getDriverName());
 		Assert.assertEquals(
 			existingAmbulance.getAmbulanceNumber(),
 			newAmbulance.getAmbulanceNumber());
@@ -211,9 +215,9 @@ public class AmbulancePersistenceTest {
 	protected OrderByComparator<Ambulance> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create(
 			"HSP_Ambulance", "uuid", true, "ambulanceId", true, "hospitalId",
-			true, "driverId", true, "ambulanceNumber", true, "vehicleType",
-			true, "status", true, "location", true, "contactNumber", true,
-			"createDate", true, "modifiedDate", true);
+			true, "driverId", true, "driverName", true, "ambulanceNumber", true,
+			"vehicleType", true, "status", true, "location", true,
+			"contactNumber", true, "createDate", true, "modifiedDate", true);
 	}
 
 	@Test
@@ -435,6 +439,8 @@ public class AmbulancePersistenceTest {
 		ambulance.setHospitalId(RandomTestUtil.nextLong());
 
 		ambulance.setDriverId(RandomTestUtil.nextLong());
+
+		ambulance.setDriverName(RandomTestUtil.randomString());
 
 		ambulance.setAmbulanceNumber(RandomTestUtil.randomString());
 
