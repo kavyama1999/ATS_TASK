@@ -1,0 +1,3 @@
+Bundle-Name: casemngt-headless-delivery-client
+Bundle-SymbolicName: casemngt.headless.delivery.client
+Bundle-Version: 1.0.0

@@ -1,0 +1,9 @@
+apiDir: "../CaseMgmt-api/src/main/java"
+apiPackagePath: "com.ats"
+application:
+    baseURI: "/CaseMgmt"
+    className: "CaseMgmtApplication"
+    name: "CaseMgmt"
+author: "Admin"
+clientDir: "../CaseMgmt-client/src/main/java"
+testDir: "../CaseMgmt-test/src/testIntegration/java"

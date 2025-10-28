@@ -1,15 +1,30 @@
 buildscript {
-	dependencies {
-		classpath group: "com.liferay", name: "com.liferay.gradle.plugins.workspace", version: "12.1.11"
-	}
+    dependencies {
+        classpath group: "com.liferay", name: "com.liferay.gradle.plugins.workspace", version: "12.1.11"
+    }
 
-	repositories {
-		mavenLocal()
+    repositories {
+        mavenLocal()
 
-		maven {
-			url "https://repository-cdn.liferay.com/nexus/content/groups/public"
-		}
-	}
+        // This is needed for Liferay Gradle plugins
+        maven {
+            url "https://repository-cdn.liferay.com/nexus/content/groups/public"
+        }
+    }
 }
 
 apply plugin: "com.liferay.workspace"
+
+// 👇 Add this block to ensure dependencies like REST Builder resolve properly
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
+    repositories {
+        mavenLocal()
+        mavenCentral()
+
+        // ✅ This is the correct repo for REST Builder and other Liferay tools
+        maven {
+            url "https://repository.liferay.com/nexus/content/groups/public"
+        }
+    }
+}

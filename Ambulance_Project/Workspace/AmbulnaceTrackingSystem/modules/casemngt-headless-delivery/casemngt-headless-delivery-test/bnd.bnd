@@ -1,0 +1,5 @@
+Bundle-Name: casemngt-headless-delivery-test
+Bundle-SymbolicName: casemngt.headless.delivery.test
+Bundle-Version: 1.0.0
+-includeresource: casemngt.headless.delivery.client.jar=../casemngt-headless-delivery-client/build/libs/casemngt.headless.delivery.client-1.0.0.jar;lib:=true
+-provider-policy: ${replacestring;${range;[==,==]};.*,(.*)];$1}

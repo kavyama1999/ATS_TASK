@@ -1,0 +1,1 @@
+create unique index IX_A85FA1C9 on Case_CaseMngt (uuid_[$COLUMN_LENGTH:75$], groupId);

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.4.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_4_0.dtd">
+
+<service-builder dependency-injector="ds" package-path="CaseManagementDB">
+	<namespace>Case</namespace>
+	<!--<entity data-source="sampleDataSource" local-service="true" name="Foo" remote-service="false" session-factory="sampleSessionFactory" table="foo" tx-manager="sampleTransactionManager uuid="true"">-->
+	<entity local-service="true" name="CaseMngt" remote-service="true" uuid="true">
+
+		<!-- PK fields -->
+
+		<column name="caseId" primary="true" type="long" id-type="increment" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+                      
+		 <column name="caseNumber" type="String" />
+                     <column name="caseType" type="String" />
+                      <column name="patientName" type="String" />
+                         <column name="patientAge" type="int" />
+                       <column name="description" type="String" />
+                         <column name="patientGender" type="String" />
+                         <column name="location" type="String" />
+                        <column name="contactNumber" type="String" />
+
+		<!-- References -->
+
+		<reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
+		<reference entity="AssetTag" package-path="com.liferay.portlet.asset" />
+	</entity>
+</service-builder>

@@ -1,0 +1,10 @@
+Bundle-Name: CaseManagementDB-api
+Bundle-SymbolicName: CaseManagementDB.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	CaseManagementDB.exception,\
+	CaseManagementDB.model,\
+	CaseManagementDB.service,\
+	CaseManagementDB.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../CaseManagementDB-service/service.xml

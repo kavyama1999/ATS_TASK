@@ -1,0 +1,5 @@
+Bundle-Name: CaseMgmt-test
+Bundle-SymbolicName: com.ats.test
+Bundle-Version: 1.0.0
+-includeresource: com.ats.client.jar=../CaseMgmt-client/build/libs/com.ats.client-1.0.0.jar;lib:=true
+-provider-policy: ${replacestring;${range;[==,==]};.*,(.*)];$1}

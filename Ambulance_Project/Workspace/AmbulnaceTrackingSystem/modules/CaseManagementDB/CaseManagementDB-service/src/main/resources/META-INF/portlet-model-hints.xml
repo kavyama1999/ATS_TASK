@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="CaseManagementDB.model.CaseMngt">
+		<field name="uuid" type="String" />
+		<field name="caseId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="caseNumber" type="String" />
+		<field name="caseType" type="String" />
+		<field name="patientName" type="String" />
+		<field name="patientAge" type="int" />
+		<field name="description" type="String" />
+		<field name="patientGender" type="String" />
+		<field name="location" type="String" />
+		<field name="contactNumber" type="String" />
+	</model>
+</model-hints>

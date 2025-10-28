@@ -1,0 +1,6 @@
+Bundle-Name: casemngt-headless-delivery-api
+Bundle-SymbolicName: casemngt.headless.delivery.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	casemngt.headless.delivery.dto.v1_0,\
+	casemngt.headless.delivery.resource.v1_0

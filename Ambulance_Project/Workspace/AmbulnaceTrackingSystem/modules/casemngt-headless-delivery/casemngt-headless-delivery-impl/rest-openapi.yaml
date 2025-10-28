@@ -1,0 +1,178 @@
+openapi: 3.0.1
+info:
+  title: "CaseManagementHeadless"
+  description: "Case Management Headless REST API"
+  version: v1.0
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+ 
+components:
+  schemas:
+    CaseMngt:
+      description: "Represents case management APIs."
+      type: object
+      properties:
+        caseId:
+          type: integer
+          format: int64
+          example: 1001
+        groupId:
+          type: integer
+          format: int64
+          example: 201
+        companyId:
+          type: integer
+          format: int64
+          example: 301
+        userId:
+          type: integer
+          format: int64
+          example: 401
+        userName:
+          type: string
+          example: "Admin User"
+        createDate:
+          type: string
+          format: date-time
+          example: "2025-10-28T10:30:00Z"
+        modifiedDate:
+          type: string
+          format: date-time
+          example: "2025-10-28T12:00:00Z"
+        caseNumber:
+          type: string
+          example: "CASE2025-001"
+        caseType:
+          type: string
+          example: "Accident"
+        patientName:
+          type: string
+          example: "John Doe"
+        patientAge:
+          type: integer
+          example: 35
+        description:
+          type: string
+          example: "Fracture due to road accident"
+        patientGender:
+          type: string
+          example: "Male"
+        location:
+          type: string
+          example: "Chennai, Tamil Nadu"
+        contactNumber:
+          type: string
+          example: "+91-9876543210"
+ 
+paths:
+  /get-cases:
+    get:
+      operationId: getCases
+      tags: ["CaseMngt"]
+      summary: "Get all cases"
+      description: "Retrieve all emergency cases."
+      responses:
+        '200':
+          description: "Cases listed successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CaseMngt"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/CaseMngt"
+        '403':
+          description: "No cases found"
+        '404':
+          description: "API not found"
+ 
+  /add-cases:
+    post:
+      operationId: addCases
+      tags: ["CaseMngt"]
+      summary: "Add a new case"
+      description: "Add a new emergency case."
+      requestBody:
+        required: true
+        description: "Case data to add"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CaseMngt"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/CaseMngt"
+      responses:
+        '200':
+          description: "Case added successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CaseMngt"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/CaseMngt"
+        '403':
+          description: "Case not added"
+        '404':
+          description: "API not found"
+ 
+  /update-cases:
+    put:
+      operationId: updateCases
+      tags: ["CaseMngt"]
+      summary: "Update case"
+      description: "Update an existing case."
+      requestBody:
+        required: true
+        description: "Case data to update"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CaseMngt"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/CaseMngt"
+      responses:
+        '200':
+          description: "Case updated successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CaseMngt"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/CaseMngt"
+        '403':
+          description: "No case found"
+        '404':
+          description: "API not found"
+ 
+  /delete-cases:
+    delete:
+      operationId: deleteCases
+      tags: ["CaseMngt"]
+      summary: "Delete case"
+      description: "Delete a case by ID."
+      parameters:
+        - name: caseId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: "Case deleted successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CaseMngt"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/CaseMngt"
+        '403':
+          description: "No case found"
+        '404':
+          description: "API not found"

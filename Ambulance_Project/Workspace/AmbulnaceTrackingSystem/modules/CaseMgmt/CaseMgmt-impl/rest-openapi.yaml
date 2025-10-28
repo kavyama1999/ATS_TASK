@@ -1,0 +1,307 @@
+info:
+    description: "CaseMgmt REST API"
+    license:
+        name: "Apache 2.0"
+        url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+    title: "CaseMgmt"
+    version: v1.0
+openapi: 3.0.1
+
+components:
+    schemas:
+      Student:
+        description: 
+          Represent student apis.
+        properties:
+          id:
+            type: integer
+            format: int64
+          name:
+            type: string
+          standard:
+            type: string
+          message:
+            type: object
+            readOnly: true
+          data:
+            type: object
+        type: object
+
+paths:
+  "/get-student":
+    get:
+      operationId: getStudent
+      tags: ["Student"]
+      description: get student
+      summary: "get student"
+      responses:
+        '200':
+          description: Student listed successfully
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/Student"
+            application/xml:
+              schema:
+                  $ref: "#/components/schemas/Student"
+        '403':
+          description: No student were found
+        '404':
+          description: API not found
+  "/add-student":
+    post:
+      operationId: addStudent
+      tags: ["Student"]
+      description: add student
+      summary: "add student"
+      requestBody:
+        description: add student
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/Student"
+          application/xml:
+            schema:
+                $ref: "#/components/schemas/Student"
+      responses:
+        '200':
+          description: Student added successfully
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/Student"
+            application/xml:
+              schema:
+                  $ref: "#/components/schemas/Student"
+        '403':
+          description: No student were found
+        '404':
+          description: API not found
+  "/update-student":
+    put: 
+      operationId: updateStudent
+      tags: ["Student"]
+      description: update student
+      summary: "update student"
+      requestBody:
+        description: update student
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/Student"
+          application/xml:
+            schema:
+                $ref: "#/components/schemas/Student"
+      responses:
+        '200':
+          description: Student updated successfully
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/Student"
+            application/xml:
+              schema:
+                  $ref: "#/components/schemas/Student"
+        '403':
+          description: No student were found
+        '404':
+          description: API not found
+
+  "/delete-student":
+    delete:
+      parameters:
+        - in: query
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      operationId: deleteStudent
+      tags: ["Student"]
+      description: delete student
+      summary: "delete student"
+      responses:
+        '200':
+          description: Student deleted successfully
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/Student"
+            application/xml:
+              schema:
+                  $ref: "#/components/schemas/Student"
+        '403':
+          description: No student were found
+        '404':
+          description: API not found
+          ===========================================================
+info:
+    description: "CaseMgmt REST API"
+    license:
+        name: "Apache 2.0"
+        url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+    title: "CaseMgmt"
+    version: v1.0
+openapi: 3.0.1
+
+components:
+    schemas:
+      CaseMngt:
+        description: 
+          Represent case management apis.
+        properties:
+          caseId:
+            type: integer
+            format: int64
+          groupId:
+            type: integer
+            format: int64
+          companyId:
+            type: integer
+            format: int64
+          userId:
+            type: integer
+            format: int64
+          userName:
+            type: string
+          createDate:
+            type: string
+            format: date-time
+          modifiedDate:
+            type: string
+            format: date-time
+          caseNumber:
+            type: string
+          caseType:
+            type: string
+          patientName:
+            type: string
+          patientAge:
+            type: integer
+          description:
+            type: string
+          patientGender:
+            type: string
+          location:
+            type: string
+          contactNumber:
+            type: string
+          message:
+            type: object
+            readOnly: true
+          data:
+            type: object
+        type: object
+
+paths:
+  "/get-case":
+    get:
+      operationId: getCase
+      tags: ["CaseMngt"]
+      description: get case
+      summary: "get case"
+      responses:
+        '200':
+          description: Case listed successfully
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/CaseMngt"
+            application/xml:
+              schema:
+                  $ref: "#/components/schemas/CaseMngt"
+        '403':
+          description: No case were found
+        '404':
+          description: API not found
+  "/add-case":
+    post:
+      operationId: addCase
+      tags: ["CaseMngt"]
+      description: add case
+      summary: "add case"
+      requestBody:
+        description: add case
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/CaseMngt"
+          application/xml:
+            schema:
+                $ref: "#/components/schemas/CaseMngt"
+      responses:
+        '200':
+          description: Case added successfully
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/CaseMngt"
+            application/xml:
+              schema:
+                  $ref: "#/components/schemas/CaseMngt"
+        '403':
+          description: No case were found
+        '404':
+          description: API not found
+  "/update-case":
+    put: 
+      operationId: updateCase
+      tags: ["CaseMngt"]
+      description: update case
+      summary: "update case"
+      requestBody:
+        description: update case
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/CaseMngt"
+          application/xml:
+            schema:
+                $ref: "#/components/schemas/CaseMngt"
+      responses:
+        '200':
+          description: Case updated successfully
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/CaseMngt"
+            application/xml:
+              schema:
+                  $ref: "#/components/schemas/CaseMngt"
+        '403':
+          description: No case were found
+        '404':
+          description: API not found
+
+  "/delete-case":
+    delete:
+      parameters:
+        - in: query
+          name: caseId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      operationId: deleteCase
+      tags: ["CaseMngt"]
+      description: delete case
+      summary: "delete case"
+      responses:
+        '200':
+          description: Case deleted successfully
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/CaseMngt"
+            application/xml:
+              schema:
+                  $ref: "#/components/schemas/CaseMngt"
+        '403':
+          description: No case were found
+        '404':
+          description: API not found
+          

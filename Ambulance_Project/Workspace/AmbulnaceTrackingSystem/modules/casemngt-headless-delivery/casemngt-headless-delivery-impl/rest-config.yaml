@@ -1,0 +1,7 @@
+apiDir: "../casemngt-headless-delivery-api/src/main/java"
+apiPackagePath: "casemngt.headless.delivery"
+application:
+    baseURI: "/casemngt-headless-delivery"
+    className: "CasemngtHeadlessDeliveryApplication"
+    name: "CasemngtHeadlessDelivery"
+author: "Admin"
