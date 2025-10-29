@@ -78,16 +78,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CaseMngt"
+                type: array
+                items:
+                  $ref: "#/components/schemas/CaseMngt"
             application/xml:
               schema:
-                $ref: "#/components/schemas/CaseMngt"
+                type: array
+                items:
+                  $ref: "#/components/schemas/CaseMngt"
         '403':
           description: "No cases found"
         '404':
           description: "API not found"
- 
-  /add-cases:
+
+  /cases:
     post:
       operationId: addCases
       tags: ["CaseMngt"]

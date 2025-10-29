@@ -29,6 +29,7 @@ import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.io.Serializable;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -67,14 +68,14 @@ public abstract class BaseCaseMngtResourceImpl
 	@javax.ws.rs.Path("/get-cases")
 	@javax.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
-	public CaseMngt getCases() throws Exception {
-		return new CaseMngt();
+	public Page<CaseMngt> getCases() throws Exception {
+		return Page.of(Collections.emptyList());
 	}
 
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/casemngt-headless-delivery/v1.0/add-cases' -d $'{"caseId": ___, "caseNumber": ___, "caseType": ___, "companyId": ___, "contactNumber": ___, "createDate": ___, "description": ___, "groupId": ___, "location": ___, "modifiedDate": ___, "patientAge": ___, "patientGender": ___, "patientName": ___, "userId": ___, "userName": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/casemngt-headless-delivery/v1.0/cases' -d $'{"caseId": ___, "caseNumber": ___, "caseType": ___, "companyId": ___, "contactNumber": ___, "createDate": ___, "description": ___, "groupId": ___, "location": ___, "modifiedDate": ___, "patientAge": ___, "patientGender": ___, "patientName": ___, "userId": ___, "userName": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
 	@io.swagger.v3.oas.annotations.Operation(
 		description = "Add a new emergency case."
@@ -83,7 +84,7 @@ public abstract class BaseCaseMngtResourceImpl
 		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "CaseMngt")}
 	)
 	@javax.ws.rs.Consumes({"application/json", "application/xml"})
-	@javax.ws.rs.Path("/add-cases")
+	@javax.ws.rs.Path("/cases")
 	@javax.ws.rs.POST
 	@javax.ws.rs.Produces({"application/json", "application/xml"})
 	@Override

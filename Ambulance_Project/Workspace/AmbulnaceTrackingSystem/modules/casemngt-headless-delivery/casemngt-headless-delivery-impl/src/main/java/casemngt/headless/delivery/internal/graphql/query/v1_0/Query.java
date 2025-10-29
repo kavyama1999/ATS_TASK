@@ -44,14 +44,14 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {cases{caseId, groupId, companyId, userId, userName, createDate, modifiedDate, caseNumber, caseType, patientName, patientAge, description, patientGender, location, contactNumber}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {cases{items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(description = "Retrieve all emergency cases.")
-	public CaseMngt cases() throws Exception {
+	public CaseMngtPage cases() throws Exception {
 		return _applyComponentServiceObjects(
 			_caseMngtResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			caseMngtResource -> caseMngtResource.getCases());
+			caseMngtResource -> new CaseMngtPage(caseMngtResource.getCases()));
 	}
 
 	@GraphQLName("CaseMngtPage")
