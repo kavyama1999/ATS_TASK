@@ -1,0 +1,7 @@
+Bundle-Name: AccountMgmtSystemPortlet
+Bundle-SymbolicName: AccountMgmtSystemPortlet
+Bundle-Version: 1.0.0
+Export-Package: AccountMgmtSystemPortlet.constants
+Provide-Capability:\
+	liferay.language.resources;\
+		resource.bundle.base.name="content.Language"

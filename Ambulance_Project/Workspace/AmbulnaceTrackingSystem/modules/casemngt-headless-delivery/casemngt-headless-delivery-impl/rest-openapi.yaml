@@ -180,3 +180,42 @@ paths:
           description: "No case found"
         '404':
           description: "API not found"
+  
+  
+  /update-cases-partial/{caseId}:
+    patch:
+      operationId: patchCases
+      tags: ["CaseMngt"]
+      summary: "Partially update a case"
+      description: "Update only specific fields of an existing case (e.g., status, description, or patient details) without replacing the entire record."
+      parameters:
+        - name: caseId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        description: "Partial case data to update"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CaseMngt"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/CaseMngt"
+      responses:
+        '200':
+          description: "Case patched successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CaseMngt"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/CaseMngt"
+        '403':
+          description: "Case not found"
+        '404':
+          description: "API not found"

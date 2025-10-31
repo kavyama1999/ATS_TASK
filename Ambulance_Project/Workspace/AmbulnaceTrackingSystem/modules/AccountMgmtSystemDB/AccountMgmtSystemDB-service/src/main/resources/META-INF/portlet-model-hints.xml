@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="AccountMgmtSystemDB.model.AccountMngt">
+		<field name="uuid" type="String" />
+		<field name="accountId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="accountNumber" type="String" />
+		<field name="accountHolderName" type="String" />
+		<field name="accountType" type="String" />
+		<field name="email" type="String" />
+		<field name="phoneNumber" type="String" />
+		<field name="branchName" type="String" />
+		<field name="balance" type="double" />
+		<field name="ifscCode" type="String" />
+	</model>
+</model-hints>

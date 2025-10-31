@@ -289,6 +289,157 @@ public CaseMngt deleteCases(@Parameter(hidden = true) Long caseId) throws Except
     }
 }
 
+
+
+///Patch cases
+
+//public CaseMngt patchCases(Long caseId, CaseMngt caseModel) throws Exception {
+//    _log.info("=== PATCH /update-cases-partial CALLED ===");
+//
+//    try {
+//        // Step 1: Validate caseId
+//        if (caseId == null || caseId <= 0) {
+//            throw new IllegalArgumentException("Valid caseId is required for patch update");
+//        }
+//
+//        // Step 2: Fetch existing record
+//        CaseManagementDB.model.CaseMngt existingCase =
+//            CaseManagementDB.service.CaseMngtLocalServiceUtil.fetchCaseMngt(caseId);
+//
+//        if (existingCase == null) {
+//            _log.warn("⚠️ No case found with ID: " + caseId);
+//            throw new Exception("Case not found with ID: " + caseId);
+//        }
+//
+//        // Step 3: Update only provided (non-null) fields
+//        if (Validator.isNotNull(caseModel.getCaseNumber()))
+//            existingCase.setCaseNumber(caseModel.getCaseNumber());
+//
+//        if (Validator.isNotNull(caseModel.getCaseType()))
+//            existingCase.setCaseType(caseModel.getCaseType());
+//
+//        if (Validator.isNotNull(caseModel.getPatientName()))
+//            existingCase.setPatientName(caseModel.getPatientName());
+//
+//        if (caseModel.getPatientAge() > 0)
+//            existingCase.setPatientAge(caseModel.getPatientAge());
+//
+//        if (Validator.isNotNull(caseModel.getPatientGender()))
+//            existingCase.setPatientGender(caseModel.getPatientGender());
+//
+//        if (Validator.isNotNull(caseModel.getContactNumber()))
+//            existingCase.setContactNumber(caseModel.getContactNumber());
+//
+//        if (Validator.isNotNull(caseModel.getDescription()))
+//            existingCase.setDescription(caseModel.getDescription());
+//
+//        if (Validator.isNotNull(caseModel.getLocation()))
+//            existingCase.setLocation(caseModel.getLocation());
+//
+//        if (Validator.isNotNull(caseModel.getUserName()))
+//            existingCase.setUserName(caseModel.getUserName());
+//
+//        if (caseModel.getUserId() > 0)
+//            existingCase.setUserId(caseModel.getUserId());
+//
+//        // Step 4: Update modified date
+//        existingCase.setModifiedDate(new Date());
+//
+//        // Step 5: Save updated record
+//        CaseManagementDB.model.CaseMngt updatedCase =
+//            CaseManagementDB.service.CaseMngtLocalServiceUtil.updateCaseMngt(existingCase);
+//
+//        _log.info("✅ Case partially updated successfully with ID: " + updatedCase.getCaseId());
+//
+//        // Step 6: Return updated DTO
+//        return toDTO(updatedCase);
+//
+//    } catch (IllegalArgumentException e) {
+//        _log.error("❌ Validation error: " + e.getMessage());
+//        throw e;
+//
+//    } catch (Exception e) {
+//        _log.error("❌ Error patching case: " + e.getMessage(), e);
+//        throw new Exception("Failed to patch case", e);
+//    }
+//}
+//
+
+
+
+//patch
+@Override
+public CaseMngt patchCases(Long caseId, CaseMngt caseMngt) throws Exception {
+    _log.info("=== PATCH /update-cases-partial CALLED ===");
+
+    try {
+        // Step 1: Validate caseId
+        if (caseId == null || caseId <= 0) {
+            throw new IllegalArgumentException("Valid caseId is required for patch update");
+        }
+
+        // Step 2: Fetch existing record
+        CaseManagementDB.model.CaseMngt existingCase =
+            CaseManagementDB.service.CaseMngtLocalServiceUtil.fetchCaseMngt(caseId);
+
+        if (existingCase == null) {
+            _log.warn("⚠️ No case found with ID: " + caseId);
+            throw new Exception("Case not found with ID: " + caseId);
+        }
+
+        // Step 3: Update only provided fields
+        if (Validator.isNotNull(caseMngt.getCaseNumber()))
+            existingCase.setCaseNumber(caseMngt.getCaseNumber());
+
+        if (Validator.isNotNull(caseMngt.getCaseType()))
+            existingCase.setCaseType(caseMngt.getCaseType());
+
+        if (Validator.isNotNull(caseMngt.getPatientName()))
+            existingCase.setPatientName(caseMngt.getPatientName());
+
+        if (caseMngt.getPatientAge() > 0)
+            existingCase.setPatientAge(caseMngt.getPatientAge());
+
+        if (Validator.isNotNull(caseMngt.getPatientGender()))
+            existingCase.setPatientGender(caseMngt.getPatientGender());
+
+        if (Validator.isNotNull(caseMngt.getContactNumber()))
+            existingCase.setContactNumber(caseMngt.getContactNumber());
+
+        if (Validator.isNotNull(caseMngt.getDescription()))
+            existingCase.setDescription(caseMngt.getDescription());
+
+        if (Validator.isNotNull(caseMngt.getLocation()))
+            existingCase.setLocation(caseMngt.getLocation());
+
+        if (Validator.isNotNull(caseMngt.getUserName()))
+            existingCase.setUserName(caseMngt.getUserName());
+
+        if (caseMngt.getUserId() > 0)
+            existingCase.setUserId(caseMngt.getUserId());
+
+        // Step 4: Update metadata
+        existingCase.setModifiedDate(new Date());
+
+        // Step 5: Persist update
+        CaseManagementDB.model.CaseMngt updatedCase =
+            CaseManagementDB.service.CaseMngtLocalServiceUtil.updateCaseMngt(existingCase);
+
+        _log.info("✅ Case partially updated successfully with ID: " + updatedCase.getCaseId());
+
+        // Step 6: Return updated DTO
+        return toDTO(updatedCase);
+
+    } catch (IllegalArgumentException e) {
+        _log.error("❌ Validation error: " + e.getMessage());
+        throw e;
+
+    } catch (Exception e) {
+        _log.error("❌ Error patching case: " + e.getMessage(), e);
+        throw new Exception("Failed to patch case", e);
+    }
+}
+
 }
     
     

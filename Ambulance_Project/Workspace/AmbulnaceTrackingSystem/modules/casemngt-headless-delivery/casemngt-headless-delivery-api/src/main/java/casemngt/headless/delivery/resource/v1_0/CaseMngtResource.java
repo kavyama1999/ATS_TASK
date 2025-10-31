@@ -50,6 +50,8 @@ public interface CaseMngtResource {
 
 	public CaseMngt deleteCases(Long caseId) throws Exception;
 
+	public CaseMngt patchCases(Long caseId, CaseMngt caseMngt) throws Exception;
+
 	public default void setContextAcceptLanguage(
 		AcceptLanguage contextAcceptLanguage) {
 	}

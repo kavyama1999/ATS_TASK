@@ -1,0 +1,1 @@
+create unique index IX_EC98BFC5 on Account_AccountMngt (uuid_[$COLUMN_LENGTH:75$], groupId);

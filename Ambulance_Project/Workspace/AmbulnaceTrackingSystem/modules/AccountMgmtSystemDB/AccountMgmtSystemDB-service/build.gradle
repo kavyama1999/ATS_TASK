@@ -1,0 +1,12 @@
+dependencies {
+	api project(":modules:AccountMgmtSystemDB:AccountMgmtSystemDB-api")
+
+	compileOnly group: "com.liferay.portal", name: "release.portal.api"
+}
+
+buildService {
+	apiDir = "../AccountMgmtSystemDB-api/src/main/java"
+	testDir = "../AccountMgmtSystemDB-test/src/testIntegration/java"
+}
+
+group = "AccountMgmtSystemDB"

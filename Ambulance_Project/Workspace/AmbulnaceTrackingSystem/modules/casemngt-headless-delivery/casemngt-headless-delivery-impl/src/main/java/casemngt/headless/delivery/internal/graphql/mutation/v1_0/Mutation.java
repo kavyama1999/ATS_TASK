@@ -68,6 +68,20 @@ public class Mutation {
 			caseMngtResource -> caseMngtResource.deleteCases(caseId));
 	}
 
+	@GraphQLField(
+		description = "Update only specific fields of an existing case (e.g., status, description, or patient details) without replacing the entire record."
+	)
+	public CaseMngt patchCases(
+			@GraphQLName("caseId") Long caseId,
+			@GraphQLName("caseMngt") CaseMngt caseMngt)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_caseMngtResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			caseMngtResource -> caseMngtResource.patchCases(caseId, caseMngt));
+	}
+
 	private <T, R, E1 extends Throwable, E2 extends Throwable> R
 			_applyComponentServiceObjects(
 				ComponentServiceObjects<T> componentServiceObjects,

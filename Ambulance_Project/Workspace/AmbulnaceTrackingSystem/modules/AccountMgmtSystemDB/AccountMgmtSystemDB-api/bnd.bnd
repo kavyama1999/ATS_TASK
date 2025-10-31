@@ -1,0 +1,10 @@
+Bundle-Name: AccountMgmtSystemDB-api
+Bundle-SymbolicName: AccountMgmtSystemDB.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	AccountMgmtSystemDB.exception,\
+	AccountMgmtSystemDB.model,\
+	AccountMgmtSystemDB.service,\
+	AccountMgmtSystemDB.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../AccountMgmtSystemDB-service/service.xml

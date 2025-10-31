@@ -145,6 +145,41 @@ public abstract class BaseCaseMngtResourceImpl
 		return new CaseMngt();
 	}
 
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'PATCH' 'http://localhost:8080/o/casemngt-headless-delivery/v1.0/update-cases-partial/{caseId}' -d $'{"caseId": ___, "caseNumber": ___, "caseType": ___, "companyId": ___, "contactNumber": ___, "createDate": ___, "description": ___, "groupId": ___, "location": ___, "modifiedDate": ___, "patientAge": ___, "patientGender": ___, "patientName": ___, "userId": ___, "userName": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 */
+	@io.swagger.v3.oas.annotations.Operation(
+		description = "Update only specific fields of an existing case (e.g., status, description, or patient details) without replacing the entire record."
+	)
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "caseId"
+			)
+		}
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "CaseMngt")}
+	)
+	@javax.ws.rs.Consumes({"application/json", "application/xml"})
+	@javax.ws.rs.PATCH
+	@javax.ws.rs.Path("/update-cases-partial/{caseId}")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
+	public CaseMngt patchCases(
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("caseId")
+			Long caseId,
+			CaseMngt caseMngt)
+		throws Exception {
+
+		return new CaseMngt();
+	}
+
 	@Override
 	@SuppressWarnings("PMD.UnusedLocalVariable")
 	public void create(
