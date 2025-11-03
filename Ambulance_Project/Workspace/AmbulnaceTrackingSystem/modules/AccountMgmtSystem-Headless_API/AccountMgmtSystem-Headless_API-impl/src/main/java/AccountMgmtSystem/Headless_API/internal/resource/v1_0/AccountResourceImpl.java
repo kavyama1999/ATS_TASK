@@ -78,6 +78,7 @@ public class AccountResourceImpl extends BaseAccountResourceImpl {
         return Page.of(dtoList);
     }
 
+    
     // ✅ POST - Add new account
     @Override
     public AccountMngt addAccount(AccountMngt dto) throws Exception {

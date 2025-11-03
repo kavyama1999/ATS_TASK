@@ -1,0 +1,7 @@
+Bundle-Name: AccountMgmtSystemPortletAjax
+Bundle-SymbolicName: AccountMgmtSystemPortletAjax
+Bundle-Version: 1.0.0
+Export-Package: AccountMgmtSystemPortletAjax.constants
+Provide-Capability:\
+	liferay.language.resources;\
+		resource.bundle.base.name="content.Language"

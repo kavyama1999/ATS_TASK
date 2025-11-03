@@ -4,25 +4,44 @@ import AccountMgmtSystemPortlet.constants.AccountMgmtSystemPortletKeys;
 
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.headless.admin.user.dto.v1_0.Account;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Date;
+import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 
 import AccountMgmtSystemDB.model.AccountMngt;
 import AccountMgmtSystemDB.service.AccountMngtLocalServiceUtil;
+
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+
 
 /**
  * @author Admin
@@ -171,6 +190,61 @@ public class AccountMgmtSystemPortlet extends MVCPortlet {
             log.error("❌ Error while deleting account", e);
         }
     }
+    
+    
+    
+    //ajax
+    
+ // ✅ AJAX Resource (fetch accounts)
+    @Override
+    public void serveResource(ResourceRequest resourceRequest, ResourceResponse resourceResponse)
+            throws IOException, PortletException {
+    log.info("Now Ajax Calling ");
+        Log log = LogFactoryUtil.getLog(AccountMgmtSystemPortlet.class);
+        log.info("🔹 serveResource() called");
+
+        HttpServletRequest httpRequest = PortalUtil.getHttpServletRequest(resourceRequest);
+        String csrfToken = AuthTokenUtil.getToken(httpRequest);
+
+        // ✅ Your Headless API URL
+        String apiUrl = PortalUtil.getPortalURL(resourceRequest)
+                + "/o/AccountMgmtSystem-Headless_API/v1.0/get-accounts";
+
+        log.info("🌐 Calling Headless API: " + apiUrl);
+
+        URL url = new URL(apiUrl);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        con.setRequestProperty("Accept", "application/json");
+        con.setRequestProperty("x-csrf-token", csrfToken);
+        con.setRequestProperty("Cookie", httpRequest.getHeader("Cookie"));
+
+        // ✅ Optional authentication (only if needed)
+        String login = "test@liferay.com:test";
+        String basicAuth = "Basic " + Base64.encode(login.getBytes());
+        con.setRequestProperty("Authorization", basicAuth);
+
+        int responseCode = con.getResponseCode();
+        log.info("🔸 Response Code: " + responseCode);
+
+        StringBuilder response = new StringBuilder();
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(
+                responseCode == 200 ? con.getInputStream() : con.getErrorStream(), "UTF-8"))) {
+            String line;
+            while ((line = in.readLine()) != null) {
+                response.append(line);
+            }
+        }
+
+        // ✅ Don't reparse or rebuild JSON — return directly
+        resourceResponse.setContentType("application/json");
+        PrintWriter writer = resourceResponse.getWriter();
+        writer.write(response.toString());
+        writer.flush();
+
+        log.info("✅ JSON data sent to JSP successfully");
+    }
+
 }
 
 //adding data we can create instance for table in Impl (its another way to store data)
