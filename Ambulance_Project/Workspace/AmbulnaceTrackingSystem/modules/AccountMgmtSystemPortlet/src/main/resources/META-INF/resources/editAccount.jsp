@@ -4,7 +4,9 @@
 <%@ page import="AccountMgmtSystemDB.service.AccountMngtLocalServiceUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 
-
+<%@ page import="com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil" %>
+<%@ page import="com.liferay.asset.kernel.model.AssetCategory" %>
+<%@ page import="java.util.List" %>
 
 <%
 long accountId = ParamUtil.getLong(request, "accountId");
@@ -13,7 +15,11 @@ AccountMngt account = null;
 if (accountId > 0) {
     account = AccountMngtLocalServiceUtil.fetchAccountMngt(accountId);
 }
+
+List<AssetCategory> assetCategories = AssetCategoryLocalServiceUtil.getChildCategories(34176);
+String selectedType = (account != null) ? account.getAccountType() : "";
 %>
+
 
 <div style="max-width:700px; margin: 40px auto; background: #fff; padding: 25px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); font-family: 'Segoe UI', sans-serif;">
     <h2 style="color: #0066cc; text-align: center; margin-bottom: 25px;">Edit Account</h2>
@@ -25,7 +31,24 @@ if (accountId > 0) {
 
         <aui:input name="accountNumber" label="Account Number" value="<%= account != null ? account.getAccountNumber() : \"\" %>" />
         <aui:input name="accountHolderName" label="Account Holder Name" value="<%= account != null ? account.getAccountHolderName() : \"\" %>" />
-        <aui:input name="accountType" label="Account Type" value="<%= account != null ? account.getAccountType() : \"\" %>" />
+<%--         <aui:input name="accountType" label="Account Type" value="<%= account != null ? account.getAccountType() : \"\" %>" />
+ --%>        
+         <!-- Account Type Dropdown -->
+        <aui:select name="accountType" label="Account Type" required="true">
+            <aui:option value="">-- Select Account Type --</aui:option>
+            <%
+            for (AssetCategory assetCategory : assetCategories) {
+                String categoryName = assetCategory.getName();
+                boolean selected = categoryName.equals(selectedType);
+            %>
+                <aui:option value="<%= categoryName %>" selected="<%= selected %>">
+                    <%= categoryName %>
+                </aui:option>
+            <%
+            }
+            %>
+        </aui:select>
+        
         <aui:input name="balance" label="Balance" value="<%= account != null ? account.getBalance() : 0 %>" />
         <aui:input name="email" label="Email" value="<%= account != null ? account.getEmail() : \"\" %>" />
         <aui:input name="phoneNumber" label="Phone Number" value="<%= account != null ? account.getPhoneNumber() : \"\" %>" />

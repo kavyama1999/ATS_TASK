@@ -1,0 +1,11 @@
+dependencies {
+	api project(":modules:AccountMgmtSystem-Headless_API:AccountMgmtSystem-Headless_API-api")
+
+	compileOnly group: "com.liferay.portal", name: "release.portal.api"
+
+	api project(":modules:AccountMgmtSystemDB:AccountMgmtSystemDB-api")
+
+       compileOnly group: "javax.annotation", name: "javax.annotation-api", version: "1.3.2" 
+}
+
+group = "AccountMgmtSystem.Headless_API"

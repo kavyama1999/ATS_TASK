@@ -1,0 +1,5 @@
+Bundle-Name: AccountMgmtSystem-Headless_API-test
+Bundle-SymbolicName: AccountMgmtSystem.Headless_API.test
+Bundle-Version: 1.0.0
+-includeresource: AccountMgmtSystem.Headless_API.client.jar=../AccountMgmtSystem-Headless_API-client/build/libs/AccountMgmtSystem.Headless_API.client-1.0.0.jar;lib:=true
+-provider-policy: ${replacestring;${range;[==,==]};.*,(.*)];$1}

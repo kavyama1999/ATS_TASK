@@ -1,0 +1,3 @@
+Bundle-Name: AccountMgmtSystem-Headless_API-client
+Bundle-SymbolicName: AccountMgmtSystem.Headless_API.client
+Bundle-Version: 1.0.0

@@ -1,0 +1,9 @@
+apiDir: "../AccountMgmtSystem-Headless_API-api/src/main/java"
+apiPackagePath: "AccountMgmtSystem.Headless_API"
+application:
+    baseURI: "/AccountMgmtSystem-Headless_API"
+    className: "AccountMgmtSystemHeadlessAPIApplication"
+    name: "AccountMgmtSystemHeadlessAPI"
+author: "Admin"
+clientDir: "../AccountMgmtSystem-Headless_API-client/src/main/java"
+testDir: "../AccountMgmtSystem-Headless_API-test/src/testIntegration/java"

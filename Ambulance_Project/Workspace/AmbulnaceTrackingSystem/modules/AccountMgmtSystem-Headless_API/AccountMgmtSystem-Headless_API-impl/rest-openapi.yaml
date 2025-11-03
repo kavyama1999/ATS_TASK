@@ -1,0 +1,147 @@
+openapi: 3.0.1
+info:
+  description: "AccountMgmtSystemHeadlessAPI REST API"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+  title: "AccountMgmtSystemHeadlessAPI"
+  version: v1.0
+
+components:
+  schemas:
+    AccountMngt:
+      description: "Account details object."
+      type: object
+      properties:
+        accountId:
+          type: integer
+          format: int64
+        accountNumber:
+          type: string
+        accountHolderName:
+          type: string
+        accountType:
+          type: string
+        balance:
+          type: number
+          format: double
+        email:
+          type: string
+        phoneNumber:
+          type: string
+        branchName:
+          type: string
+        ifscCode:
+          type: string
+
+paths:
+  "/get-accounts":
+    get:
+      operationId: getAccounts
+      tags: ["Account"]
+      summary: "Get all accounts"
+      description: "Retrieve all account details."
+      responses:
+        '200':
+          description: Accounts fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AccountMngt"
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AccountMngt"
+        '403':
+          description: No accounts found
+        '404':
+          description: API not found
+
+  "/add-account":
+    post:
+      operationId: addAccount
+      tags: ["Account"]
+      summary: "Add new account"
+      description: "Add a new account record."
+      requestBody:
+        description: "Account details to add"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AccountMngt"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/AccountMngt"
+      responses:
+        '200':
+          description: Account added successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountMngt"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/AccountMngt"
+        '400':
+          description: Invalid input
+        '404':
+          description: API not found
+
+  "/update-account":
+    put:
+      operationId: updateAccount
+      tags: ["Account"]
+      summary: "Update existing account"
+      description: "Update account information by accountId."
+      requestBody:
+        description: "Updated account details"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AccountMngt"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/AccountMngt"
+      responses:
+        '200':
+          description: Account updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountMngt"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/AccountMngt"
+        '404':
+          description: Account not found
+
+  "/delete-account":
+    delete:
+      operationId: deleteAccount
+      tags: ["Account"]
+      summary: "Delete account"
+      description: "Delete an account by accountId."
+      parameters:
+        - in: query
+          name: accountId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Account deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountMngt"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/AccountMngt"
+        '404':
+          description: Account not found

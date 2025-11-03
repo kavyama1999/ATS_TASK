@@ -1,0 +1,6 @@
+Bundle-Name: AccountMgmtSystem-Headless_API-api
+Bundle-SymbolicName: AccountMgmtSystem.Headless_API.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	AccountMgmtSystem.Headless_API.dto.v1_0,\
+	AccountMgmtSystem.Headless_API.resource.v1_0

@@ -151,33 +151,6 @@ public class AccountMgmtSystemPortlet extends MVCPortlet {
     
     //delete
     
-//    public void deleteAccount(ActionRequest actionRequest, ActionResponse actionResponse)
-//    		throws IOException, PortletException {
-//    	log.info("Inside Delete method");
-//    	
-//    	try {
-//            // Get accountId from the request
-//            long accountId = ParamUtil.getLong(actionRequest, "accountId");
-//
-//            if (accountId > 0) {
-//                // Delete from database using Service Builder’s util class
-//                AccountMngtLocalServiceUtil.deleteAccountMngt(accountId);
-//
-//                log.info("✅ Account deleted successfully. ID: " + accountId);
-//            } else {
-//                log.warn("⚠️ Invalid Account ID for deletion");
-//            }
-//
-////            // Redirect back to view.jsp
-////            actionResponse.sendRedirect("/web" + actionRequest.getContextPath() + "/view.jsp");
-//
-//        } catch (Exception e) {
-//            log.error("❌ Error while deleting account", e);
-//        }
-//    	
-//    }
-//   }
-    
     public void deleteAccount(ActionRequest actionRequest, ActionResponse actionResponse)
             throws IOException, PortletException {
 
@@ -200,15 +173,5 @@ public class AccountMgmtSystemPortlet extends MVCPortlet {
     }
 }
 
-////Delete
-//public void deleteEmployee(ActionRequest actionRequest, ActionResponse actionResponse)
-//        throws IOException, PortletException, PortalException {
-//
-//    long employeeId = ParamUtil.getLong(actionRequest, "empId");
-//
-//    employee emp = employeeLocalServiceUtil.fetchemployee(employeeId);
-//
-//    if (emp != null) {
-//        employeeLocalServiceUtil.deleteemployee(emp);
-//    }
-//}
+//adding data we can create instance for table in Impl (its another way to store data)
+//AccountMngtLocalServiceImpl

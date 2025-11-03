@@ -42,9 +42,9 @@ List<AccountMngt> accountList = AccountMngtLocalServiceUtil.getAccountMngts(-1, 
                 <th>Type</th>
                 <th>Balance</th>
                 <th>Email</th>
-                <th>Phone</th>
-                <th>Branch</th>
-                <th>IFSC</th>
+                <th>PhoneNo</th>
+                <th>Branch Name</th>
+                <th>IFSC Code</th>
                 <th>Actions</th>
             </tr>
         </thead>
