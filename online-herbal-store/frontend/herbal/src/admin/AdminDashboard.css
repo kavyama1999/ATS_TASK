@@ -1,35 +1,73 @@
+/* 🌿 Layout Wrapper */
 .admin-layout {
   display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f9fff9;
 }
 
-/* Sidebar full height always */
+/* 🌿 Fixed Header */
+.admin-header {
+  background-color: #0d5b2d;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.admin-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.logout-btn {
+  background-color: #145a32;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+  background-color: #0b3d1b;
+}
+
+/* 🌿 Sidebar */
 .sidebar {
   width: 220px;
   background-color: #0d5b2d;
   color: white;
   padding: 20px;
-
   position: fixed;
-  top: 0;
+  top: 70px; /* below header */
   left: 0;
-  bottom: 0; /* ✅ ensures full height */
-  overflow-y: auto; /* scroll only if sidebar content is long */
+  bottom: 0;
+  overflow-y: auto;
 }
-
-/* Main content shifts right */
-.main-content {
-  margin-left: 220px; /* same width as sidebar */
-  padding: 20px;
-}
-
 
 .sidebar h2 {
   margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
 .sidebar ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .sidebar ul li {
@@ -39,11 +77,98 @@
 .sidebar ul li a {
   color: white;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: block;
+  padding: 6px 0;
 }
 
-/* Main section */
-/* .main-content {
-  flex: 1;
+.sidebar ul li a:hover {
+  color: #a5d6a7;
+  background: rgba(255, 255, 255, 0.1);
+  padding-left: 8px;
+  border-radius: 6px;
+}
+
+/* 🌿 Main Content Area */
+.main-content {
+  margin-left: 220px; /* space for sidebar */
+  margin-top: 70px; /* space for header */
   padding: 30px;
-} */
+  width: calc(100% - 220px);
+  background: linear-gradient(to bottom right, #f9fff9, #e8f5e9);
+  min-height: calc(100vh - 120px); /* leaves space for header + footer */
+  box-sizing: border-box;
+}
+
+/* 🌿 Footer */
+.admin-footer {
+  background-color: #0d5b2d;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0;
+  left: 220px; /* align after sidebar */
+  right: 0;
+  font-size: 0.9rem;
+}
+
+
+
+
+/* logout */
+
+.logout-btn {
+  background-color: #4caf50;
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.logout-btn:hover {
+  background-color: #2e7d32;
+  transform: scale(1.1);
+}
+
+.logout-icon {
+  background: white;
+  color: #4caf50;
+  border-radius: 50%;
+  padding: 5px;
+  font-size: 22px;
+}
+
+/* 🌿 Responsive Fixes */
+@media (max-width: 900px) {
+  .admin-header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    top: 0;
+  }
+
+  .main-content {
+    margin: 20px 0 60px 0;
+    width: 100%;
+    padding: 20px;
+  }
+
+  .admin-footer {
+    left: 0;
+    width: 100%;
+    position: relative;
+  }
+}

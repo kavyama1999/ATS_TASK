@@ -1,11 +1,14 @@
 from pydantic import BaseModel
+from typing import Optional
 
 # Product Schemas
 class ProductBase(BaseModel):
     name: str
     description: str
     price: float
-    image_url: str
+    # image_url: str
+    image_url: Optional[str] = None  # ✅ make optional
+
 
 class ProductCreate(ProductBase):
     pass

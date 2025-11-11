@@ -1,184 +1,158 @@
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
+import "./ManageProducts.css";
 
-// const ManageProducts = () => {
-//   const [products, setProducts] = useState([]);
-//   const [newProduct, setNewProduct] = useState({
-//     name: "",
-//     description: "",
-//     price: "",
-//     image_url: "",
-//   });
-
-//   useEffect(() => {
-//     fetchProducts();
-//   }, []);
-
-//   const fetchProducts = async () => {
-//     const res = await axios.get("http://127.0.0.1:8000/products/");
-//     setProducts(res.data);
-//   };
-
-//   const handleAdd = async () => {
-//     await axios.post("http://127.0.0.1:8000/products/", newProduct);
-//     fetchProducts();
-//     setNewProduct({ name: "", description: "", price: "", image_url: "" });
-//   };
-
-//   const handleDelete = async (id) => {
-//     await axios.delete(`http://127.0.0.1:8000/products/${id}`);
-//     fetchProducts();
-//   };
-
-//   return (
-//     <div style={{ padding: "30px" }}>
-//       <h2>Manage Products</h2>
-
-//       <div style={{ marginBottom: "20px" }}>
-//         <input
-//           placeholder="Name"
-//           value={newProduct.name}
-//           onChange={(e) =>
-//             setNewProduct({ ...newProduct, name: e.target.value })
-//           }
-//         />
-//         <input
-//           placeholder="Description"
-//           value={newProduct.description}
-//           onChange={(e) =>
-//             setNewProduct({ ...newProduct, description: e.target.value })
-//           }
-//         />
-//         <input
-//           placeholder="Price"
-//           type="number"
-//           value={newProduct.price}
-//           onChange={(e) =>
-//             setNewProduct({ ...newProduct, price: e.target.value })
-//           }
-//         />
-//         <input
-//           placeholder="Image filename"
-//           value={newProduct.image_url}
-//           onChange={(e) =>
-//             setNewProduct({ ...newProduct, image_url: e.target.value })
-//           }
-//         />
-//         <button onClick={handleAdd}>Add Product</button>
-//       </div>
-
-//       <ul>
-//         {products.map((p) => (
-//           <li key={p.id}>
-//             {p.name} - ₹{p.price}
-//             <button onClick={() => handleDelete(p.id)}>Delete</button>
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// };
-
-// export default ManageProducts;
-
-
-import { useEffect, useState } from "react";
-
-function ManageProducts() {
+const ManageProducts = () => {
   const [products, setProducts] = useState([]);
-  const [form, setForm] = useState({ name: "", description: "", price: "", image_url: "" });
-  const [editingId, setEditingId] = useState(null);
+  const [editingProduct, setEditingProduct] = useState(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    price: "",
+    description: "",
+    image: null,      // selected file
+    image_url: "",    // existing image filename
+  });
 
   // Fetch products
-  const loadProducts = () => {
-    fetch("http://localhost:8000/products/")
-      .then(res => res.json())
-      .then(data => setProducts(data));
-  };
-
   useEffect(() => {
-    loadProducts();
+    axios.get("http://127.0.0.1:8000/products/")
+      .then(res => setProducts(res.data))
+      .catch(err => console.error(err));
   }, []);
-
-  // Handle input change
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  // Create or Update product
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const url = editingId
-      ? `http://localhost:8000/products/${editingId}`
-      : "http://localhost:8000/products/";
-
-    const method = editingId ? "PUT" : "POST";
-
-    await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form)
-    });
-
-    setForm({ name: "", description: "", price: "", image_url: "" });
-    setEditingId(null);
-    loadProducts();
-  };
 
   // Delete product
   const handleDelete = async (id) => {
-    await fetch(`http://localhost:8000/products/${id}`, { method: "DELETE" });
-    loadProducts();
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      await axios.delete(`http://127.0.0.1:8000/products/${id}`);
+      setProducts(products.filter(p => p.id !== id));
+    }
   };
 
-  // Edit mode
+  // Open edit modal
   const handleEdit = (product) => {
-    setForm(product);
-    setEditingId(product.id);
+    setEditingProduct(product);
+    setFormData({
+      name: product.name,
+      price: product.price,
+      description: product.description,
+      image: null,
+      image_url: product.image_url.split("/").pop() || "", // store filename only
+    });
   };
+
+  // Handle form changes
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === "image" && files.length > 0) {
+      setFormData(prev => ({ ...prev, image: files[0] }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+  };
+
+  // Save edited product
+  const handleSave = async () => {
+    try {
+      const form = new FormData();
+      form.append("name", formData.name);
+      form.append("price", formData.price);
+      form.append("description", formData.description);
+
+      // Append new image if selected, else keep existing filename
+      if (formData.image) {
+        form.append("image", formData.image);
+      } else {
+        form.append("image_url", formData.image_url);
+      }
+
+      const res = await axios.put(
+        `http://127.0.0.1:8000/products/${editingProduct.id}`,
+        form,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
+      // Update product list
+      setProducts(products.map(p => (p.id === editingProduct.id ? res.data : p)));
+      setEditingProduct(null);
+    } catch (err) {
+      console.error(err.response ? err.response.data : err.message);
+      alert("Error updating product! Check console for details.");
+    }
+  };
+
+  const handleCancel = () => setEditingProduct(null);
 
   return (
-    <div style={{ padding: "25px" }}>
-      <h2>Manage Products</h2>
+    <div className="manage-products-container">
+      <h2 className="page-title">🛍 Manage Products</h2>
 
-      {/* Add / Edit Form */}
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="name" placeholder="Product Name" value={form.name} onChange={handleChange} required /> <br />
-        <input type="text" name="description" placeholder="Description" value={form.description} onChange={handleChange} required /> <br />
-        <input type="number" name="price" placeholder="Price" value={form.price} onChange={handleChange} required /> <br />
+      <div className="product-grid">
+        {products.map(product => (
+          <div key={product.id} className="product-card">
+            <img src={product.image_url} alt={product.name} className="product-image"/>
+            <div className="product-info">
+              <h3>{product.name}</h3>
+              <p className="desc">{product.description}</p>
+              <p className="price">₹{product.price}</p>
+              <div className="action-buttons">
+                <button className="edit-btn" onClick={() => handleEdit(product)}><FiEdit /></button>
+                <button className="delete-btn" onClick={() => handleDelete(product.id)}><FiTrash2 /></button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
 
-        {/* Image filename only: example aloe.jpg */}
-        <input type="text" name="image_url" placeholder="Image Filename" value={form.image_url} onChange={handleChange} required /> <br />
-
-        <button type="submit">{editingId ? "Update Product" : "Add Product"}</button>
-      </form>
-
-      <hr />
-
-      {/* Product Table */}
-      <table border="1" cellPadding="10">
-        <thead>
-          <tr>
-            <th>ID</th><th>Name</th><th>Price</th><th>Image</th><th>Edit</th><th>Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map(p => (
-            <tr key={p.id}>
-              <td>{p.id}</td>
-              <td>{p.name}</td>
-              <td>₹{p.price}</td>
-              <td><img src={p.image_url} width="75" /></td>
-
-              <td><button onClick={() => handleEdit(p)}>Edit</button></td>
-              <td><button onClick={() => handleDelete(p.id)}>Delete</button></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
+      {/* Edit Modal */}
+      {editingProduct && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Edit Product</h3>
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={formData.name}
+              onChange={handleChange}
+            />
+            <input
+              type="number"
+              name="price"
+              placeholder="Price"
+              value={formData.price}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="description"
+              placeholder="Description"
+              value={formData.description}
+              onChange={handleChange}
+            />
+            <input
+              type="file"
+              name="image"
+              accept="image/*"
+              onChange={handleChange}
+            />
+            {/* Show current image if no new image selected */}
+            {formData.image_url && !formData.image && (
+              <img
+                src={`http://127.0.0.1:8000/images/${formData.image_url}`}
+                alt="Current"
+                style={{ width: "100px", marginTop: "10px" }}
+              />
+            )}
+            <div className="modal-actions">
+              <button className="save-btn" onClick={handleSave}>Save</button>
+              <button className="cancel-btn" onClick={handleCancel}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default ManageProducts;

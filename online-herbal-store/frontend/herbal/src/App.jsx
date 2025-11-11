@@ -49,6 +49,8 @@ import AdminDashboard from "./admin/AdminDashboard";
 import ManageProducts from "./admin/ManageProducts";
 import ViewProducts from "./admin/ViewProducts";
 import AddProduct from "./admin/AddProduct";
+import AdminViewProducts from "./admin/AdminViewProducts";
+
 
 function App() {
 
@@ -60,6 +62,10 @@ function App() {
   return (
     <>
       {!hideLayout && <Navbar />}
+{/* <h2 className="text-4xl font-bold text-green-600 text-center mt-600">
+  🌿 Kavya Herbal 🌿
+</h2> */}
+<h2 className="text-4xl text-green-600 text-center">Tailwind Test</h2>
 
       <Routes>
         {/* Public */}
@@ -76,6 +82,10 @@ function App() {
           {/* ✅ Correct nested paths (remove /admindashboard/ prefix) */}
           <Route path="view-products" element={<ViewProducts />} />
           <Route path="add-product" element={<AddProduct />} />
+          <Route path="admin-view-products" element={<AdminViewProducts />} />
+          <Route path="manage-products" element={<ManageProducts />} />
+
+
           
         </Route>
       </Routes>

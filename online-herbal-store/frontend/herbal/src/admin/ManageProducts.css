@@ -1,0 +1,154 @@
+.manage-products-container {
+  padding: 30px;
+  background-color: #f9fff9;
+  min-height: 100vh;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2e7d32;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 25px;
+  justify-content: center;
+}
+
+.product-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.product-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.product-info {
+  padding: 16px;
+  text-align: center;
+}
+
+.product-info h3 {
+  color: #1b5e20;
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.price {
+  color: #388e3c;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.desc {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 10px;
+  height: 40px;
+  overflow: hidden;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.edit-btn, .delete-btn {
+  border: none;
+  cursor: pointer;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  transition: all 0.2s ease;
+}
+
+.edit-btn {
+  background-color: #81c784;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #e57373;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #66bb6a;
+}
+
+.delete-btn:hover {
+  background-color: #ef5350;
+}
+
+
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Modal box */
+.modal {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal input {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.save-btn {
+  background: #28a745;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background: #dc3545;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
