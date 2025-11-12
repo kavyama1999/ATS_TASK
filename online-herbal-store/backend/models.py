@@ -1,6 +1,8 @@
 from sqlalchemy import Column, Integer, String, Float, Text, Boolean, ForeignKey, DateTime
 from sqlalchemy.sql import func
 from database import Base
+from datetime import datetime
+
 
 class User(Base):
     __tablename__ = "users"
@@ -8,7 +10,7 @@ class User(Base):
     username = Column(String(255), unique=True, nullable=False)
     email = Column(String(255), unique=True)
     password = Column(String(255), nullable=False)
-    is_admin = Column(Boolean, default=False)
+    # is_admin = Column(Boolean, default=False)
 
 class Product(Base):
     __tablename__ = "products"

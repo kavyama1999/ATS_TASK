@@ -9,6 +9,13 @@ from database import Base, engine, get_db
 from fastapi import UploadFile, File, Form
 import shutil
 import os
+# from utils import hash_password  # import the helper
+from utils import hash_password, verify_password  # import both helpers
+
+from passlib.context import CryptContext
+
+from datetime import datetime, timedelta
+import jwt
 
 from fastapi import FastAPI
 # Create all tables
@@ -31,6 +38,20 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
+
+
+
+
+# JWT secret key
+SECRET_KEY = "supersecretkey"
+ALGORITHM = "HS256"
+
+# ------------------ PASSWORD HELPERS ------------------
+
+def create_access_token(data: dict):
+    expire = datetime.utcnow() + timedelta(hours=2)
+    data.update({"exp": expire})
+    return jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
 
 # ---------------- Products ----------------
 # @app.post("/products/", response_model=schemas.Product)
@@ -175,18 +196,69 @@ def delete_product(product_id: int, db: Session = Depends(get_db)):
 
 
 # ---------------- Users ----------------
+
+# @app.post("/users/", response_model=schemas.User)
+# def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+#     db_user = models.User(**user.dict())
+#     db.add(db_user)
+#     db.commit()
+#     db.refresh(db_user)
+#     return db_user
+
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = models.User(**user.dict())
+    # hash the password before saving
+    hashed_pw = hash_password(user.password)
+    db_user = models.User(
+        username=user.username,
+        email=user.email,
+        password=hashed_pw
+    )
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
 
 
+
 @app.get("/users/", response_model=list[schemas.User])
 def get_users(db: Session = Depends(get_db)):
     return db.query(models.User).all()
+
+
+# ------------------ LOGIN USER ------------------
+
+# @app.post("/login")
+# def login_user(login_data: schemas.LoginRequest, db: Session = Depends(get_db)):
+#     # Find user by email
+#     db_user = db.query(models.User).filter(models.User.email == login_data.email).first()
+#     if not db_user:
+#         raise HTTPException(status_code=400, detail="Invalid email or password")
+
+#     # Verify password
+#     if not verify_password(login_data.password, db_user.password):
+#         raise HTTPException(status_code=400, detail="Invalid email or password")
+
+#     # Create token
+#     token = create_access_token({"sub": db_user.email})
+
+#     return {
+#         "message": "Login successful",
+#         "access_token": token,
+#         "user": {
+#             "id": db_user.id,
+#             "username": db_user.username,
+#             "email": db_user.email
+#         }
+#     }
+
+
+@app.post("/login/")
+def login_user(login_data: schemas.UserLogin, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.email == login_data.email).first()
+    if not user or not verify_password(login_data.password, user.password):
+        raise HTTPException(status_code=400, detail="Invalid email or password")
+    return {"message": "Login successful", "user_id": user.id}
 
 
 # ---------------- Orders ----------------

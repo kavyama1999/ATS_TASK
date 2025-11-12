@@ -20,7 +20,7 @@ const AdminViewProducts = () => {
 
   return (
     <div className="admin-products-container">
-      <h1 className="admin-products-title">🌿 Product List (Admin View)</h1>
+      <h1 className="admin-products-title">🌿 Product List</h1>
 
       <div className="admin-product-grid">
         {products.map((product) => (

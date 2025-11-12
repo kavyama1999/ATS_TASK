@@ -25,12 +25,18 @@ class UserBase(BaseModel):
     password: str
 
 class UserCreate(UserBase):
-    is_admin: bool = False
+    # is_admin: bool = False
+    pass  
 
 class User(UserBase):
     id: int
     class Config:
         orm_mode = True
+
+# User Login Schema
+class UserLogin(BaseModel):
+    email: str
+    password: str        
 
 # OrderItem Schemas
 class OrderItemBase(BaseModel):
