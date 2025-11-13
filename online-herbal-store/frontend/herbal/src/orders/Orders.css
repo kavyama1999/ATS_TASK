@@ -1,0 +1,138 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+  margin: 0;
+  padding: 0;
+}
+
+.orders-page {
+  padding: 50px 8%;
+}
+
+.orders-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.orders-header h1 {
+  font-size: 2.5rem;
+  color: #2e7d32;
+  font-weight: 700;
+}
+
+.orders-header p {
+  color: #388e3c;
+  font-size: 1.1rem;
+}
+
+/* Grid Layout */
+.orders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+/* Beautiful Card */
+.order-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(76, 175, 80, 0.2);
+  box-shadow: 0 8px 20px rgba(46, 125, 50, 0.15);
+  transition: all 0.3s ease;
+}
+
+.order-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 25px rgba(46, 125, 50, 0.25);
+}
+
+/* Header */
+.order-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.order-top h2 {
+  font-size: 1.2rem;
+  color: #1b5e20;
+}
+
+.order-time {
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Details */
+.order-details p {
+  margin: 6px 0;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+/* Footer */
+.order-footer {
+  text-align: right;
+  margin-top: 10px;
+}
+
+.order-status {
+  display: inline-block;
+  background: linear-gradient(90deg, #a5d6a7, #66bb6a);
+  color: #1b5e20;
+  padding: 6px 16px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Loading */
+.orders-loading {
+  text-align: center;
+  margin-top: 120px;
+  color: #4caf50;
+}
+
+.spinner {
+  width: 45px;
+  height: 45px;
+  border: 5px solid #c8e6c9;
+  border-top: 5px solid #43a047;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* No Orders */
+.no-orders {
+  text-align: center;
+  padding: 80px 20px;
+  color: #666;
+  font-size: 1.2rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .orders-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .order-card {
+    padding: 15px;
+  }
+}

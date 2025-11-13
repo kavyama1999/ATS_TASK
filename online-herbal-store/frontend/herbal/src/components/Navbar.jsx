@@ -21,6 +21,14 @@ const Navbar = () => {
           </Link>
         </li>
 
+        {/* ✅ Orders Page Link */}
+        <li>
+          <Link to="/orders" className="orders-btn">
+            Orders
+          </Link>
+        </li>
+
+
         {/* ✅ Admin Button */}
         <li>
           <Link to="/adminlogin" className="admin-btn">

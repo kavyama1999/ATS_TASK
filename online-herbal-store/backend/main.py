@@ -281,9 +281,38 @@ def create_order(order: schemas.OrderCreate, db: Session = Depends(get_db)):
     return db_order
 
 
+# @app.get("/orders/", response_model=list[schemas.Order])
+# def get_orders(db: Session = Depends(get_db)):
+#     return db.query(models.Order).all()
+
 @app.get("/orders/", response_model=list[schemas.Order])
 def get_orders(db: Session = Depends(get_db)):
-    return db.query(models.Order).all()
+    results = (
+        db.query(
+            models.Order.id,
+            models.Order.user_id,
+            models.Order.total_price,
+            models.Order.order_date,
+            models.User.username,
+            models.User.email
+        )
+        .join(models.User, models.Order.user_id == models.User.id)
+        .all()
+    )
+
+    return [
+        {
+            "id": r.id,
+            "user_id": r.user_id,
+            "total_price": r.total_price,
+            "order_date": r.order_date,
+            "username": r.username,
+            "email": r.email,
+            "items": []  # Optional: can fetch order items if needed
+        }
+        for r in results
+    ]
+
 
 # admin Login
 

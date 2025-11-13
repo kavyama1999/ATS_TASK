@@ -1,12 +1,216 @@
+// import React, { useEffect, useState } from "react";
+// import api from "../api/axios";
+// import "./Orders.css";
+
+// const Orders = () => {
+//   const [orders, setOrders] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     fetchOrders();
+//   }, []);
+
+//   const fetchOrders = async () => {
+//     try {
+//       const response = await api.get("/orders/");
+//       setOrders(response.data);
+//     } catch (error) {
+//       console.error("Error fetching orders:", error);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   if (loading) {
+//     return (
+//       <div className="orders-loading">
+//         <div className="spinner"></div>
+//         <p>Fetching your herbal orders...</p>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className="orders-page">
+//       <div className="orders-header">
+//         <h1>🌿 My Herbal Orders</h1>
+//         <p>Track your eco-friendly purchases in one place</p>
+//       </div>
+
+//       {orders.length === 0 ? (
+//         <div className="no-orders">
+//           <p>😔 You haven’t placed any orders yet. Start shopping green 🌱</p>
+//         </div>
+//       ) : (
+//         <div className="orders-grid">
+//           {orders.map((order) => (
+//             <div key={order.id} className="order-card">
+//               <div className="order-top">
+//                 <h2>Order #{order.id}</h2>
+//                 <p className="order-date">
+//                   {new Date(order.order_date).toLocaleString("en-IN", {
+//                     year: "numeric",
+//                     month: "short",
+//                     day: "numeric",
+//                     hour: "2-digit",
+//                     minute: "2-digit",
+//                     hour12: true,
+//                   })}
+//                 </p>
+//               </div>
+
+//               <div className="order-details">
+//                 <p>
+//                   👤 <strong>User:</strong> {order.username || "Unknown"}
+//                 </p>
+//                 <p>
+//                   📧 <strong>Email:</strong> {order.email || "Not available"}
+//                 </p>
+//                 <p>
+//                   💰 <strong>Total:</strong> ₹{order.total_price}
+//                 </p>
+//               </div>
+
+//               <div className="order-footer">
+//                 <span className="status success">✅ Order Confirmed</span>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default Orders;
+
+
+// import React, { useEffect, useState } from "react";
+// import api from "../api/axios";
+// import "./Orders.css";
+
+// const timeAgo = (dateString) => {
+//   const date = new Date(dateString);
+//   const seconds = Math.floor((new Date() - date) / 1000);
+
+//   let interval = Math.floor(seconds / 31536000);
+//   if (interval >= 1) return `${interval} year${interval > 1 ? "s" : ""} ago`;
+
+//   interval = Math.floor(seconds / 2592000);
+//   if (interval >= 1) return `${interval} month${interval > 1 ? "s" : ""} ago`;
+
+//   interval = Math.floor(seconds / 86400);
+//   if (interval >= 1) return `${interval} day${interval > 1 ? "s" : ""} ago`;
+
+//   interval = Math.floor(seconds / 3600);
+//   if (interval >= 1) return `${interval} hour${interval > 1 ? "s" : ""} ago`;
+
+//   interval = Math.floor(seconds / 60);
+//   if (interval >= 1) return `${interval} minute${interval > 1 ? "s" : ""} ago`;
+
+//   return "just now";
+// };
+
+// const Orders = () => {
+//   const [orders, setOrders] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     fetchOrders();
+//     const interval = setInterval(fetchOrders, 15000); // auto-refresh
+//     return () => clearInterval(interval);
+//   }, []);
+
+//   const fetchOrders = async () => {
+//     try {
+//       const response = await api.get("/orders/");
+//       setOrders(response.data);
+//     } catch (error) {
+//       console.error("Error fetching orders:", error);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   if (loading) {
+//     return (
+//       <div className="orders-loading">
+//         <div className="spinner"></div>
+//         <p>Loading your orders...</p>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className="orders-page">
+//       <div className="orders-header">
+//         <h1>🌿 My Orders</h1>
+//         <p>Track your herbal product purchases in real-time</p>
+//       </div>
+
+//       {orders.length === 0 ? (
+//         <div className="no-orders">
+//           <p>😔 No orders yet. Place your first herbal order!</p>
+//         </div>
+//       ) : (
+//         <div className="orders-grid">
+//           {orders.map((order) => (
+//             <div key={order.id} className="order-card">
+//               <div className="order-top">
+//                 <h2>Order #{order.id}</h2>
+//                 <span className="order-time">{timeAgo(order.order_date)}</span>
+//               </div>
+
+//               <div className="order-details">
+//                 <p>
+//                   👤 <strong>{order.username || "Unknown User"}</strong>
+//                 </p>
+//                 <p>
+//                   📧 {order.email || "No email available"}
+//                 </p>
+//                 <p>
+//                   💰 Total: <strong>₹{order.total_price}</strong>
+//                 </p>
+//               </div>
+
+//               <div className="order-footer">
+//                 <span className="order-status">✅ Confirmed</span>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default Orders;
+
+
 import React, { useEffect, useState } from "react";
 import api from "../api/axios";
+import "./Orders.css";
+
+const formatDateTime = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+};
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
-  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchOrders();
+    const interval = setInterval(fetchOrders, 15000); // auto-refresh every 15s
+    return () => clearInterval(interval);
   }, []);
 
   const fetchOrders = async () => {
@@ -15,60 +219,59 @@ const Orders = () => {
       setOrders(response.data);
     } catch (error) {
       console.error("Error fetching orders:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const createOrder = async () => {
-    try {
-      const orderData = {
-        user_id: 1, // 👈 Change this to an existing user ID
-        total_price: 500,
-        items: [
-          { product_id: 1, quantity: 2, price: 250 },
-          { product_id: 3, quantity: 1, price: 250 },
-        ],
-      };
-
-      const response = await api.post("/orders/", orderData);
-      setMessage(`✅ Order #${response.data.id} created successfully`);
-      fetchOrders();
-    } catch (error) {
-      console.error("Error creating order:", error);
-      setMessage("❌ Failed to create order");
-    }
-  };
+  if (loading) {
+    return (
+      <div className="orders-loading">
+        <div className="spinner"></div>
+        <p>Loading your orders...</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-semibold text-green-700 mb-4">📦 Orders</h2>
-      <button
-        onClick={createOrder}
-        className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
-      >
-        Create Dummy Order
-      </button>
-      {message && <p className="mt-3 text-gray-700">{message}</p>}
+    <div className="orders-page">
+      <div className="orders-header">
+        <h1>🌿 Users Orders</h1>
+        {/* <p>Track all your herbal purchases in real-time</p> */}
+      </div>
 
-      <table className="min-w-full border mt-6 border-gray-300 rounded-lg">
-        <thead className="bg-green-200">
-          <tr>
-            <th className="py-2 px-4 border">Order ID</th>
-            <th className="py-2 px-4 border">User ID</th>
-            <th className="py-2 px-4 border">Total Price</th>
-            <th className="py-2 px-4 border">Order Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders.map((o) => (
-            <tr key={o.id} className="text-center border-b">
-              <td className="py-2 border">{o.id}</td>
-              <td className="py-2 border">{o.user_id}</td>
-              <td className="py-2 border">₹{o.total_price}</td>
-              <td className="py-2 border">{o.order_date}</td>
-            </tr>
+      {orders.length === 0 ? (
+        <div className="no-orders">
+          <p>😔 You haven’t placed any orders yet.</p>
+        </div>
+      ) : (
+        <div className="orders-grid">
+          {orders.map((order) => (
+            <div key={order.id} className="order-card">
+              <div className="order-top">
+                <h2>Order #{order.id}</h2>
+                <span className="order-time">
+                  {formatDateTime(order.order_date)}
+                </span>
+              </div>
+
+              <div className="order-details">
+                <p>
+                  👤 <strong>{order.username || "Unknown User"}</strong>
+                </p>
+                <p>📧 {order.email || "Not available"}</p>
+                <p>
+                  💰 Total: <strong>₹{order.total_price}</strong>
+                </p>
+              </div>
+
+              <div className="order-footer">
+                <span className="order-status">✅ Confirmed</span>
+              </div>
+            </div>
           ))}
-        </tbody>
-      </table>
+        </div>
+      )}
     </div>
   );
 };

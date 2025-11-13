@@ -54,3 +54,45 @@
 .card button:hover {
   background-color: #256927;
 }
+
+
+/* --- Add at the bottom of your existing Products.css --- */
+
+/* Group both buttons side by side */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Both buttons same base style */
+.button-group button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+/* Add to Cart - Green */
+.button-group button:first-child {
+  background-color: #2e7d32;
+}
+
+.button-group button:first-child:hover {
+  background-color: #256927;
+}
+
+/* Buy Now - Orange */
+.button-group .buy-now {
+  background-color: #ff9800;
+}
+
+.button-group .buy-now:hover {
+  background-color: #e68900;
+}

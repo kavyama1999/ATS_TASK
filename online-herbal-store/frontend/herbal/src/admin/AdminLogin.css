@@ -1,40 +1,84 @@
-.login-container {
-  width: 400px;
-  margin: 100px auto;
-  padding: 30px;
-  background: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
+/* Full-screen gradient background */
+.admin-login-page {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #a8e6cf, #dcedc1, #f0f4c3);
+  font-family: "Poppins", sans-serif;
+}
+
+/* Glass-like login card */
+.login-card {
+  width: 380px;
+  padding: 40px 35px;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
   text-align: center;
+  transition: all 0.3s ease-in-out;
 }
 
-.login-container h2 {
+.login-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Title */
+.login-card h2 {
   color: #2e7d32;
-  margin-bottom: 20px;
+  font-size: 26px;
+  margin-bottom: 25px;
+  font-weight: 600;
 }
 
-.login-container input {
-  display: block;
-  width: 90%;
-  margin: 10px auto;
-  padding: 10px;
-  border: 1px solid #aaa;
-  border-radius: 8px;
+/* Input fields */
+.login-card input {
+  width: 100%;
+  padding: 12px 14px;
+  margin: 10px 0;
+  border: 1px solid #c8e6c9;
+  border-radius: 10px;
   font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s ease-in-out;
 }
 
-.login-container button {
-  width: 95%;
+.login-card input:focus {
+  border-color: #2e7d32;
+  box-shadow: 0 0 6px rgba(46, 125, 50, 0.3);
+}
+
+/* Button */
+.login-card button {
+  width: 100%;
   padding: 12px;
-  background-color: #2e7d32;
-  color: white;
+  background: #2e7d32;
   border: none;
-  border-radius: 8px;
+  color: white;
   font-size: 18px;
+  border-radius: 10px;
   cursor: pointer;
+  transition: background 0.3s ease;
   margin-top: 15px;
 }
 
-.login-container button:hover {
-  background-color: #256927;
+.login-card button:hover {
+  background: #1b5e20;
+}
+
+/* Optional subtle animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-card {
+  animation: fadeIn 0.8s ease-in-out;
 }

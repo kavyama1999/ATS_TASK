@@ -9,7 +9,6 @@ const AdminLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const res = await axios.post("http://127.0.0.1:8000/admin/login", login);
       if (res.status === 200) {
@@ -22,25 +21,27 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="login-container">
-      <h2>Admin Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={login.email}
-          onChange={(e) => setLogin({ ...login, email: e.target.value })}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={login.password}
-          onChange={(e) => setLogin({ ...login, password: e.target.value })}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
+    <div className="admin-login-page">
+      <div className="login-card">
+        <h2>🌿 Admin Login</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Enter your email"
+            value={login.email}
+            onChange={(e) => setLogin({ ...login, email: e.target.value })}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Enter your password"
+            value={login.password}
+            onChange={(e) => setLogin({ ...login, password: e.target.value })}
+            required
+          />
+          <button type="submit">Login</button>
+        </form>
+      </div>
     </div>
   );
 };

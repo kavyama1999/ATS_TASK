@@ -17,7 +17,9 @@ import UserLogin from "./users/UserLogin";
 import UserList from "./users/UserList";
 
 import Orders from "./orders/Orders";
-
+import Cart from "./orders/Cart";
+import Checkout from "./orders/Checkout";
+import OrderSuccess from "./orders/OrderSuccess";
 
 
 
@@ -50,8 +52,10 @@ function App() {
           <Route path="add-product" element={<AddProduct />} />
           <Route path="admin-view-products" element={<AdminViewProducts />} />
           <Route path="manage-products" element={<ManageProducts />} />
-          <Route path="user-list" element={<UserList />} /> {/* ✅ New route */}
-          
+          <Route path="user-list" element={<UserList />} /> 
+            <Route path="orders" element={<Orders />} />
+
+
 
         </Route>
 
@@ -62,6 +66,9 @@ function App() {
 
         {/* 🛒 Orders */}
         <Route path="/orders" element={<Orders />} />
+        <Route path="/orders/cart" element={<Cart />} />
+        <Route path="/orders/checkout" element={<Checkout />} />
+        <Route path="/orders/ordersuccess" element={<OrderSuccess />} />
       </Routes>
 
 

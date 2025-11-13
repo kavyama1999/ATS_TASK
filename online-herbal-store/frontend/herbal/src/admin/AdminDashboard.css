@@ -6,14 +6,14 @@
   background-color: #f9fff9;
 }
 
-/* 🌿 Fixed Header */
+/* 🌿 Header */
 .admin-header {
-  background-color: #0d5b2d;
-  color: white;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* home left, title center, logout right */
   align-items: center;
   padding: 15px 30px;
+  background-color: #0d5b2d;
+  color: white;
   position: fixed;
   top: 0;
   left: 0;
@@ -23,26 +23,61 @@
 }
 
 .admin-header h1 {
+  flex: 1;
+  text-align: center;
   font-size: 1.8rem;
   font-weight: 700;
+  margin: 0;
+}
+
+.home-btn
+{
+  background: none;
+  border: none;
+   padding: 10px 2px; 
+
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-btn {
+  margin-right: auto;
 }
 
 .logout-btn {
-  background-color: #145a32;
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: background-color 0.3s;
+  background-color: #4caf50;
+  border-radius: 50%;
+  padding: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 .logout-btn:hover {
-  background-color: #0b3d1b;
+  background-color: #2e7d32;
+  transform: scale(1.1);
+}
+
+.logout-btn svg {
+  background: white;
+  color: #4caf50;
+  border-radius: 50%;
+  padding: 5px;
+  font-size: 22px;
 }
 
 /* 🌿 Sidebar */
@@ -114,38 +149,7 @@
   font-size: 0.9rem;
 }
 
-
-
-
-/* logout */
-
-.logout-btn {
-  background-color: #4caf50;
-  border: none;
-  border-radius: 50%;
-  padding: 10px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-}
-
-.logout-btn:hover {
-  background-color: #2e7d32;
-  transform: scale(1.1);
-}
-
-.logout-icon {
-  background: white;
-  color: #4caf50;
-  border-radius: 50%;
-  padding: 5px;
-  font-size: 22px;
-}
-
-/* 🌿 Responsive Fixes */
+/* 🌿 Responsive */
 @media (max-width: 900px) {
   .admin-header {
     flex-direction: column;

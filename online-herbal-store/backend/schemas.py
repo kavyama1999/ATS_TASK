@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
+from datetime import datetime  
+
 
 # Product Schemas
 class ProductBase(BaseModel):
@@ -36,7 +38,7 @@ class User(UserBase):
 # User Login Schema
 class UserLogin(BaseModel):
     email: str
-    password: str        
+    password: str       
 
 # OrderItem Schemas
 class OrderItemBase(BaseModel):
@@ -62,8 +64,11 @@ class OrderCreate(OrderBase):
 
 class Order(OrderBase):
     id: int
-    order_date: str
+    # order_date: str
+    order_date: datetime  
     items: list[OrderItem] = []
+    username: Optional[str] = None   # ✅ Added
+    email: Optional[str] = None      # ✅ Added
     class Config:
         orm_mode = True
 
