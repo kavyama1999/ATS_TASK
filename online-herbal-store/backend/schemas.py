@@ -1,6 +1,8 @@
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime  
+from pydantic import Field
+
 
 
 # Product Schemas
@@ -25,6 +27,18 @@ class UserBase(BaseModel):
     username: str
     email: str | None = None
     password: str
+
+    # 🆕 NEW FIELDS
+    address: Optional[str] = None
+    # contact_number: Optional[str] = None
+    # VALIDATED CONTACT NUMBER (EXACTLY 10 DIGITS)
+    contact_number: str = Field(
+    ...,
+    min_length=10,
+    max_length=10,
+    pattern="^[0-9]{10}$"
+)
+
 
 class UserCreate(UserBase):
     # is_admin: bool = False

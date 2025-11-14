@@ -205,20 +205,55 @@ def delete_product(product_id: int, db: Session = Depends(get_db)):
 #     db.refresh(db_user)
 #     return db_user
 
+
+
+# @app.post("/users/", response_model=schemas.User)
+# def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+#     # hash the password before saving
+#     hashed_pw = hash_password(user.password)
+#     db_user = models.User(
+#         username=user.username,
+#         email=user.email,
+#         password=hashed_pw,
+#          # 🆕 NEW FIELDS
+#         address=user.address,
+#         contact_number=user.contact_number
+
+#     )
+#     db.add(db_user)
+#     db.commit()
+#     db.refresh(db_user)
+#     return db_user
+
+
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+
+    # ✅ Validate contact number (must be exactly 10 digits and numeric)
+    if not user.contact_number.isdigit() or len(user.contact_number) != 10:
+        raise HTTPException(
+            status_code=400,
+            detail="Contact number must be exactly 10 digits."
+        )
+
     # hash the password before saving
     hashed_pw = hash_password(user.password)
+
     db_user = models.User(
         username=user.username,
         email=user.email,
-        password=hashed_pw
+        password=hashed_pw,
+
+        # 🆕 NEW FIELDS
+        address=user.address,
+        contact_number=user.contact_number
     )
+
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    return db_user
 
+    return db_user
 
 
 @app.get("/users/", response_model=list[schemas.User])

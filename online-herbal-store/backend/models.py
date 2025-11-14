@@ -10,7 +10,11 @@ class User(Base):
     username = Column(String(255), unique=True, nullable=False)
     email = Column(String(255), unique=True)
     password = Column(String(255), nullable=False)
-    # is_admin = Column(Boolean, default=False)
+        # 🆕 NEW FIELDS
+    address = Column(String(255), nullable=True)
+    contact_number = Column(String(20), nullable=True)
+
+
 
 class Product(Base):
     __tablename__ = "products"
