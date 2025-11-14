@@ -1,146 +1,213 @@
+
+
+
+// import React, { useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import "./Cart.css";
+
+// const Cart = () => {
+//   const navigate = useNavigate();
+//   const [cart, setCart] = useState([]);
+//   const [selectedItems, setSelectedItems] = useState([]);
+
+//   const userId = localStorage.getItem("user_id");
+
+//   useEffect(() => {
+//     if (!userId) {
+//       alert("Please login first.");
+//       navigate("/user-login");
+//       return;
+//     }
+
+//     const saved = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
+//     setCart(saved);
+//     setSelectedItems(saved.map((i) => i.id));
+//   }, []);
+
+//   const updateCart = (newCart) => {
+//     localStorage.setItem(`cart_${userId}`, JSON.stringify(newCart));
+//     setCart(newCart);
+//     window.dispatchEvent(new Event("storage"));
+//   };
+
+//   const toggleSelect = (id) => {
+//     setSelectedItems((prev) =>
+//       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+//     );
+//   };
+
+//   const changeQty = (id, delta) => {
+//     const updated = cart.map((i) =>
+//       i.id === id ? { ...i, quantity: Math.max(1, i.quantity + delta) } : i
+//     );
+//     updateCart(updated);
+//   };
+
+//   const total = cart
+//     .filter((i) => selectedItems.includes(i.id))
+//     .reduce((s, i) => s + i.price * i.quantity, 0);
+
+//   return (
+//     <div className="cart-wrapper">
+//       <h2 className="cart-title">Your Cart</h2>
+
+//       <div className="cart-box">
+//         {cart.map((item) => (
+//           <div key={item.id} className="cart-card">
+//             <input
+//               type="checkbox"
+//               checked={selectedItems.includes(item.id)}
+//               onChange={() => toggleSelect(item.id)}
+//               className="cart-check"
+//             />
+
+//             <img src={item.image_url} alt={item.name} className="cart-img" />
+
+//             <div className="cart-info">
+//               <h3>{item.name}</h3>
+//               <p className="price">₹{item.price}</p>
+
+//               <div className="qty-box">
+//                 <button onClick={() => changeQty(item.id, -1)}>-</button>
+//                 <span>{item.quantity}</span>
+//                 <button onClick={() => changeQty(item.id, 1)}>+</button>
+//               </div>
+
+//               <p className="sub">Subtotal: ₹{item.price * item.quantity}</p>
+//             </div>
+
+//             <button
+//               className="remove-btn"
+//               onClick={() =>
+//                 updateCart(cart.filter((x) => x.id !== item.id))
+//               }
+//             >
+//               Remove
+//             </button>
+//           </div>
+//         ))}
+//       </div>
+
+//       <div className="cart-footer">
+//         <h3>Total: ₹{total}</h3>
+//         <button className="pay-btn" onClick={() => navigate("/orders/checkout")}>
+//           Proceed to Pay ₹{total}
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Cart;
+
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Cart.css";
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]); // ✅ selected items for checkout
-  const [total, setTotal] = useState(0);
   const navigate = useNavigate();
+  const [cart, setCart] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
 
-  // ✅ Load cart from localStorage
+  const userId = localStorage.getItem("user_id");
+
   useEffect(() => {
-    const userId = localStorage.getItem("user_id");
     if (!userId) {
-      alert("⚠️ Please login to view your cart!");
-      navigate("/login");
+      alert("Please login first.");
+      navigate("/user-login");
       return;
     }
 
-    const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    setCartItems(savedCart);
-  }, [navigate]);
+    const saved = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
+    setCart(saved);
+    setSelectedItems(saved.map((i) => i.id));
+  }, []);
 
-  // ✅ Calculate total for selected items
-  useEffect(() => {
-    const selectedTotal = selectedItems.reduce((sum, id) => {
-      const item = cartItems.find((p) => p.id === id);
-      return item ? sum + item.price * item.quantity : sum;
-    }, 0);
-    setTotal(selectedTotal);
-  }, [cartItems, selectedItems]);
-
-  // ✅ Update quantity
-  const updateQuantity = (index, change) => {
-    const updated = [...cartItems];
-    const item = updated[index];
-    item.quantity = Math.max(1, item.quantity + change);
-    setCartItems(updated);
-    localStorage.setItem("cart", JSON.stringify(updated));
+  const updateCart = (newCart) => {
+    localStorage.setItem(`cart_${userId}`, JSON.stringify(newCart));
+    setCart(newCart);
+    window.dispatchEvent(new Event("storage"));
   };
 
-  // ✅ Remove item
-  const removeItem = (index) => {
-    const updated = cartItems.filter((_, i) => i !== index);
-    setCartItems(updated);
-    localStorage.setItem("cart", JSON.stringify(updated));
-  };
-
-  // ✅ Select/unselect item for checkout
   const toggleSelect = (id) => {
-    if (selectedItems.includes(id)) {
-      setSelectedItems(selectedItems.filter((itemId) => itemId !== id));
-    } else {
-      setSelectedItems([...selectedItems, id]);
-    }
+    setSelectedItems((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
   };
 
-  // ✅ Proceed to checkout
-  const proceedToCheckout = () => {
-    if (selectedItems.length === 0) {
-      alert("Please select at least one item to proceed.");
+  const changeQty = (id, delta) => {
+    const updated = cart.map((i) =>
+      i.id === id ? { ...i, quantity: Math.max(1, i.quantity + delta) } : i
+    );
+    updateCart(updated);
+  };
+
+  const total = cart
+    .filter((i) => selectedItems.includes(i.id))
+    .reduce((s, i) => s + i.price * i.quantity, 0);
+
+  const proceedToPay = () => {
+    const selected = cart.filter((i) => selectedItems.includes(i.id));
+
+    if (selected.length === 0) {
+      alert("Please select at least one item.");
       return;
     }
 
-    const selectedProducts = cartItems.filter((p) =>
-      selectedItems.includes(p.id)
-    );
-    localStorage.setItem("checkoutItems", JSON.stringify(selectedProducts));
+    // ✅ Store ONLY selected checkout items
+    localStorage.setItem("cartCheckout", JSON.stringify(selected));
 
+    // Go to checkout page
     navigate("/orders/checkout");
   };
 
-  // ✅ View Product Details
-  const viewProductDetails = (productId) => {
-    navigate(`/product/${productId}`);
-  };
-
   return (
-    <div className="cart-container">
-      <h2 className="cart-header">🛒 Your Shopping Cart</h2>
+    <div className="cart-wrapper">
+      <h2 className="cart-title">Your Cart</h2>
 
-      {cartItems.length === 0 ? (
-        <p className="cart-empty">
-          Your cart is empty. Add some herbal goodness 🌿!
-        </p>
-      ) : (
-        <>
-          <div className="cart-list">
-            {cartItems.map((item, i) => (
-              <div key={i} className="cart-item">
-                {/* ✅ Select Checkbox */}
-                <input
-                  type="checkbox"
-                  checked={selectedItems.includes(item.id)}
-                  onChange={() => toggleSelect(item.id)}
-                  className="cart-checkbox"
-                />
+      <div className="cart-box">
+        {cart.map((item) => (
+          <div key={item.id} className="cart-card">
+            <input
+              type="checkbox"
+              checked={selectedItems.includes(item.id)}
+              onChange={() => toggleSelect(item.id)}
+              className="cart-check"
+            />
 
-                {/* ✅ Product Image and Info */}
-                <div
-                  className="cart-item-left"
-                  onClick={() => viewProductDetails(item.id)}
-                >
-                  <img
-                    src={item.image_url || "https://via.placeholder.com/100"}
-                    alt={item.name}
-                  />
-                  <div className="cart-item-info">
-                    <h3>{item.name}</h3>
-                    <p>{item.description?.slice(0, 60)}...</p>
-                    <p className="price">₹{item.price}</p>
-                  </div>
-                </div>
+            <img src={item.image_url} alt={item.name} className="cart-img" />
 
-                {/* ✅ Quantity controls */}
-                <div className="quantity-controls">
-                  <button onClick={() => updateQuantity(i, -1)}>-</button>
-                  <span>{item.quantity}</span>
-                  <button onClick={() => updateQuantity(i, 1)}>+</button>
-                </div>
+            <div className="cart-info">
+              <h3>{item.name}</h3>
+              <p className="price">₹{item.price}</p>
 
-                {/* ✅ Remove */}
-                <button
-                  className="cart-remove"
-                  onClick={() => removeItem(i)}
-                >
-                  Remove
-                </button>
+              <div className="qty-box">
+                <button onClick={() => changeQty(item.id, -1)}>-</button>
+                <span>{item.quantity}</span>
+                <button onClick={() => changeQty(item.id, 1)}>+</button>
               </div>
-            ))}
-          </div>
 
-          {/* ✅ Summary section */}
-          <div className="cart-summary">
-            <h3>
-              Selected Items: {selectedItems.length} | Total: ₹{total}
-            </h3>
-            <button onClick={proceedToCheckout}>
-              💳 Proceed to Pay
+              <p className="sub">Subtotal: ₹{item.price * item.quantity}</p>
+            </div>
+
+            <button
+              className="remove-btn"
+              onClick={() => updateCart(cart.filter((x) => x.id !== item.id))}
+            >
+              Remove
             </button>
           </div>
-        </>
-      )}
+        ))}
+      </div>
+
+      <div className="cart-footer">
+        <h3>Total: ₹{total}</h3>
+
+        <button className="pay-btn" onClick={proceedToPay}>
+          Proceed to Pay ₹{total}
+        </button>
+      </div>
     </div>
   );
 };

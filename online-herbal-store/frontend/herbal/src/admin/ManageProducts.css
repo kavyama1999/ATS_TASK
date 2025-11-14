@@ -24,7 +24,7 @@
   border-radius: 14px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: 0.3s ease;
 }
 
 .product-card:hover {
@@ -69,57 +69,62 @@
   margin-top: 10px;
 }
 
-.edit-btn, .delete-btn {
-  border: none;
-  cursor: pointer;
+.edit-btn,
+.delete-btn {
   padding: 10px 14px;
   border-radius: 8px;
-  font-size: 1.1rem;
-  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+  font-size: 1.2rem;
+  transition: 0.2s ease;
 }
 
-.edit-btn {
-  background-color: #81c784;
-  color: white;
-}
-
+/* 🟩 EDIT BUTTON */
+/* DELETE BUTTON (white background + red icon) */
 .delete-btn {
-  background-color: #e57373;
-  color: white;
+  background-color: white !important;
+  border: 2px solid #e53935 !important;
+  color: #e53935 !important;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
 }
 
-.edit-btn:hover {
-  background-color: #66bb6a;
+/* Trash icon RED */
+.delete-btn .trash-icon {
+  color: #e53935 !important;
 }
 
+/* On hover – red background & white icon */
 .delete-btn:hover {
-  background-color: #ef5350;
+  background-color: #e53935 !important;
+  color: white !important;
+}
+
+.delete-btn:hover .trash-icon {
+  color: white !important;
 }
 
 
-
-/* Modal overlay */
+/* MODAL */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Modal box */
 .modal {
   background: #fff;
   padding: 20px;
   border-radius: 10px;
   width: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 }
 
 .modal input {
@@ -127,6 +132,7 @@
   border-radius: 5px;
   border: 1px solid #ccc;
   width: 100%;
+  margin-bottom: 8px;
 }
 
 .modal-actions {

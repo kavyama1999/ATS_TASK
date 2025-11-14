@@ -140,39 +140,3 @@
     position: relative;
   }
 }
-
-/* This for that welcome animation */
-
-/* Welcome Box */
-.dashboard-hero {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.herbal-title {
-  font-size: 1.8rem;
-  color: #0d5b2d;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-/* Animation Box --- REDUCED HEIGHT VERSION */
-.animation-box.small {
-  position: relative;
-  height: 120px;     /* reduced from 220px → 120px */
-  overflow: hidden;
-  margin: 0 auto;
-}
-
-/* Floating Leaves */
-.leaf {
-  position: absolute;
-  width: 45px;       /* also reduced */
-  opacity: 0.8;
-  animation: fall 4s linear infinite;
-}
-
-@keyframes fall {
-  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(140px) rotate(90deg); opacity: 0; }
-}
