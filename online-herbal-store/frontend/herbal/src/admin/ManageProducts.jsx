@@ -255,8 +255,18 @@ const ManageProducts = () => {
               <p className="desc">{product.description}</p>
               <p className="price">₹{product.price}</p>
 
-              <div className="action-buttons">
+              {/* <div className="action-buttons">
                 <button className="edit-btn">
+                  <FiEdit />
+                </button> */}
+                
+
+                 <div className="action-buttons">
+                {/* ✔ FIXED: Edit button calls handleEdit */}
+                <button
+                  className="edit-btn"
+                  onClick={() => handleEdit(product)}
+                >
                   <FiEdit />
                 </button>
 

@@ -44,9 +44,76 @@
 
 // export default UserList;
 
+// import React, { useEffect, useState } from "react";
+// import api from "../api/axios";
+// import "./UserList.css"; // External CSS file
+
+// const UserList = () => {
+//   const [users, setUsers] = useState([]);
+
+//   useEffect(() => {
+//     fetchUsers();
+//   }, []);
+
+//   const fetchUsers = async () => {
+//     try {
+//       const response = await api.get("/users/");
+//       setUsers(response.data);
+//     } catch (error) {
+//       console.error("Error fetching users:", error);
+//     }
+//   };
+
+//   return (
+//     <div className="userlist-container">
+//       <div className="userlist-card">
+//         <header className="userlist-header">
+//           <h2>🌿  Herbal Store — User Management</h2>
+//           <span className="user-count">Total Users: {users.length}</span>
+//         </header>
+
+//         <table className="userlist-table">
+//           <thead>
+//             <tr>
+//               <th>SI No</th>
+//               <th>ID</th>
+//               <th>Username</th>
+//               <th>Email</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             {users.length > 0 ? (
+//               users.map((u, index) => (
+//                 <tr key={u.id}>
+//                   <td>{index + 1}</td>
+//                   <td>{u.id}</td>
+//                   <td>{u.username}</td>
+//                   <td>{u.email}</td>
+//                 </tr>
+//               ))
+//             ) : (
+//               <tr>
+//                 <td colSpan="4" className="no-data">
+//                   No users found
+//                 </td>
+//               </tr>
+//             )}
+//           </tbody>
+//         </table>
+
+//         <footer className="userlist-footer">
+//           🌱  Herbal Store 🌱
+//         </footer>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default UserList;
+
 import React, { useEffect, useState } from "react";
 import api from "../api/axios";
-import "./UserList.css"; // External CSS file
+import "./UserList.css";
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -68,7 +135,7 @@ const UserList = () => {
     <div className="userlist-container">
       <div className="userlist-card">
         <header className="userlist-header">
-          <h2>🌿  Herbal Store — User Management</h2>
+          <h2>🌿 Herbal Store — User Management</h2>
           <span className="user-count">Total Users: {users.length}</span>
         </header>
 
@@ -79,6 +146,8 @@ const UserList = () => {
               <th>ID</th>
               <th>Username</th>
               <th>Email</th>
+              <th>Address</th>             {/* Added */}
+              <th>Contact Number</th>      {/* Added */}
             </tr>
           </thead>
           <tbody>
@@ -89,20 +158,20 @@ const UserList = () => {
                   <td>{u.id}</td>
                   <td>{u.username}</td>
                   <td>{u.email}</td>
+                  <td>{u.address || "—"}</td>               {/* Added */}
+                  <td>{u.contact_number || "—"}</td>        {/* Added */}
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="4" className="no-data">
-                  No users found
-                </td>
+                <td colSpan="6" className="no-data">No users found</td>
               </tr>
             )}
           </tbody>
         </table>
 
         <footer className="userlist-footer">
-          🌱  Herbal Store 🌱
+          🌱 Herbal Store 🌱
         </footer>
       </div>
     </div>

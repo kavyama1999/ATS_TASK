@@ -18,6 +18,14 @@ from datetime import datetime, timedelta
 import jwt
 
 from fastapi import FastAPI
+
+# MAil And SMS Notification
+from utils_notifications import send_email, send_sms
+
+from dotenv import load_dotenv
+load_dotenv()
+
+
 # Create all tables
 Base.metadata.create_all(bind=engine)
 
@@ -252,6 +260,26 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
+    
+    # ----------------- SEND NOTIFICATIONS -----------------
+
+    email_msg = f"""
+Hello {user.username},
+
+🎉 Congratulations!  
+You have successfully registered on the Online Herbal Store.
+
+Thank you for joining us!
+"""
+
+    sms_msg = "🎉 Welcome to Online Herbal Store! Your registration is successful."
+
+    send_email(user.email, "Registration Successful ✔️", email_msg)
+    send_sms(user.contact_number, sms_msg)
+
+    # ------------------------------------------------------
+
+    
 
     return db_user
 
@@ -313,6 +341,29 @@ def create_order(order: schemas.OrderCreate, db: Session = Depends(get_db)):
         )
         db.add(db_item)
     db.commit()
+
+
+     # Fetch user details for notification
+    user = db.query(models.User).filter(models.User.id == order.user_id).first()
+
+    # ---------------- NOTIFICATION ----------------
+    email_msg = f"""
+Hello {user.username},
+
+🛒 Your order has been successfully placed!
+Order ID: {db_order.id}
+Total Amount: ₹{order.total_price}
+
+We will notify you once it is shipped.
+
+Thank you for shopping with Online Herbal Store!
+"""
+
+    sms_msg = f"🛒 Order Confirmed! Your Order ID {db_order.id} is placed. Total ₹{order.total_price}."
+
+    send_email(user.email, "Order Confirmed ✔️", email_msg)
+    send_sms(user.contact_number, sms_msg)
+    # ------------------------------------------------
     return db_order
 
 
