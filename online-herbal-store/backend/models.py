@@ -13,6 +13,8 @@ class User(Base):
         # 🆕 NEW FIELDS
     address = Column(String(255), nullable=True)
     contact_number = Column(String(20), nullable=True)
+    # ✅ New column for profile image
+    profile_image = Column(String(255), nullable=True)  # store filename or URL
 
 
 

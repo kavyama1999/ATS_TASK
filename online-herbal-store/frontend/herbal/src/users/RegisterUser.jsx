@@ -190,15 +190,7 @@ const RegisterUser = () => {
             required
           />
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Enter Password"
-            value={form.password}
-            onChange={handleChange}
-            required
-          />
-
+      
           <input
             type="text"
             name="address"
@@ -213,6 +205,15 @@ const RegisterUser = () => {
             name="contact_number"
             placeholder="Enter Contact Number"
             value={form.contact_number}
+            onChange={handleChange}
+            required
+          />
+
+           <input
+            type="password"
+            name="password"
+            placeholder="Enter Password"
+            value={form.password}
             onChange={handleChange}
             required
           />

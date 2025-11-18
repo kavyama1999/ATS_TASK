@@ -215,3 +215,42 @@
     transform: translateY(0);
   }
 }
+/* ========== NEW GOOGLE STYLE SEARCH BAR ========== */
+
+.navbar-search {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  margin: 0 25px;
+}
+
+.search-box {
+  position: relative;
+  width: 800px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 40px 10px 15px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  outline: none;
+  background: #fff;
+  transition: 0.2s;
+}
+
+.search-input:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 4px rgba(74, 144, 226, 0.4);
+}
+
+.search-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 25px;
+  cursor: pointer;
+  color: #2e7d32;
+}

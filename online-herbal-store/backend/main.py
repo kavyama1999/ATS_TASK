@@ -9,6 +9,7 @@ from database import Base, engine, get_db
 from fastapi import UploadFile, File, Form
 import shutil
 import os
+
 # from utils import hash_password  # import the helper
 from utils import hash_password, verify_password  # import both helpers
 
@@ -25,6 +26,8 @@ from utils_notifications import send_email, send_sms
 from dotenv import load_dotenv
 load_dotenv()
 
+from fastapi.staticfiles import StaticFiles
+
 
 # Create all tables
 Base.metadata.create_all(bind=engine)
@@ -38,6 +41,9 @@ app.mount("/images", StaticFiles(directory="static/images"), name="images")
 
 # (Optional) If you also want /static for CSS, JS, etc.
 # app.mount("/static", StaticFiles(directory="static"), name="static")
+
+app.mount("/static", StaticFiles(directory="static"), name="static")   # 🔥 CHANGED (ADDED)
+
 
 # ✅ Allow frontend (React Vite default port)
 app.add_middleware(
@@ -202,6 +208,21 @@ def delete_product(product_id: int, db: Session = Depends(get_db)):
     db.commit()
     return {"message": "Product deleted"}
 
+# SEARCH ==================================================
+
+@app.get("/products/search")
+def search_products(q: str, db: Session = Depends(get_db)):
+    products = (
+        db.query(models.Products)
+        .filter(
+            (models.Products.name.ilike(f"%{q}%")) |
+            (models.Products.category.ilike(f"%{q}%")) |
+            (models.Products.description.ilike(f"%{q}%"))
+        )
+        .all()
+    )
+    return products
+
 
 # ---------------- Users ----------------
 
@@ -279,14 +300,120 @@ Thank you for joining us!
 
     # ------------------------------------------------------
 
-    
-
     return db_user
 
 
+# @app.get("/users/", response_model=list[schemas.User])
+# def get_users(db: Session = Depends(get_db)):
+#     return db.query(models.User).all()
+
+    
 @app.get("/users/", response_model=list[schemas.User])
-def get_users(db: Session = Depends(get_db)):
-    return db.query(models.User).all()
+def get_users(request: Request, db: Session = Depends(get_db)):
+    users = db.query(models.User).all()
+
+    BASE_URL = str(request.base_url)  # http://localhost:8000/
+
+    for user in users:
+        if user.profile_image:
+            filename = user.profile_image.split("/")[-1]
+            user.image_url = f"{BASE_URL}images/{filename}"
+        else:
+            user.image_url = None
+
+    return users
+
+
+
+
+# ///////////////////////////////////
+
+@app.get("/users/{user_id}", response_model=schemas.User)
+def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
+  
+
+# update
+
+
+# @app.put("/users/{user_id}", response_model=schemas.User)
+# def update_user(
+#     user_id: int,
+#     user_update: schemas.UserUpdate,   # new schema for updating
+#     db: Session = Depends(get_db)
+# ):
+#     db_user = db.query(models.User).filter(models.User.id == user_id).first()
+#     if not db_user:
+#         raise HTTPException(status_code=404, detail="User not found")
+
+#     # Update only fields provided
+#     if user_update.username:
+#         db_user.username = user_update.username
+
+#     if user_update.email:
+#         db_user.email = user_update.email
+
+#     if user_update.address:
+#         db_user.address = user_update.address
+
+#     if user_update.contact_number:
+#         if not user_update.contact_number.isdigit() or len(user_update.contact_number) != 10:
+#             raise HTTPException(
+#                 status_code=400,
+#                 detail="Contact number must be exactly 10 digits."
+#             )
+#         db_user.contact_number = user_update.contact_number
+
+#     db.commit()
+#     db.refresh(db_user)
+#     return db_user
+
+@app.put("/users/{user_id}", response_model=schemas.User)
+def update_user(
+    user_id: int,
+    username: str = Form(None),
+    email: str = Form(None),
+    address: str = Form(None),
+    contact_number: str = Form(None),
+    profile_image: UploadFile | None = File(None),
+    db: Session = Depends(get_db),
+):
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Update text fields
+    if username:
+        db_user.username = username
+    if email:
+        db_user.email = email
+    if address:
+        db_user.address = address
+    if contact_number:
+        if not contact_number.isdigit() or len(contact_number) != 10:
+            raise HTTPException(status_code=400, detail="Contact number must be 10 digits")
+        db_user.contact_number = contact_number
+
+    # Handle image upload
+    if profile_image:
+        filename = f"user_{user_id}_{profile_image.filename}"
+        save_path = f"static/images/{filename}"
+
+        # Ensure folder exists
+        os.makedirs("static/images", exist_ok=True)
+
+        with open(save_path, "wb") as buffer:
+            shutil.copyfileobj(profile_image.file, buffer)
+
+        db_user.profile_image = filename
+
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
 
 
 # ------------------ LOGIN USER ------------------

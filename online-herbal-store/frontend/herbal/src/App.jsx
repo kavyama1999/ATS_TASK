@@ -16,6 +16,11 @@ import RegisterUser from "./users/RegisterUser";
 import UserLogin from "./users/UserLogin";
 import UserList from "./users/UserList";
 import UserDashboard from "./users/UserDashboard"; 
+import UserProfile from "./users/UserProfile";
+import EditProfile from "./users/EditProfile";
+
+
+
 
 
 import Orders from "./orders/Orders";
@@ -55,7 +60,7 @@ function App() {
           <Route path="admin-view-products" element={<AdminViewProducts />} />
           <Route path="manage-products" element={<ManageProducts />} />
           <Route path="user-list" element={<UserList />} /> 
-            <Route path="orders" element={<Orders />} />
+          <Route path="orders" element={<Orders />} />
 
 
 
@@ -66,6 +71,10 @@ function App() {
         <Route path="/users" element={<UserList />} />
         <Route path="/user-login" element={<UserLogin />} />
         <Route path="/dashboard" element={<UserDashboard />} />
+        <Route path="/user-profile" element={<UserProfile />} />
+        <Route path="/edit-profile" element={<EditProfile />} />
+
+
 
 
         {/* 🛒 Orders */}

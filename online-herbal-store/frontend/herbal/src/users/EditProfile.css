@@ -1,0 +1,211 @@
+/* Main Container */
+.edit-container {
+  min-height: 100vh;
+  background: #f0f9ff;
+  padding: 30px;
+  transition: 0.4s ease-in-out;
+}
+
+.edit-container.dark {
+  background: #0f172a;
+  color: white;
+}
+
+/* Dark Mode Toggle */
+.dark-toggle {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 55px;
+  height: 28px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background: #ccc;
+  border-radius: 34px;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  background: white;
+  border-radius: 50%;
+  left: 3px; bottom: 3px;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background: #4c8df6;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Animated Title */
+.animated-title {
+  text-align: center;
+  font-size: 2.4rem;
+  margin-bottom: 25px;
+  animation: fadeIn 1s ease-in-out;
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(-10px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+/* Skeleton Loading */
+.skeleton-wrapper {
+  width: 350px;
+  margin: auto;
+  text-align: center;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #e0e0e0, #f8f8f8, #e0e0e0);
+  background-size: 200% 200%;
+  animation: shimmer 1.3s infinite;
+  border-radius: 10px;
+  margin: 15px auto;
+}
+
+.avatar {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+}
+
+.line {
+  width: 80%;
+  height: 20px;
+}
+
+.small {
+  width: 50%;
+  height: 20px;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Profile Card */
+.profile-card {
+  max-width: 430px;
+  margin: auto;
+  background: white;
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.12);
+  transition: 0.4s;
+}
+
+.edit-container.dark .profile-card {
+  background: #1e293b;
+  color: white;
+}
+
+/* Profile Picture */
+.profile-pic-section {
+  text-align: center;
+}
+
+.profile-pic {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #4c8df6;
+}
+
+.upload-btn {
+  display: block;
+  margin: 10px auto;
+  background: #4c8df6;
+  padding: 8px 15px;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.upload-btn:hover {
+  background: #2563eb;
+}
+
+/* Form */
+.form-section {
+  margin-top: 20px;
+}
+
+.form-section label {
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.form-section input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  margin-bottom: 12px;
+}
+
+.save-btn {
+  width: 100%;
+  background: #16a34a;
+  padding: 10px;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.save-btn:hover {
+  background: #15803d;
+}
+
+/* Social Icons */
+.social-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 18px;
+}
+
+.social-icon {
+  font-size: 28px;
+  color: #475569;
+  transition: 0.3s;
+}
+
+.social-icon:hover {
+  color: #2563eb;
+}
+
+.edit-container.dark .social-icon {
+  color: #cbd5e1;
+}

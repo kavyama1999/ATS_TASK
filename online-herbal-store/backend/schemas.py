@@ -39,6 +39,13 @@ class UserBase(BaseModel):
     pattern="^[0-9]{10}$"
 )
 
+# class UserUpdate(BaseModel):
+#     username: str | None = None
+#     email: str | None = None
+#     address: str | None = None
+#     contact_number: str | None = None
+
+
 
 class UserCreate(UserBase):
     # is_admin: bool = False
@@ -46,6 +53,11 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
+    profile_image: Optional[str] = None   # MUST match database column
+    image_url: Optional[str] = None       # computed full URL (new!)
+  
+
+
     class Config:
         orm_mode = True
 

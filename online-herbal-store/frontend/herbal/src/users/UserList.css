@@ -8,9 +8,10 @@
   font-family: "Poppins", sans-serif;
 }
 
+/* ⭐ Wider card */
 .userlist-card {
-  width: 90%;
-  max-width: 1000px;
+  width: 95%;
+  max-width: 1400px;
   background: white;
   border-radius: 16px;
   box-shadow: 0 6px 20px rgba(0, 128, 0, 0.2);
@@ -73,6 +74,19 @@
 .userlist-table tr:hover {
   background-color: #dcedc8;
   transition: background-color 0.3s ease;
+}
+
+.userlist-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #4caf50;
+}
+
+.no-img {
+  color: #888;
+  font-style: italic;
 }
 
 .no-data {

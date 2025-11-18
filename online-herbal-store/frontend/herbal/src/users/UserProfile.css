@@ -1,0 +1,123 @@
+/* Background */
+.profile-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #d4f5e5, #f7fff9);
+  padding: 20px;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Card with Glassmorphism */
+.profile-card {
+  width: 420px;
+  padding: 30px;
+  border-radius: 25px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.7s ease-in-out;
+}
+
+/* Glass effect border */
+.glass-effect {
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+/* Profile header */
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Profile image */
+.profile-image {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+  border: 3px solid #bfffd9;
+}
+
+/* Name */
+.user-name {
+  font-size: 26px;
+  font-weight: 700;
+  color: #0f5d2e;
+  letter-spacing: 0.5px;
+}
+
+/* Info Box */
+.profile-info {
+  margin-top: 20px;
+}
+
+.info-box {
+  background: #ffffffd9;
+  padding: 15px 20px;
+  border-radius: 15px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.08);
+  transition: 0.3s ease;
+}
+
+.info-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Label */
+.label {
+  font-weight: 600;
+  color: #0f5d2e;
+}
+
+/* Value */
+.value {
+  font-weight: 500;
+  color: #333;
+}
+
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.edit-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #4caf50;
+  color: white;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.edit-button:hover {
+  background: #45a049;
+  transform: scale(1.05);
+}
