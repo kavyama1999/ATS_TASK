@@ -302,11 +302,18 @@ const Cart = () => {
       <div className="cart-box">
         {cart.map((item) => (
           <div key={item.id} className="cart-card">
-            <input
+            {/* <input
               type="checkbox"
               checked={selectedItems.includes(item.id)}
               onChange={() => toggleSelect(item.id)}
+            /> */}
+            <input
+              type="checkbox"
+              className="big-checkbox"
+              checked={selectedItems.includes(item.id)}
+              onChange={() => toggleSelect(item.id)}
             />
+
 
             <img src={item.image_url} alt={item.name} className="cart-img" />
 

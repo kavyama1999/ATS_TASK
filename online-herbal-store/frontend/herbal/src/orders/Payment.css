@@ -58,3 +58,13 @@
   transition: 0.3s ease;
 }
 
+
+
+.big-radio {
+  /* width: 18px;
+  height: 18px; */
+  transform: scale(1.6);     /* 🔥 Increase size */
+  margin-right: 10px;
+  accent-color: #2e7d32;     /* green color */
+  cursor: pointer;
+}

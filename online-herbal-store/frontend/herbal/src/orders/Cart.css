@@ -112,3 +112,14 @@
   border-radius: 10px;
   cursor: pointer;
 }
+
+
+.big-checkbox {
+  /* width: 18px;
+  height: 18px; */
+  transform: scale(1.6);     /* 🔥 Increase size */
+  margin-right: 15px;
+  accent-color: #2e7d32;     /* Optional: green color */
+  cursor: pointer;
+}
+

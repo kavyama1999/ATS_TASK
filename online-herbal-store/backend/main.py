@@ -29,6 +29,28 @@ load_dotenv()
 from fastapi.staticfiles import StaticFiles
 
 
+import random
+from pydantic import BaseModel
+from models import User
+
+# forgot
+otp_store = {}
+
+
+
+class ForgotPasswordRequest(BaseModel):
+    email: str
+
+class VerifyOtpRequest(BaseModel):
+    email: str
+    otp: int
+
+class ResetPasswordRequest(BaseModel):
+    email: str
+    new_password: str
+
+
+
 # Create all tables
 Base.metadata.create_all(bind=engine)
 
@@ -535,3 +557,57 @@ def admin_login(admin: schemas.AdminLogin, db: Session = Depends(get_db)):
     if not db_admin or db_admin.password != admin.password:
         raise HTTPException(status_code=401, detail="Invalid email or password")
     return {"message": "Login successful", "admin_name": db_admin.admin_name}
+
+
+
+
+
+    # Forgot Password
+
+
+
+
+@app.post("/forgot-password/")
+def forgot_password(req: ForgotPasswordRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == req.email).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="Email not found")
+
+    otp = random.randint(100000, 999999)
+    otp_store[req.email] = otp
+
+    send_email(req.email, "Password Reset OTP", f"Your OTP is {otp}")
+
+    return {"message": "OTP sent to email"}
+
+
+    # OTP
+
+
+@app.post("/verify-otp/")
+def verify_otp(req: VerifyOtpRequest):
+    if otp_store.get(req.email) != req.otp:
+        raise HTTPException(status_code=400, detail="Invalid OTP")
+
+    return {"message": "OTP verified"}
+
+
+
+# Reset Password
+
+@app.post("/reset-password/")
+def reset_password(req: ResetPasswordRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == req.email).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    new_hashed = hash_password(req.new_password)
+    user.password = new_hashed
+    db.commit()
+
+    # remove OTP from memory after use
+    otp_store.pop(req.email, None)
+
+    return {"message": "Password updated successfully"}

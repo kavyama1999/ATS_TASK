@@ -121,3 +121,20 @@
 .register-link:hover {
   text-decoration: underline;
 }
+
+
+.forgot-text {
+  text-align: right;
+  margin-top: -8px;
+  margin-bottom: 10px;
+}
+
+.forgot-link {
+  color: #2e7d32;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
