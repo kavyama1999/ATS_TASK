@@ -27,6 +27,7 @@ import Orders from "./orders/Orders";
 import Cart from "./orders/Cart";
 import Checkout from "./orders/Checkout";
 import OrderSuccess from "./orders/OrderSuccess";
+import Payment from "./orders/Payment";
 
 
 
@@ -81,6 +82,7 @@ function App() {
         <Route path="/orders" element={<Orders />} />
         <Route path="/orders/cart" element={<Cart />} />
         <Route path="/orders/checkout" element={<Checkout />} />
+        <Route path="/orders/payment" element={<Payment />} />
         <Route path="/orders/ordersuccess" element={<OrderSuccess />} />
       </Routes>
 
