@@ -50,26 +50,30 @@ body {
   box-shadow: 0 12px 25px rgba(46, 125, 50, 0.25);
 }
 
-/* Header */
+/* Top Section: Order Number + Date/Time */
 .order-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  flex-wrap: nowrap; /* prevent wrapping */
 }
 
 .order-top h2 {
   font-size: 1.2rem;
   color: #1b5e20;
+  flex-shrink: 0; /* prevent shrinking on small screens */
 }
 
-.order-time {
+.order-time,
+.order-date {
   background: #e8f5e9;
   color: #2e7d32;
   padding: 4px 10px;
   border-radius: 12px;
   font-size: 0.85rem;
   font-weight: 500;
+  white-space: nowrap; /* prevent line break */
 }
 
 /* Details */
@@ -135,4 +139,65 @@ body {
   .order-card {
     padding: 15px;
   }
+}
+
+/* ================================
+   Product Items Inside Order Card
+   ================================ */
+
+.order-items {
+  margin-top: 15px;
+  border-top: 1px solid #dcedc8;
+  padding-top: 15px;
+}
+
+.item-card {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 15px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(76, 175, 80, 0.15);
+  transition: all 0.3s ease;
+}
+
+.item-card:hover {
+  background: rgba(255, 255, 255, 0.85);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(76, 175, 80, 0.15);
+}
+
+.item-image {
+  width: 70px;
+  height: 70px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid #c8e6c9;
+}
+
+.item-info {
+  flex: 1;
+}
+
+.item-name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #2e7d32;
+  margin-bottom: 4px;
+}
+
+.item-info p {
+  margin: 3px 0;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.orders-title {
+  text-align: center;   /* center the title */
+  font-size: 2rem;      /* optional: adjust size */
+  color: #2e7d32;       /* optional: match your theme */
+  font-weight: 700;
+  margin-bottom: 30px;  /* optional: space below */
 }

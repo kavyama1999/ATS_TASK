@@ -129,3 +129,33 @@
   color: white;
   font-weight: bold;
 }
+
+
+
+/* === Perfect Real-Time Toast Popup === */
+.toast-popup {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333; /* Herbal success green  #28a745*/
+  color: #fff;
+  padding: 14px 22px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  z-index: 9999;
+
+  /* Smooth modern animation */
+  opacity: 0;
+  animation: fadeInOut 2.2s ease forwards;
+}
+
+/* Fade-in + stay + fade-out */
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  85% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+}

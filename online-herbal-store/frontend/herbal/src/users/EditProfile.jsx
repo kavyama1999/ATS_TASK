@@ -32,7 +32,7 @@ const EditProfile = () => {
 
         if (res.data.profile_image) {
           setPreviewPic(
-            `http://localhost:8000/static/images/${res.data.profile_image}` // 🔥 CHANGED
+            `http://192.168.0.113:8000/static/images/${res.data.profile_image}` // 🔥 CHANGED
           );
         }
 

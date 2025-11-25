@@ -70,7 +70,9 @@ app.mount("/static", StaticFiles(directory="static"), name="static")   # 🔥 CH
 # ✅ Allow frontend (React Vite default port)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=["http://localhost:5173","http://192.168.0.113:5173","*"],
+    # allow_origins=["*"],   # allow all devices in your network
+
     allow_methods=["*"],
     allow_headers=["*"]
 )
@@ -277,25 +279,71 @@ def search_products(q: str, db: Session = Depends(get_db)):
 #     return db_user
 
 
+# @app.post("/users/", response_model=schemas.User)
+# def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+
+#     # ✅ Validate contact number (must be exactly 10 digits and numeric)
+#     if not user.contact_number.isdigit() or len(user.contact_number) != 10:
+#         raise HTTPException(
+#             status_code=400,
+#             detail="Contact number must be exactly 10 digits."
+#         )
+
+#     # hash the password before saving
+#     hashed_pw = hash_password(user.password)
+
+#     db_user = models.User(
+#         username=user.username,
+#         email=user.email,
+#         password=hashed_pw,
+
+#         # 🆕 NEW FIELDS
+#         address=user.address,
+#         contact_number=user.contact_number
+#     )
+
+#     db.add(db_user)
+#     db.commit()
+#     db.refresh(db_user)
+    
+#     # ----------------- SEND NOTIFICATIONS -----------------
+
+#     email_msg = f"""
+# Hello {user.username},
+
+# 🎉 Congratulations!  
+# You have successfully registered on the Online Herbal Store.
+
+# Thank you for joining us!
+# """
+
+#     sms_msg = "🎉 Welcome to Online Herbal Store! Your registration is successful."
+
+#     send_email(user.email, "Registration Successful ✔️", email_msg)
+#     send_sms(user.contact_number, sms_msg)
+
+#     # ------------------------------------------------------
+
+#     return db_user
+
+
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
-    # ✅ Validate contact number (must be exactly 10 digits and numeric)
+    # ✅ Contact number validation
     if not user.contact_number.isdigit() or len(user.contact_number) != 10:
-        raise HTTPException(
-            status_code=400,
-            detail="Contact number must be exactly 10 digits."
-        )
+        raise HTTPException(status_code=400, detail="Contact number must be exactly 10 digits.")
 
-    # hash the password before saving
+    # ✅ Force email lowercase
+    email = user.email.lower()
+
+    # ✅ Hash password
     hashed_pw = hash_password(user.password)
 
     db_user = models.User(
         username=user.username,
-        email=user.email,
+        email=email,
         password=hashed_pw,
-
-        # 🆕 NEW FIELDS
         address=user.address,
         contact_number=user.contact_number
     )
@@ -303,26 +351,13 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    
-    # ----------------- SEND NOTIFICATIONS -----------------
 
-    email_msg = f"""
-Hello {user.username},
-
-🎉 Congratulations!  
-You have successfully registered on the Online Herbal Store.
-
-Thank you for joining us!
-"""
-
-    sms_msg = "🎉 Welcome to Online Herbal Store! Your registration is successful."
-
-    send_email(user.email, "Registration Successful ✔️", email_msg)
-    send_sms(user.contact_number, sms_msg)
-
-    # ------------------------------------------------------
+    # Optional notifications
+    send_email(email, "Registration Successful ✔️", f"Hello {user.username}, welcome!")
+    send_sms(user.contact_number, "🎉 Welcome! Registration successful.")
 
     return db_user
+
 
 
 # @app.get("/users/", response_model=list[schemas.User])
@@ -440,37 +475,26 @@ def update_user(
 
 # ------------------ LOGIN USER ------------------
 
-# @app.post("/login")
-# def login_user(login_data: schemas.LoginRequest, db: Session = Depends(get_db)):
-#     # Find user by email
-#     db_user = db.query(models.User).filter(models.User.email == login_data.email).first()
-#     if not db_user:
+
+
+
+# @app.post("/login/")
+# def login_user(login_data: schemas.UserLogin, db: Session = Depends(get_db)):
+#     user = db.query(models.User).filter(models.User.email == login_data.email).first()
+#     if not user or not verify_password(login_data.password, user.password):
 #         raise HTTPException(status_code=400, detail="Invalid email or password")
-
-#     # Verify password
-#     if not verify_password(login_data.password, db_user.password):
-#         raise HTTPException(status_code=400, detail="Invalid email or password")
-
-#     # Create token
-#     token = create_access_token({"sub": db_user.email})
-
-#     return {
-#         "message": "Login successful",
-#         "access_token": token,
-#         "user": {
-#             "id": db_user.id,
-#             "username": db_user.username,
-#             "email": db_user.email
-#         }
-#     }
-
+#     return {"message": "Login successful", "user_id": user.id}
 
 @app.post("/login/")
 def login_user(login_data: schemas.UserLogin, db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.email == login_data.email).first()
+    email = login_data.email.lower()  # ✅ enforce lowercase
+    user = db.query(models.User).filter(models.User.email == email).first()
+
     if not user or not verify_password(login_data.password, user.password):
         raise HTTPException(status_code=400, detail="Invalid email or password")
+
     return {"message": "Login successful", "user_id": user.id}
+
 
 
 # ---------------- Orders ----------------
@@ -547,6 +571,61 @@ def get_orders(db: Session = Depends(get_db)):
         }
         for r in results
     ]
+
+# get orders by userid
+
+@app.get("/orders/user/{user_id}")
+def get_orders_by_user(user_id: int, request: Request, db: Session = Depends(get_db)):
+    """Fetch all orders of a specific user including items + product details + address."""
+    
+    # Fetch user to get address
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not user:
+        return []
+
+    # Fetch orders of that user
+    orders = db.query(models.Order).filter(models.Order.user_id == user_id).all()
+    if not orders:
+        return []
+
+    result = []
+
+    for order in orders:
+        # JOIN order items + product table
+        items_with_product = (
+            db.query(models.OrderItem, models.Product)
+            .join(models.Product, models.Product.id == models.OrderItem.product_id)
+            .filter(models.OrderItem.order_id == order.id)
+            .all()
+        )
+
+        formatted_items = []
+        for item, product in items_with_product:
+            image_url = None
+            if product.image_url:
+                filename = product.image_url.split("/")[-1]
+                image_url = f"{request.base_url}images/{filename}"  # Attach full URL
+
+            formatted_items.append({
+                "id": item.id,
+                "product_id": item.product_id,
+                "product_name": product.name,
+                "image_url": image_url,
+                "quantity": item.quantity,
+                "price": item.price
+            })
+
+        result.append({
+            "id": order.id,
+            "user_id": order.user_id,
+            "total_price": order.total_price,
+            "order_date": order.order_date,
+            "address": user.address,
+            "items": formatted_items
+        })
+
+    return result
+
 
 
 # admin Login

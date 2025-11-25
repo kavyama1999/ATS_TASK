@@ -138,3 +138,34 @@
 .forgot-link:hover {
   text-decoration: underline;
 }
+
+
+
+/* === Top-Right Toast Message === */
+.toast-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #2e7d32; /* Success green */
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  z-index: 9999;
+  opacity: 1;
+  animation: fadeOut 0.6s ease 2s forwards;
+}
+
+/* Error toast (red) */
+.toast-error {
+  background: #d32f2f;
+}
+
+/* Fade out animation */
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+

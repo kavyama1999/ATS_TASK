@@ -158,3 +158,31 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+
+.top-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.top-btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+}
+
+.view-btn {
+  background: #1976d2;
+}
+
+.add-btn {
+  background: #2e7d32;
+}
+
+.top-btn:hover {
+  opacity: 0.8;
+}

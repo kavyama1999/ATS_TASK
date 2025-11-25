@@ -1,114 +1,5 @@
 
 
-// import React, { useState } from "react";
-// import { Link } from "react-router-dom";
-// import api from "../api/axios";
-// import "./RegisterUser.css";
-
-// const RegisterUser = () => {
-//   const [form, setForm] = useState({
-//     username: "",
-//     email: "",
-//     password: "",
-//     address: "",
-//     contact_number: "",
-//   });
-//   const [message, setMessage] = useState("");
-
-//   const handleChange = (e) => {
-//     setForm({ ...form, [e.target.name]: e.target.value });
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const response = await api.post("/users/", form);
-//       setMessage(`✅ User created: ${response.data.username}`);
-
-//       setForm({
-//         username: "",
-//         email: "",
-//         password: "",
-//         address: "",
-//         contact_number: "",
-//       });
-//     } catch (error) {
-//       console.error("Error creating user:", error);
-//       setMessage("❌ User already exists. Please use a different one");
-//     }
-//   };
-
-//   return (
-//     <div className="register-container">
-//       <div className="register-card">
-//         <h2>👤 Create New User</h2>
-//         <form onSubmit={handleSubmit}>
-//           <input
-//             type="text"
-//             name="username"
-//             placeholder="Enter Username"
-//             value={form.username}
-//             onChange={handleChange}
-//             required
-//           />
-
-//           <input
-//             type="email"
-//             name="email"
-//             placeholder="Enter Email"
-//             value={form.email}
-//             onChange={handleChange}
-//             required
-//           />
-
-//           <input
-//             type="password"
-//             name="password"
-//             placeholder="Enter Password"
-//             value={form.password}
-//             onChange={handleChange}
-//             required
-//           />
-
-//           {/* NEW FIELDS */}
-//           <input
-//             type="text"
-//             name="address"
-//             placeholder="Enter Address"
-//             value={form.address}
-//             onChange={handleChange}
-//             required
-//           />
-
-//           <input
-//             type="text"
-//             name="contact_number"
-//             placeholder="Enter Contact Number"
-//             value={form.contact_number}
-//             onChange={handleChange}
-//             required
-//           />
-
-//           <button type="submit">Register</button>
-//         </form>
-
-//         {message && <p className="message">{message}</p>}
-
-//         <p className="login-text">
-//           Already registered?{" "}
-//           <Link to="/user-login" className="login-link">
-//             Login here
-//           </Link>
-//         </p>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default RegisterUser;
-
-
-
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
@@ -125,34 +16,63 @@ const RegisterUser = () => {
   });
 
   const [message, setMessage] = useState("");
+  const [passwordError, setPasswordError] = useState(""); // ✅ password error
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     let { name, value } = e.target;
 
-    // ✅ Allow only 10 digits for contact number
     if (name === "contact_number") {
-      if (!/^\d*$/.test(value)) return;    // only numbers
-      if (value.length > 10) return;       // max 10 digits
+      if (!/^\d*$/.test(value)) return;
+      if (value.length > 10) return;
     }
 
     setForm({ ...form, [name]: value });
+
+    // ✅ Password validation live
+    if (name === "password") {
+      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{6,}$/.test(value)) {
+        setPasswordError("❌ Please enter a strong password");
+      } else {
+        setPasswordError(""); // strong password, remove message
+      }
+    }
+  };
+
+  const isValidEmail = (email) => {
+    return /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(email);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
 
-    // ❌ Prevent submit if contact number is not exactly 10 digits
     if (form.contact_number.length !== 10) {
       setMessage("❌ Contact number must be exactly 10 digits!");
       return;
     }
 
+    if (!isValidEmail(form.email)) {
+      setMessage("❌ Invalid email! Use lowercase letters only.");
+      return;
+    }
+
+    if (passwordError) {
+      setMessage(passwordError);
+      return;
+    }
+
+    if (/\s/.test(form.password)) {
+      setMessage("❌ Password cannot contain spaces!");
+      return;
+    }
+
+    setLoading(true);
     try {
-      const response = await api.post("/users/", form);
-      // setMessage(`✅ User created sucessfully: ${response.data.username}`);
-        setMessage(`✅ User created sucessfully`);
+      const payload = { ...form, email: form.email.toLowerCase() };
+      await api.post("/users/", payload);
 
-
+      setMessage("✅ Registration successful!");
       setForm({
         username: "",
         email: "",
@@ -160,16 +80,28 @@ const RegisterUser = () => {
         address: "",
         contact_number: "",
       });
+
+      setTimeout(() => setMessage(""), 3000);
     } catch (error) {
       console.error("Error creating user:", error);
-      setMessage("❌ User already exists. Please try with another email.");
+      setMessage("❌ User already exists or server error.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="register-container">
+      {message && (
+        <div
+          className={`toast-message ${message.includes("❌") ? "toast-error" : ""}`}
+        >
+          {message}
+        </div>
+      )}
+
       <div className="register-card">
-        <h2>👤 Create New User</h2>
+        <h2>👤 Create Account</h2>
 
         <form onSubmit={handleSubmit}>
           <input
@@ -179,6 +111,7 @@ const RegisterUser = () => {
             value={form.username}
             onChange={handleChange}
             required
+            disabled={loading}
           />
 
           <input
@@ -188,9 +121,9 @@ const RegisterUser = () => {
             value={form.email}
             onChange={handleChange}
             required
+            disabled={loading}
           />
 
-      
           <input
             type="text"
             name="address"
@@ -198,6 +131,7 @@ const RegisterUser = () => {
             value={form.address}
             onChange={handleChange}
             required
+            disabled={loading}
           />
 
           <input
@@ -207,21 +141,32 @@ const RegisterUser = () => {
             value={form.contact_number}
             onChange={handleChange}
             required
+            disabled={loading}
           />
 
-           <input
+          <input
             type="password"
             name="password"
             placeholder="Enter Password"
             value={form.password}
             onChange={handleChange}
             required
+            disabled={loading}
           />
+          {passwordError && (
+            <p style={{ fontSize: "0.9rem", color: "red" }}>{passwordError}</p>
+          )}
 
-          <button type="submit">Register</button>
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              cursor: loading ? "not-allowed" : "pointer",
+            }}
+          >
+            {loading ? "Registering..." : "Register"}
+          </button>
         </form>
-
-        {message && <p className="message">{message}</p>}
 
         <p className="login-text">
           Already registered?{" "}

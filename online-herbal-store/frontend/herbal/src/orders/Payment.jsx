@@ -27,11 +27,18 @@ const Payment = () => {
         };
 
         try {
-            const res = await fetch("http://localhost:8000/orders/", {
+            //     const res = await fetch("http://localhost:8000/orders/", {
+            //         method: "POST",
+            //         headers: { "Content-Type": "application/json" },
+            //         body: JSON.stringify(payload),
+            //     });
+
+            const res = await fetch("http://192.168.0.113:8000/orders/", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
             });
+
 
             const data = await res.json();
             const orderId = data.id || data.orderId || data.order_id;

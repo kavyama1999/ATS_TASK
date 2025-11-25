@@ -1,3 +1,4 @@
+
 // import React, { useState } from "react";
 // import { Link, useNavigate } from "react-router-dom";
 // import api from "../api/axios";
@@ -22,12 +23,11 @@
 //     try {
 //       const response = await api.post("/login/", form);
 
-//       // ✅ Save both user and user_id consistently
 //       localStorage.setItem("user", JSON.stringify(response.data));
-//       localStorage.setItem("user_id", response.data.user_id); // 👈 use user_id not userId
+//       localStorage.setItem("user_id", response.data.user_id);
 
 //       setMessage("✅ Login successful!");
-//       setTimeout(() => navigate("/"), 1000); // redirect to home after 1s
+//       setTimeout(() => navigate("/"), 1200);
 //     } catch (error) {
 //       console.error("Login failed:", error);
 //       setMessage("❌ Invalid email or password.");
@@ -36,8 +36,21 @@
 
 //   return (
 //     <div className="login-container">
+
+//       {/* === TOP-RIGHT TOAST MESSAGE === */}
+//       {message && (
+//         <div
+//           className={`toast-message ${
+//             message.includes("Invalid") ? "toast-error" : ""
+//           }`}
+//         >
+//           {message}
+//         </div>
+//       )}
+
 //       <div className="login-card">
 //         <h2>🔐 User Login</h2>
+
 //         <form onSubmit={handleSubmit}>
 //           <input
 //             type="email"
@@ -47,6 +60,7 @@
 //             onChange={handleChange}
 //             required
 //           />
+
 //           <input
 //             type="password"
 //             name="password"
@@ -55,12 +69,16 @@
 //             onChange={handleChange}
 //             required
 //           />
+
+//           <div className="forgot-text">
+//             <Link to="/forgot-password" className="forgot-link">
+//               Forgot Password?
+//             </Link>
+//           </div>
+
 //           <button type="submit">Login</button>
 //         </form>
 
-//         {message && <p className="message">{message}</p>}
-
-//         {/* Optional register link */}
 //         <p className="register-text">
 //           Don’t have an account?{" "}
 //           <Link to="/register" className="register-link">
@@ -87,6 +105,7 @@ const UserLogin = () => {
     password: "",
   });
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false); // ✅ loading state
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -96,6 +115,14 @@ const UserLogin = () => {
     e.preventDefault();
     setMessage("");
 
+    // ❌ Email must be lowercase
+    if (form.email !== form.email.toLowerCase()) {
+      setMessage("❌ Invalid Email ");
+      return;
+    }
+
+    setLoading(true); // start loading
+
     try {
       const response = await api.post("/login/", form);
 
@@ -103,15 +130,28 @@ const UserLogin = () => {
       localStorage.setItem("user_id", response.data.user_id);
 
       setMessage("✅ Login successful!");
-      setTimeout(() => navigate("/"), 1000);
+      setTimeout(() => navigate("/"), 1200);
     } catch (error) {
       console.error("Login failed:", error);
       setMessage("❌ Invalid email or password.");
+    } finally {
+      setLoading(false); // stop loading
     }
   };
 
   return (
     <div className="login-container">
+      {message && (
+        <div
+          className={`toast-message ${message.includes("Invalid") || message.includes("lowercase")
+            ? "toast-error"
+            : ""
+            }`}
+        >
+          {message}
+        </div>
+      )}
+
       <div className="login-card">
         <h2>🔐 User Login</h2>
 
@@ -123,6 +163,7 @@ const UserLogin = () => {
             value={form.email}
             onChange={handleChange}
             required
+            disabled={loading} // ✅ disable input while loading
           />
 
           <input
@@ -132,19 +173,26 @@ const UserLogin = () => {
             value={form.password}
             onChange={handleChange}
             required
+            disabled={loading} // ✅ disable input while loading
           />
 
-          {/* 🔥 Forgot Password link added */}
           <div className="forgot-text">
             <Link to="/forgot-password" className="forgot-link">
               Forgot Password?
             </Link>
           </div>
 
-          <button type="submit">Login</button>
-        </form>
+          <button
+            type="submit"
+            disabled={loading} // ✅ disable button while loading
+            style={{
+              cursor: loading ? "not-allowed" : "pointer", // just change cursor
+            }}
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
 
-        {message && <p className="message">{message}</p>}
+        </form>
 
         <p className="register-text">
           Don’t have an account?{" "}
