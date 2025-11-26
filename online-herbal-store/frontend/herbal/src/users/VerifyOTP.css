@@ -1,0 +1,91 @@
+.otp-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  background: linear-gradient(135deg, #e0f7ec, #c8f5d3);
+  font-family: "Poppins", sans-serif;
+}
+
+.otp-card {
+  background: #ffffff;
+  padding: 50px 40px;
+  border-radius: 20px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 128, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.otp-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 40px rgba(0, 128, 0, 0.25);
+}
+
+.otp-card h2 {
+  font-size: 2rem;
+  color: #166534;
+  margin-bottom: 1.5rem;
+}
+
+.otp-email {
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.otp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.otp-form input {
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #a1d9b5;
+  font-size: 1rem;
+  outline: none;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.otp-form input:focus {
+  border-color: #166534;
+  box-shadow: 0 0 0 2px rgba(22, 101, 52, 0.2);
+}
+
+.btn-primary, .btn-secondary {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: #166534;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #0e4a26;
+}
+
+.btn-secondary {
+  background: #f0f0f0;
+  color: #166534;
+  margin-top: 10px;
+}
+
+.btn-secondary:hover {
+  background: #d5f5e3;
+}
+
+.otp-message {
+  margin-top: 15px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}

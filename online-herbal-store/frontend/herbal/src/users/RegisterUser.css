@@ -1,88 +1,159 @@
-.register-container {
+/* Background gradient */
+.register-wrapper {
+  min-height: 80vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #e0f7ec, #c8f5d3);
+  background: linear-gradient(135deg, #c8f5d3, #b0efc4, #d6fde5);
+  padding: 20px;
   font-family: "Poppins", sans-serif;
 }
 
-.register-card {
-  background: #ffffff;
-  padding: 45px 40px;
+/* Glassmorphism Card */
+.register-glass {
+  width: 380px;
+  padding: 35px 30px;
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 128, 0, 0.15);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 25px rgba(0, 128, 0, 0.18);
+  animation: fadeIn 0.5s ease;
+}
+
+.title {
   text-align: center;
-  width: 420px;      /* 🔥 Increased width */
-  transition: 0.3s ease;
+  font-size: 1.9rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #14532d;
 }
 
-.register-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0, 128, 0, 0.25);
+/* ✔ SUCCESS MESSAGE INSIDE FORM */
+.form-message {
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 18px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.95rem;
+  animation: fadeIn 0.4s ease;
 }
 
-.register-card h2 {
-  color: #166534;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
+.form-message.success {
+  background: #d1fadf;
+  color: #0d6b34;
+  border: 1px solid #8be8a0;
 }
 
-.register-card form {
+.form-message.error {
+  background: #ffd4d4;
+  color: #b60101;
+  border: 1px solid #ff9191;
+}
+
+/* Form Layout */
+.register-form {
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
-.register-card input {
-  padding: 14px;
-  border-radius: 10px;
-  border: 1px solid #a1d9b5;
+.input-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.input-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #14532d;
+  margin-bottom: 6px;
+}
+
+.input-group input {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #a8dfb4;
+  background: #ffffff;
   font-size: 1rem;
   outline: none;
-  transition: all 0.2s;
+  transition: 0.2s ease;
 }
 
-.register-card input:focus {
-  border-color: #166534;
-  box-shadow: 0 0 0 2px rgba(22, 101, 52, 0.2);
+.input-group input:focus {
+  border-color: #0d8a41;
+  box-shadow: 0 0 0 2px rgba(13, 138, 65, 0.25);
 }
 
-.register-card button {
+/* Error text under password */
+.error-text {
+  color: red;
+  font-size: 0.85rem;
+  margin-top: -10px;
+}
+
+/* Register Button */
+.btn-register {
   padding: 14px;
-  background: #166534;
-  color: white;
+  background: #0f7a3c;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
+  color: white;
   font-size: 1rem;
-  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.register-card button:hover {
-  background: #0e4a26;
-}
-
-.message {
-  margin-top: 1rem;
-  color: #155e2c;
-  font-weight: 500;
-}
-
-.login-text {
-  margin-top: 20px;
-  font-size: 0.95rem;
-  color: #555;
-}
-
-.login-link {
-  color: #166534;
   font-weight: 600;
-  text-decoration: none;
+  transition: 0.3s ease;
 }
 
-.login-link:hover {
+.btn-register:hover {
+  background: #0c5e2e;
+}
+
+.btn-register:disabled {
+  background: #9cccac;
+  cursor: not-allowed;
+}
+
+/* Bottom Link */
+.login-hint {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.login-hint a {
+  color: #0f7a3c;
+  font-weight: 600;
+}
+
+.login-hint a:hover {
   text-decoration: underline;
-  color: #0e4a26;
+}
+
+/* Fade Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Password field wrapper for icon */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 40px; /* space for icon */
+}
+
+.password-icon {
+  position: absolute;
+  right: 12px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #0d6835;
 }

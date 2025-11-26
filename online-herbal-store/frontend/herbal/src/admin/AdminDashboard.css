@@ -89,7 +89,7 @@
   margin: 14px 0;
 }
 
-.sidebar ul li a {
+/* .sidebar ul li a {
   color: white;
   text-decoration: none;
   font-weight: 600;
@@ -97,7 +97,21 @@
   padding: 8px;
   transition: 0.25s;
   border-radius: 6px;
+} */
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;   /* 🔥 prevents text from going to next line */
+  padding: 8px;
+  transition: 0.25s;
+  border-radius: 6px;
 }
+
 
 .sidebar ul li a:hover {
   background: rgba(255,255,255,0.1);
@@ -175,4 +189,17 @@
 @keyframes fall {
   0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
   100% { transform: translateY(140px) rotate(90deg); opacity: 0; }
+}
+
+.menu-link {
+  color: #4caf50; /* same as ⚙️ */
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+}
+
+.menu-link:hover {
+  color: #388e3c;
 }

@@ -48,3 +48,21 @@
 .submit-btn:hover {
   background-color: #09743b;
 }
+
+.error-msg {
+  color: red;
+  font-size: 14px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.image-preview {
+  margin-top: 10px;
+}
+
+.image-preview img {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}

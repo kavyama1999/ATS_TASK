@@ -61,8 +61,7 @@ const UserList = () => {
             <td>{index + 1}</td>
 
                   <td>{user.id}</td>
-
-
+                  
                   {/* Image Column */}
                   <td>
                     {getImageUrl(user) ? (

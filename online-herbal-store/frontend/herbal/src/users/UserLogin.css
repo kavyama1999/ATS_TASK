@@ -2,7 +2,7 @@
 
 .login-container {
   background: linear-gradient(135deg, #d5f5e3, #baf3d0);
-  height: 100vh;
+  height: 80vh;
   width: 100vw;
   display: flex;
   justify-content: center;
@@ -14,7 +14,7 @@
   background: #ffffff;
   padding: 50px 45px;
   border-radius: 22px;
-  width: 420px; /* ✔ increased size */
+  width: 430px;
   box-shadow: 0 12px 35px rgba(0, 128, 0, 0.18);
   text-align: center;
   transition: 0.3s ease;
@@ -31,55 +31,102 @@
   margin-bottom: 1.6rem;
 }
 
-/* ==== FORM ==== */
+/* ============================
+      MESSAGE INSIDE FORM
+===============================*/
 
-.login-card form {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+.form-error,
+.form-success {
+  padding: 12px 15px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: 600;
 }
 
+.form-error {
+  background: #d32f2f;
+  color: white;
+}
+
+.form-success {
+  background: #2e7d32;
+  color: white;
+}
+
+/* ============================
+      FORM FIELD STYLING
+===============================*/
+
+
+
+.form-group {
+  text-align: left;
+  margin-bottom: 14px;   /* reduced spacing */
+}
+
+.login-card label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #166534;
+  margin-bottom: -6px;    /* reduced label gap */
+  display: block;
+}
 .login-card input {
-  padding: 14px;
-  border-radius: 12px;
+  width: 100%;
+  padding: 14px 45px 14px 14px;
+  border-radius: 10px;
   border: 1px solid #9ed8b5;
-  font-size: 1rem;
+  background: #f7fdf9;
+  font-size: 15px;
   outline: none;
-  transition: 0.2s;
+  transition: 0.25s ease;
 }
 
 .login-card input:focus {
   border-color: #166534;
-  box-shadow: 0 0 0 2px rgba(22, 101, 52, 0.25);
+  background: #ffffff;
+  box-shadow: 0 0 0 2px rgba(22, 101, 52, 0.15);
 }
 
-/* === Password with show button === */
-
+/* Password eye icon */
 .password-wrapper {
   position: relative;
 }
 
-.show-btn {
+.eye-icon {
   position: absolute;
-  right: 10px;
-  top: 9px;
-  padding: 5px 8px;
-  font-size: 0.8rem;
-  border: none;
-  background: #166534;
-  color: white;
-  border-radius: 6px;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
   cursor: pointer;
+  font-size: 18px;
+  color: #166534;
 }
 
-.show-btn:hover {
-  background: #0e4a26;
+/* Forgot text */
+.forgot-text {
+  text-align: right;
+ margin-top: -20px;     /* was -12px */
+  margin-bottom: 4px;   /* was 12px */
+  
 }
 
-/* === Buttons === */
+.forgot-link {
+  color: #2e7d32;
+  font-size: 14px;
+  text-decoration: none;
+}
 
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+/* Button */
 .login-card button {
   padding: 14px;
+  width: 100%;
   background: #166534;
   color: white;
   border: none;
@@ -94,20 +141,7 @@
   background: #0e4a26;
 }
 
-/* === Links === */
-
-.forgot-link {
-  margin-top: 12px;
-  display: block;
-  color: #166534;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.forgot-link:hover {
-  text-decoration: underline;
-}
-
+/* Register text */
 .register-text {
   margin-top: 18px;
   color: #444;
@@ -123,49 +157,15 @@
 }
 
 
-.forgot-text {
-  text-align: right;
-  margin-top: -8px;
-  margin-bottom: 10px;
+
+
+/* Hide default password reveal icon (Edge/IE) */
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
 }
 
-.forgot-link {
-  color: #2e7d32;
-  font-size: 14px;
-  text-decoration: none;
+/* Hide default icon for Chrome/Safari if it appears */
+input[type="password"]::-webkit-textfield-decoration-container {
+  display: none;
 }
-
-.forgot-link:hover {
-  text-decoration: underline;
-}
-
-
-
-/* === Top-Right Toast Message === */
-.toast-message {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: #2e7d32; /* Success green */
-  color: white;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-size: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-  z-index: 9999;
-  opacity: 1;
-  animation: fadeOut 0.6s ease 2s forwards;
-}
-
-/* Error toast (red) */
-.toast-error {
-  background: #d32f2f;
-}
-
-/* Fade out animation */
-@keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
-
