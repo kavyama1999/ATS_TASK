@@ -8,12 +8,20 @@ body {
 }
 
 .orders-page {
-  padding: 50px 8%;
+  padding: 40px 2%;
 }
 
+
+.main-content {
+    margin-left: 220px;
+    margin-top: 10px;
+    padding: 30px;
+    min-height: calc(100vh - 120px);
+    background: #f4fff4;
+}
 .orders-header {
-  text-align: center;
-  margin-bottom: 40px;
+  /* text-align: center; 40*/
+  margin-bottom: 10px;
 }
 
 .orders-header h1 {

@@ -1,5 +1,5 @@
 .userlist-container {
-  background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+  /* background: linear-gradient(135deg, #e8f5e9, #f1f8e9); */
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -74,6 +74,13 @@
 .userlist-table tr:hover {
   background-color: #dcedc8;
   transition: background-color 0.3s ease;
+}
+.userlist-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
 }
 
 .userlist-img {

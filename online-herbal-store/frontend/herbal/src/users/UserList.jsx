@@ -37,7 +37,7 @@ const UserList = () => {
     <div className="userlist-container">
       <div className="userlist-card">
         <header className="userlist-header">
-          <h2>🌿 Herbal Store — User Management</h2>
+          <h2> Users</h2>
           <span className="user-count">Total Users: {users.length}</span>
         </header>
 
@@ -56,14 +56,14 @@ const UserList = () => {
 
           <tbody>
             {users.length > 0 ? (
-              users.map((user,index) => (
+              users.map((user, index) => (
                 <tr key={user.id}>
-            <td>{index + 1}</td>
+                  <td>{index + 1}</td>
 
                   <td>{user.id}</td>
-                  
+
                   {/* Image Column */}
-                  <td>
+                  {/* <td>
                     {getImageUrl(user) ? (
                       <img
                         src={getImageUrl(user)}
@@ -73,6 +73,13 @@ const UserList = () => {
                     ) : (
                       <span className="no-img">No Image</span>
                     )}
+                  </td> */}
+                  <td>
+                    <img
+                      src={getImageUrl(user) || "/default-user.png"}
+                      alt="User"
+                      className="userlist-img"
+                    />
                   </td>
 
                   <td>{user.username}</td>

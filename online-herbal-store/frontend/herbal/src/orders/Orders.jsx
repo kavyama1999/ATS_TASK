@@ -1,4 +1,6 @@
 
+//latest order should come first
+
 import React, { useEffect, useState } from "react";
 import api from "../api/axios";
 import "./Orders.css";
@@ -28,7 +30,13 @@ const Orders = () => {
   const fetchOrders = async () => {
     try {
       const response = await api.get("/orders/");
-      setOrders(response.data);
+
+      // ✅ Sort: latest order on top
+      const sortedOrders = response.data.sort(
+        (a, b) => new Date(b.order_date) - new Date(a.order_date)
+      );
+
+      setOrders(sortedOrders);
     } catch (error) {
       console.error("Error fetching orders:", error);
     } finally {
@@ -46,10 +54,10 @@ const Orders = () => {
   }
 
   return (
+    <div>
     <div className="orders-page">
       <div className="orders-header">
         <h1>🌿 Users Orders</h1>
-        {/* <p>Track all your herbal purchases in real-time</p> */}
       </div>
 
       {orders.length === 0 ? (
@@ -84,6 +92,7 @@ const Orders = () => {
           ))}
         </div>
       )}
+    </div>
     </div>
   );
 };

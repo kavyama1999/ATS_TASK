@@ -173,6 +173,7 @@
   font-weight: bold;
   text-decoration: none;
   color: white;
+  margin-top: 30px;
 }
 
 .view-btn {
@@ -185,4 +186,26 @@
 
 .top-btn:hover {
   opacity: 0.8;
+}
+
+
+/* SUCCESS MESSAGE POPUP */
+.success-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #4caf50;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  animation: fadeInOut 2s ease;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(-20px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-20px); }
 }

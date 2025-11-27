@@ -36,6 +36,9 @@ from models import User
 # forgot
 otp_store = {}
 
+# IMAGE UPLOAD FOLDER
+UPLOAD_DIR = "static/images"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
 class ForgotPasswordRequest(BaseModel):
@@ -92,16 +95,36 @@ def create_access_token(data: dict):
     return jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
 
 # ---------------- Products ----------------
-# @app.post("/products/", response_model=schemas.Product)
-# def create_product(product: schemas.ProductCreate, db: Session = Depends(get_db)):
-#     """
-#     Create a new product. 
-#     Example: image_url should be only the filename, like 'coconut-oil.jpg'
-#     """
-#     db_product = models.Product(**product.dict())
+
+
+
+# @app.post("/products/upload", response_model=schemas.Product)
+# def upload_product(
+#     name: str = Form(...),
+#     description: str = Form(...),
+#     price: float = Form(...),
+#     image: UploadFile = File(...),
+#     db: Session = Depends(get_db)
+# ):
+#     # Save Image
+#     image_filename = image.filename
+#     image_path = f"static/images/{image_filename}"
+
+#     with open(image_path, "wb") as buffer:
+#         shutil.copyfileobj(image.file, buffer)
+
+#     # Save Product Info
+#     db_product = models.Product(
+#         name=name,
+#         description=description,
+#         price=price,
+#         image_url=image_filename  # only store filename
+#     )
+
 #     db.add(db_product)
 #     db.commit()
 #     db.refresh(db_product)
+
 #     return db_product
 
 
@@ -113,26 +136,53 @@ def upload_product(
     image: UploadFile = File(...),
     db: Session = Depends(get_db)
 ):
-    # Save Image
-    image_filename = image.filename
-    image_path = f"static/images/{image_filename}"
+    # Remove extra spaces
+    name = name.strip()
 
-    with open(image_path, "wb") as buffer:
+    # 1️⃣ Check for duplicate product name
+    existing = db.query(models.Product).filter(models.Product.name.ilike(name)).first()
+    if existing:
+        raise HTTPException(
+            status_code=400,
+            detail="Product with this name already exists."
+        )
+
+    # 2️⃣ Validate price
+    if price <= 0:
+        raise HTTPException(
+            status_code=400,
+            detail="Price must be a positive number."
+        )
+
+    # 3️⃣ Validate image type
+    allowed_types = ["image/jpeg", "image/jpg", "image/png"]
+    if image.content_type not in allowed_types:
+        raise HTTPException(
+            status_code=400,
+            detail="Unsupported image type. Only JPG, JPEG, PNG allowed."
+        )
+
+    # 4️⃣ Save image
+    filename = image.filename
+    save_path = os.path.join(UPLOAD_DIR, filename)
+
+    with open(save_path, "wb") as buffer:
         shutil.copyfileobj(image.file, buffer)
 
-    # Save Product Info
-    db_product = models.Product(
+    # 5️⃣ Save product in DB
+    new_product = models.Product(
         name=name,
         description=description,
         price=price,
-        image_url=image_filename  # only store filename
+        image_url=filename  # only filename stored
     )
 
-    db.add(db_product)
+    db.add(new_product)
     db.commit()
-    db.refresh(db_product)
+    db.refresh(new_product)
 
-    return db_product
+    return new_product
+
 
 
 @app.get("/products/", response_model=list[schemas.Product])

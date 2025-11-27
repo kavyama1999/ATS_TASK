@@ -1,6 +1,8 @@
 
+
+
 // import { useState } from "react";
-// import api from "../api/axios";   // ✅ USE axios instance
+// import api from "../api/axios";
 // import "./AdminDashboard.css";
 // import "./AddProduct.css";
 
@@ -9,27 +11,66 @@
 //   const [description, setDescription] = useState("");
 //   const [price, setPrice] = useState("");
 //   const [imageFile, setImageFile] = useState(null);
+//   const [imagePreview, setImagePreview] = useState(null);
+//   const [errors, setErrors] = useState({ price: "", image: "" });
+
+//   // Handle image preview & validation
+//   const handleImageChange = (e) => {
+//     const file = e.target.files[0];
+//     if (!file) return;
+
+//     const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+//     if (!allowedTypes.includes(file.type)) {
+//       setErrors(prev => ({ ...prev, image: "Unsupported file type. Only JPG, JPEG, PNG allowed." }));
+//       setImageFile(null);
+//       setImagePreview(null);
+//       return;
+//     }
+
+//     setErrors(prev => ({ ...prev, image: "" }));
+//     setImageFile(file);
+
+//     const reader = new FileReader();
+//     reader.onload = () => setImagePreview(reader.result);
+//     reader.readAsDataURL(file);
+//   };
 
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
 
+//     // Price validation
+//     if (Number(price) <= 0) {
+//       setErrors(prev => ({ ...prev, price: "Price must be a positive number." }));
+//       return;
+//     }
+
+//     if (!imageFile) {
+//       setErrors(prev => ({ ...prev, image: "Please upload an image." }));
+//       return;
+//     }
+
 //     const formData = new FormData();
-//     formData.append("name", name);
+//     formData.append("name", name.trim());
 //     formData.append("description", description);
 //     formData.append("price", price);
 //     formData.append("image", imageFile);
 
 //     try {
-//       const response = await api.post("/products/upload", formData);
-
+//       await api.post("/products/upload", formData);
 //       alert("✅ Product Added Successfully!");
 //       setName("");
 //       setDescription("");
 //       setPrice("");
 //       setImageFile(null);
+//       setImagePreview(null);
+//       setErrors({ price: "", image: "" });
 
 //     } catch (error) {
-//       alert("Error adding product: " + error);
+//       if (error.response && error.response.status === 400) {
+//         alert(error.response.data.detail); // duplicate product or validation error
+//       } else {
+//         alert("Error adding product: " + error);
+//       }
 //     }
 //   };
 
@@ -39,19 +80,50 @@
 //         <h1 className="page-title">➕ Add New Product</h1>
 
 //         <form className="add-product-form" onSubmit={handleSubmit}>
+
 //           <label>Product Name</label>
-//           <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+//           <input 
+//             type="text" 
+//             value={name} 
+//             onChange={(e) => setName(e.target.value)} 
+//             required 
+//           />
 
 //           <label>Description</label>
-//           <textarea rows="4" value={description} onChange={(e) => setDescription(e.target.value)} required></textarea>
+//           <textarea 
+//             rows="4" 
+//             value={description} 
+//             onChange={(e) => setDescription(e.target.value)} 
+//             required
+//           ></textarea>
 
 //           <label>Price (₹)</label>
-//           <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} required />
+//           <input 
+//             type="number" 
+//             value={price} 
+//             onChange={(e) => setPrice(e.target.value)} 
+//             required 
+//           />
+//           {errors.price && <p className="error-msg">{errors.price}</p>}
 
 //           <label>Upload Product Image</label>
-//           <input type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files[0])} required />
+//           <input 
+//             type="file" 
+//             accept="image/jpeg, image/jpg, image/png" 
+//             onChange={handleImageChange} 
+//             required 
+//           />
+//           {errors.image && <p className="error-msg">{errors.image}</p>}
 
-//           <button type="submit" className="submit-btn">Add Product</button>
+//           {imagePreview && (
+//             <div className="image-preview">
+//               <img src={imagePreview} alt="Preview" />
+//             </div>
+//           )}
+
+//           <button type="submit" className="submit-btn">
+//             Add Product
+//           </button>
 //         </form>
 //       </main>
 //     </div>
@@ -59,10 +131,8 @@
 // }
 
 // export default AddProduct;
-
-
 import { useState } from "react";
-import api from "../api/axios";   // ✅ axios instance
+import api from "../api/axios";
 import "./AdminDashboard.css";
 import "./AddProduct.css";
 
@@ -72,15 +142,12 @@ function AddProduct() {
   const [price, setPrice] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [errors, setErrors] = useState({ price: "", image: "" });
 
-  const [errors, setErrors] = useState({
-    name: "",
-    price: "",
-    image: "",
-    duplicate: ""
-  });
+  // NEW STATES FOR POPUP MESSAGE
+  const [msg, setMsg] = useState("");
+  const [msgType, setMsgType] = useState(""); // success | error
 
-  // Handle image change and preview
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -96,39 +163,25 @@ function AddProduct() {
     setErrors(prev => ({ ...prev, image: "" }));
     setImageFile(file);
 
-    // Show image preview
     const reader = new FileReader();
     reader.onload = () => setImagePreview(reader.result);
     reader.readAsDataURL(file);
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Reset duplicate error
-    setErrors(prev => ({ ...prev, duplicate: "" }));
-
-    // Validate price
+    // Price validation
     if (Number(price) <= 0) {
       setErrors(prev => ({ ...prev, price: "Price must be a positive number." }));
       return;
     }
 
-    // Check for duplicate product name
-    try {
-      const check = await api.post("/products/check-name", { name: name.trim() });
-      if (check.data.exists) {
-        setErrors(prev => ({ ...prev, duplicate: "Product with this name already exists." }));
-        return;
-      }
-    } catch (err) {
-      console.error("Error checking duplicate:", err);
-      alert("Error checking product name.");
+    if (!imageFile) {
+      setErrors(prev => ({ ...prev, image: "Please upload an image." }));
       return;
     }
 
-    // Prepare form data for upload
     const formData = new FormData();
     formData.append("name", name.trim());
     formData.append("description", description);
@@ -138,16 +191,33 @@ function AddProduct() {
     try {
       await api.post("/products/upload", formData);
 
-      alert("✅ Product Added Successfully!");
+      // SHOW SUCCESS MESSAGE
+      setMsg("✅ Product Added Successfully!");
+      setMsgType("success");
+
+      // reset fields
       setName("");
       setDescription("");
       setPrice("");
       setImageFile(null);
       setImagePreview(null);
-      setErrors({ name: "", price: "", image: "", duplicate: "" });
+      setErrors({ price: "", image: "" });
+
+      setTimeout(() => setMsg(""), 3000);
 
     } catch (error) {
-      alert("Error adding product: " + error);
+      if (error.response && error.response.status === 400) {
+
+        // SHOW DUPLICATE PRODUCT MESSAGE
+        setMsg(error.response.data.detail);
+        setMsgType("error");
+        setTimeout(() => setMsg(""), 3000);
+
+      } else {
+        setMsg("❌ Error adding product");
+        setMsgType("error");
+        setTimeout(() => setMsg(""), 3000);
+      }
     }
   };
 
@@ -158,6 +228,13 @@ function AddProduct() {
 
         <form className="add-product-form" onSubmit={handleSubmit}>
 
+          {/* POPUP MESSAGE BOX ABOVE FIELDS */}
+          {msg && (
+            <div className={`form-msg ${msgType}`}>
+              {msg}
+            </div>
+          )}
+
           <label>Product Name</label>
           <input 
             type="text" 
@@ -165,7 +242,6 @@ function AddProduct() {
             onChange={(e) => setName(e.target.value)} 
             required 
           />
-          {errors.duplicate && <p className="error-msg">{errors.duplicate}</p>}
 
           <label>Description</label>
           <textarea 
@@ -193,14 +269,15 @@ function AddProduct() {
           />
           {errors.image && <p className="error-msg">{errors.image}</p>}
 
-          {/* Image Preview */}
           {imagePreview && (
             <div className="image-preview">
               <img src={imagePreview} alt="Preview" />
             </div>
           )}
 
-          <button type="submit" className="submit-btn">Add Product</button>
+          <button type="submit" className="submit-btn">
+            Add Product
+          </button>
         </form>
       </main>
     </div>

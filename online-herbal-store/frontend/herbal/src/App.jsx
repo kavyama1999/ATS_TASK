@@ -11,6 +11,8 @@ import ManageProducts from "./admin/ManageProducts";
 import ViewProducts from "./admin/ViewProducts";
 import AddProduct from "./admin/AddProduct";
 import AdminViewProducts from "./admin/AdminViewProducts";
+import DashboardHome from "./admin/DashboardHome";
+
 
 import RegisterUser from "./users/RegisterUser";
 import UserLogin from "./users/UserLogin";
@@ -64,6 +66,9 @@ function App() {
 
         {/* 🧩 Admin Dashboard Layout */}
         <Route path="/admindashboard" element={<AdminDashboard />}>
+
+           {/* ✅ Dashboard Home (Welcome + Stats) */}
+          <Route index element={<DashboardHome />} />
           <Route path="view-products" element={<ViewProducts />} />
           <Route path="add-product" element={<AddProduct />} />
           <Route path="admin-view-products" element={<AdminViewProducts />} />
