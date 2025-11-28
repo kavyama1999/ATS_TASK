@@ -1,4 +1,4 @@
-/* Layout */
+/* LAYOUT */
 .admin-layout {
   display: flex;
   flex-direction: column;
@@ -6,7 +6,7 @@
   background: #f3fff3;
 }
 
-/* 🌿 Header */
+/* HEADER */
 .admin-header {
   display: flex;
   align-items: center;
@@ -23,7 +23,6 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.18);
 }
 
-/* 🌿 Header Title */
 .header-title {
   font-size: 1.7rem;
   font-weight: 700;
@@ -32,9 +31,9 @@
   margin: 0;
 }
 
-/* 🌿 Header Icon Buttons */
+/* ICON BUTTONS */
 .icon-btn {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.15);
   border: none;
   width: 42px;
   height: 42px;
@@ -48,7 +47,7 @@
 }
 
 .icon-btn:hover {
-  background: rgba(255,255,255,0.28);
+  background: rgba(255, 255, 255, 0.28);
   transform: scale(1.08);
 }
 
@@ -60,7 +59,7 @@
   background: #c62828 !important;
 }
 
-/* 🌿 Sidebar */
+/* SIDEBAR (DESKTOP) */
 .sidebar {
   width: 220px;
   background-color: #0d5b2d;
@@ -89,46 +88,44 @@
   margin: 14px 0;
 }
 
-/* .sidebar ul li a {
-  color: white;
-  text-decoration: none;
-  font-weight: 600;
-  display: block;
-  padding: 8px;
-  transition: 0.25s;
-  border-radius: 6px;
-} */
-
-.sidebar ul li a {
+.sidebar-link {
   color: white;
   text-decoration: none;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  white-space: nowrap;   /* 🔥 prevents text from going to next line */
+  white-space: nowrap;
   padding: 8px;
   transition: 0.25s;
   border-radius: 6px;
 }
 
-
-.sidebar ul li a:hover {
-  background: rgba(255,255,255,0.1);
-  color: #b2fab4;
+.sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.1);
   padding-left: 12px;
 }
 
-/* 🌿 Main content */
-.main-content {
+/* MAIN CONTENT */
+/* .main-content {
   margin-left: 220px;
   margin-top: 70px;
   padding: 30px;
   min-height: calc(100vh - 120px);
   background: #f4fff4;
+} */
+
+.main-content {
+    margin-left: 250px;
+    margin-top: 80px;
+    padding: 30px;
+    min-height: calc(100vh - 120px);
+    background: #f4fff4;
+
 }
 
-/* 🌿 Footer */
+
+/* FOOTER */
 .admin-footer {
   background: #0d5b2d;
   color: white;
@@ -140,119 +137,96 @@
   right: 0;
 }
 
-/* 🌿 Responsive */
+/* RESPONSIVE */
+
+/* MOBILE SIDEBAR FIX */
 @media (max-width: 900px) {
   .sidebar {
-    position: relative;
     width: 100%;
+    position: relative;
+    height: auto;
   }
-  .main-content {
+
+  /* .main-content {
     margin-left: 0;
-  }
+    margin-top: 140px;
+  } */
+
   .admin-footer {
     left: 0;
+    width: 100%;
     position: relative;
   }
 }
 
-/* This for that welcome animation */
+/* HEADER MOBILE CENTER FIX */
+@media (max-width: 600px) {
+  .header-title {
+    font-size: 1.2rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    flex: none;
+  }
 
-/* ============================
-   HERBAL DASHBOARD CLEAN CSS
-============================ */
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+}
 
-/* --- Welcome Box --- */
+
+
+/* Dashboard Welcome Box */
 .herbal-welcome-box {
-  background: none;
-  box-shadow: none;
-  border: none;
-  border-radius: 0;
-  padding: 0;
-  margin-top: 50px;
-  text-align: center;
-  font-family: "Poppins", sans-serif;
+  /* background: #e8f5e9; */
+  /* padding: 20px; */
+  border-radius: 10px;
+  margin-bottom: 30px;
+  font-size: 1.2rem;
+  font-weight: 500;
 }
 
-.herbal-welcome-box h2 {
-  font-size: 24px;
-  color: #0d5b2d;
-  margin-bottom: 6px;
-}
-
-.herbal-welcome-box p {
-  font-size: 16px;
-  color: #145a32;
-  margin-bottom: 10px;
-}
-
-/* --- Leaf Container --- */
-.leaf-animation {
-  position: relative;
-  height: 60px;
-  overflow: hidden;
-}
-
-/* --- Floating Leaves (cleaned) --- */
-.leaf-fall {
-  position: absolute;
-  top: -10px;
-  width: 22px;
-  opacity: 0.9;
-  animation: leafFall 3.5s linear infinite;
-}
-
-.leaf-fall.delay1 { animation-delay: 0.5s; }
-.leaf-fall.delay2 { animation-delay: 1s; }
-
-/* --- Single Animation (NO DUPLICATES) --- */
-@keyframes leafFall {
-  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(60px) rotate(120deg); opacity: 0; }
-}
-
-/* --- Stats Grid --- */
+/* Dashboard Stats Cards */
 .herbal-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 25px;
-  margin-top: 25px;
+  display: flex;
+  gap: 20px;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }
 
-/* --- Cards --- */
 .herbal-card {
-  background: white;
-  padding: 25px;
-  border-radius: 18px;
-  border-top: 6px solid #2e7d32;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 260px;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
   transition: 0.3s;
 }
 
 .herbal-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
 }
 
-/* --- Icons --- */
 .h-icon {
-  font-size: 45px;
-  margin-bottom: 12px;
-}
-
-.h-icon.users    { color: #2e7d32; }
-.h-icon.products { color: #1b5e20; }
-.h-icon.orders   { color: #008000; }
-
-/* --- Text --- */
-.herbal-card h3 {
-  color: #145a32;
-  font-size: 18px;
-  margin-bottom: 8px;
+  font-size: 40px;
+  margin-bottom: 10px;
+  color: #2d6a4f;
 }
 
 .h-number {
-  color: #0c7a32;
-  font-size: 38px;
+  font-size: 2rem;
   font-weight: bold;
+  margin-top: 10px;
 }
+
+.herbal-welcome-box h2{
+  margin-top: 60px;
+  font-size: 20px;
+  margin-left: 220px;
+
+}
+
+

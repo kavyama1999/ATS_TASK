@@ -34,11 +34,9 @@
   object-fit: cover;
 }
 
-.price {
-  color: #2e7d32;
-  font-size: 22px;
-  font-weight: bold;
-}
+
+
+
 
 .card button {
   border: none;
@@ -158,4 +156,37 @@
   10% { opacity: 1; transform: translateX(-50%) translateY(0); }
   85% { opacity: 1; }
   100% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+}
+
+
+/* === PRODUCT NAME === */
+.card h1 {
+  font-size: 18px;
+  color: rgb(33, 33, 33);
+  font-weight: 600;
+  margin: 10px 0;
+}
+
+/* === PRODUCT PRICE === */
+
+/* .price {
+  color: rgb(33, 33, 33);
+  font-weight: bold;
+  margin-top: 6px;
+  font-size: 18px;
+} */
+/* .price {
+  color: rgb(33, 33, 33) !important;
+  font-weight: bold;
+  margin-top: 6px;
+  font-size: 18px;
+} */
+
+.price {
+  font-family: Inter, -apple-system, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22.4px;
+  color: rgb(33, 33, 33) !important;
+  margin-top: 6px;
 }

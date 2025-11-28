@@ -111,7 +111,7 @@
 .dropdown-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   padding: 10px 15px;
   color: white;
   text-decoration: none;
@@ -172,7 +172,6 @@
   gap: 15px;
 }
 
-/* Cancel button */
 .logout-cancel {
   background-color: #bdbdbd;
   color: black;
@@ -188,7 +187,6 @@
   background-color: #9e9e9e;
 }
 
-/* OK button */
 .logout-ok {
   background-color: #d32f2f;
   color: white;
@@ -204,19 +202,13 @@
   background-color: #b71c1c;
 }
 
-/* Fade animation */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-/* ========== NEW GOOGLE STYLE SEARCH BAR ========== */
 
+
+/* ========== NEW GOOGLE STYLE SEARCH BAR ========== */
 .navbar-search {
   flex: 1;
   display: flex;
@@ -256,9 +248,75 @@
 }
 
 
-.dropdown-item {
+
+/* ========================================================= */
+/* ================= MOBILE HAMBURGER MENU ================= */
+/* ========================================================= */
+
+.mobile-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.mobile-hamburger .bar {
+  width: 26px;
+  height: 3px;
+  background: white;
+  border-radius: 3px;
+}
+
+/* Hide desktop links on mobile */
+@media (max-width: 768px) {
+  .navbar-links {
+    display: none;
+  }
+
+  .mobile-hamburger {
+    display: flex;
+  }
+
+  .navbar-search {
+    width: 100%;
+    order: 3;
+    margin-top: 10px;
+  }
+}
+
+/* ================= MOBILE SLIDE MENU ================= */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -260px;
+  width: 260px;
+  height: 100%;
+  background: #1b5e20;
+  padding: 70px 20px;
   display: flex;
-  align-items: center;
-  gap: 10px;         /* spacing between icon and text */
-  white-space: nowrap; /* text will NOT break into new line */
+  flex-direction: column;
+  gap: 18px;
+  transition: 0.3s ease-in-out;
+  z-index: 999;
+}
+
+.mobile-menu a,
+.mobile-menu button {
+  color: white;
+  font-size: 18px;
+  text-decoration: none;
+  padding: 10px 0;
+  border-bottom: 1px solid #2e7d32;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mobile-menu.open {
+  right: 0;
+}
+
+.mobile-logout {
+  color: #ffdddd;
 }
